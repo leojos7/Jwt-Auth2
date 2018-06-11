@@ -4,6 +4,7 @@ import com.siemens.mindsphere.apps.module.login.utils.CustomAuthenticationEntryP
 import com.siemens.mindsphere.apps.module.login.utils.CustomLogoutSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -43,7 +44,8 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .authorizeRequests()
                 .antMatchers("/public/").permitAll()
                 .antMatchers("/secure/admin/**").access("hasRole('ROLE_ADMIN')")
-                .antMatchers("/secure/user/**").access("hasRole('ROLE_USER')");
+                .antMatchers("/secure/user/**").access("hasRole('ROLE_USER')")
+                .antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll();
     }
 
 }

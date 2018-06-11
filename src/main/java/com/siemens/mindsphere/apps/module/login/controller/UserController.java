@@ -5,8 +5,6 @@ import com.siemens.mindsphere.apps.module.login.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/secure/user")
 public class UserController {
@@ -33,7 +31,7 @@ public class UserController {
         return userService.updateUser(user);
     }
 
-    @RequestMapping(value = "/get/{name}", method = RequestMethod.GET, produces="application/json")
+    @RequestMapping(value = "/get/{name}", method = RequestMethod.GET, produces = "application/json")
     public User getUser(@PathVariable String name) {
         return userService.getUser(name);
     }

@@ -1,14 +1,13 @@
 package com.siemens.mindsphere.apps.module.login.controller;
 
 import com.siemens.mindsphere.apps.module.login.entity.User;
-import com.siemens.mindsphere.apps.module.login.repository.UserRepository;
 import com.siemens.mindsphere.apps.module.login.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/public")

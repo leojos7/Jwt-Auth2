@@ -16,7 +16,7 @@ public class AdminController {
     @Autowired
     public UserService userService;
 
-    @RequestMapping(value = "/getAll", method = RequestMethod.GET, produces="application/json")
+    @RequestMapping(value = "/getAll", method = RequestMethod.GET, produces = "application/json")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }

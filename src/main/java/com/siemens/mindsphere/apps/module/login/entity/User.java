@@ -1,7 +1,5 @@
 package com.siemens.mindsphere.apps.module.login.entity;
 
-import org.hibernate.validator.constraints.Email;
-
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Set;
@@ -19,7 +17,7 @@ public class User {
 
     private boolean activated;
 
-    @ManyToMany(fetch=FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_authority",
             joinColumns = @JoinColumn(name = "username"),

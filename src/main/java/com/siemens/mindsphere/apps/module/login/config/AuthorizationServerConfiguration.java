@@ -15,25 +15,23 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 
-import static com.siemens.mindsphere.apps.module.login.utils.Constants.PASSWORD_GRANT_TYPE;
-import static com.siemens.mindsphere.apps.module.login.utils.Constants.READ;
-import static com.siemens.mindsphere.apps.module.login.utils.Constants.WRITE;
+import static com.siemens.mindsphere.apps.module.login.utils.Constants.*;
 import static org.springframework.security.oauth2.common.OAuth2AccessToken.REFRESH_TOKEN;
 
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
-    @Value( "${authentication.oauth.clientid}" )
+    @Value("${authentication.oauth.clientid}")
     private String clientId;
 
-    @Value( "${authentication.oauth.secret}" )
+    @Value("${authentication.oauth.secret}")
     private String secret;
 
-    @Value( "${authentication.oauth.accessTokenValidityInSeconds}" )
+    @Value("${authentication.oauth.accessTokenValidityInSeconds}")
     private int accessTokenValidityInSeconds;
 
-    @Value( "${authentication.oauth.refreshTokenValidityInSeconds}" )
+    @Value("${authentication.oauth.refreshTokenValidityInSeconds}")
     private int refreshTokenValidityInSeconds;
 
     @Autowired
