@@ -4,6 +4,7 @@ INSERT INTO user (username,email, password, activated) VALUES ('rajith', 'rajith
 
 INSERT INTO authority (name) VALUES ('ROLE_USER');
 INSERT INTO authority (name) VALUES ('ROLE_ADMIN');
+INSERT INTO authority (name) VALUES ('ROLE_SALES');
 
 INSERT INTO user_authority (username,authority) VALUES ('rajith', 'ROLE_USER');
 INSERT INTO user_authority (username,authority) VALUES ('user', 'ROLE_USER');

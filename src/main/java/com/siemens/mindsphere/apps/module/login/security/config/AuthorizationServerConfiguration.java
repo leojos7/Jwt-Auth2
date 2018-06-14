@@ -62,8 +62,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                 .inMemory()
                 .withClient(clientId)
                 .scopes(READ, WRITE)
-                .authorities(Authorities.ROLE_ADMIN.name(), Authorities.ROLE_USER.name())
-                .authorizedGrantTypes(PASSWORD_GRANT_TYPE, REFRESH_TOKEN)
+                .authorities(Authorities.ROLE_ADMIN.name(), Authorities.ROLE_USER.name(), Authorities.ROLE_SALES.name())
+                .authorizedGrantTypes(PASSWORD_GRANT_TYPE, REFRESH_TOKEN, "implicit")
                 .secret(passwordEncoder.encode(secret))
                 .accessTokenValiditySeconds(accessTokenValidityInSeconds)
                 .refreshTokenValiditySeconds(refreshTokenValidityInSeconds);

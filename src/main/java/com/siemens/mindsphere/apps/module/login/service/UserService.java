@@ -1,20 +1,20 @@
 package com.siemens.mindsphere.apps.module.login.service;
 
 import com.siemens.mindsphere.apps.module.login.entity.User;
+import com.siemens.mindsphere.apps.module.login.exception.AlreadyExistingUserException;
+import com.siemens.mindsphere.apps.module.login.exception.NoUserFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-
 public interface UserService {
 
-    public void addUser(User user);
+    public User addUser(User user, String authorityName) throws NoUserFoundException, AlreadyExistingUserException;
 
-    public void deleteUser(String username);
+    public void deleteUser(String username) throws NoUserFoundException;
 
-    public User updateUser(User user);
+    public User updateUser(User user) throws NoUserFoundException;
 
     public Page<User> getAllUsers(Pageable pageable);
 
-    public User getUser(String username);
+    public User getUser(String username) throws NoUserFoundException;
 }
