@@ -1,20 +1,12 @@
 package com.siemens.mindsphere.apps.module.login.controller;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.siemens.mindsphere.apps.module.login.entity.User;
 import com.siemens.mindsphere.apps.module.login.exception.NoUserFoundException;
 import com.siemens.mindsphere.apps.module.login.exception.ParseException;
 import com.siemens.mindsphere.apps.module.login.service.UserService;
 import com.siemens.mindsphere.apps.module.login.utils.CommonUtils;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.apache.commons.codec.binary.Base64;
-
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/secure/user")
@@ -47,8 +39,18 @@ public class UserController {
             throws NoUserFoundException, ParseException {
         String username = CommonUtils.getUsernameFromAccessToken(authorization);
         User user = userService.getUser(username);
-        if(user == null) {
-            throw new NoUserFoundException(username+ " doesn't exist");
+        if (user == null) {
+            throw new NoUserFoundException(username + " doesn't exist");
+        }
+        return user;
+    }
+
+    @RequestMapping(value = "/get/{username}", method = RequestMethod.GET, produces = "application/json")
+    public User getUserByNAme(@PathVariable String username)
+            throws NoUserFoundException, ParseException {
+        User user = userService.getUser(username);
+        if (user == null) {
+            throw new NoUserFoundException(username + " doesn't exist");
         }
         return user;
     }

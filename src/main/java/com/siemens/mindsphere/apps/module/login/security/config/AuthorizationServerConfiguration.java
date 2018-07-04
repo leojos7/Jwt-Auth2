@@ -1,6 +1,7 @@
 package com.siemens.mindsphere.apps.module.login.security.config;
 
 import com.siemens.mindsphere.apps.module.login.utils.Authorities;
+import com.siemens.mindsphere.apps.module.login.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +16,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 
-import static com.siemens.mindsphere.apps.module.login.utils.Constants.*;
 import static org.springframework.security.oauth2.common.OAuth2AccessToken.REFRESH_TOKEN;
 
 @Configuration
@@ -61,9 +61,9 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         clients
                 .inMemory()
                 .withClient(clientId)
-                .scopes(READ, WRITE)
+                .scopes(Constants.READ, Constants.WRITE)
                 .authorities(Authorities.ROLE_ADMIN.name(), Authorities.ROLE_USER.name(), Authorities.ROLE_SALES.name())
-                .authorizedGrantTypes(PASSWORD_GRANT_TYPE, REFRESH_TOKEN, "implicit")
+                .authorizedGrantTypes(Constants.PASSWORD_GRANT_TYPE, REFRESH_TOKEN, "implicit")
                 .secret(passwordEncoder.encode(secret))
                 .accessTokenValiditySeconds(accessTokenValidityInSeconds)
                 .refreshTokenValiditySeconds(refreshTokenValidityInSeconds);

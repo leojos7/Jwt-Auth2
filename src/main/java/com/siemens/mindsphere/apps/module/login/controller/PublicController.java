@@ -27,5 +27,4 @@ public class PublicController {
     public User salesSignUp(@RequestBody User user) throws AlreadyExistingUserException, NoUserFoundException {
         return userService.addUser(user, Authorities.ROLE_SALES.toString());
     }
-
 }

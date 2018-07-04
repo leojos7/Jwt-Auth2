@@ -1,4 +1,4 @@
-package com.siemens.mindsphere.apps.module.login;
+package com.siemens.mindsphere.apps.module;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

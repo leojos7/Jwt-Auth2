@@ -25,9 +25,9 @@ public class CommonUtils {
     public static String getUsernameFromAccessToken(String authorization) throws ParseException {
         String username = null;
         try {
-            if(!StringUtils.isEmpty(authorization)) {
-                String[] jwtToken =authorization.split("Bearer ");
-                if(jwtToken[1] != null) {
+            if (!StringUtils.isEmpty(authorization)) {
+                String[] jwtToken = authorization.split("Bearer ");
+                if (jwtToken[1] != null) {
                     String[] split_string = jwtToken[1].split("\\.");
                     Base64 base64Url = new Base64(true);
                     if (split_string[1] != null) {
