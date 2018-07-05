@@ -1,4 +1,4 @@
-package com.siemens.mindsphere.apps.module.login.context;
+package com.siemens.mindsphere.apps.module.login.security.context;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

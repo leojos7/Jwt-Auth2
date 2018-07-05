@@ -22,7 +22,7 @@ public class ProductParams {
     private Date modifiedDate;
 
 /*    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
-    private Set<ParamDetails> paramDetails;*/
+    private Set<paramDetails> paramDetails;*/
 
     public Integer getId() {
         return id;
@@ -64,11 +64,11 @@ public class ProductParams {
         this.modifiedDate = modifiedDate;
     }
 
-/*    public Set<ParamDetails> getParamDetails() {
+/*    public Set<paramDetails> getParamDetails() {
         return paramDetails;
     }
 
-    public void setParamDetails(Set<ParamDetails> paramDetails) {
+    public void setParamDetails(Set<paramDetails> paramDetails) {
         this.paramDetails = paramDetails;
     }*/
 }

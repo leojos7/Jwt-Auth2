@@ -2,15 +2,13 @@ package com.siemens.mindsphere.apps.module.product.controller;
 
 import com.siemens.mindsphere.apps.module.product.dto.ProductParamsDto;
 import com.siemens.mindsphere.apps.module.product.entity.ProductParams;
-import com.siemens.mindsphere.apps.module.product.service.ProductParamsService;
+import com.siemens.mindsphere.apps.module.product.service.productParams.ProductParamsService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 
@@ -24,9 +22,15 @@ public class ProductParamsController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @RequestMapping(value = "/getAllProductParams", method = RequestMethod.GET, produces = "application/json")
-    public Page<ProductParamsDto> getAllProductParams(Pageable pageable) {
-        return convertToDtos(productParamsService.getAllProductParams(pageable));
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    public ProductParamsDto addParamDetails(@RequestBody ProductParamsDto productDto) {
+        ProductParams paramDetails = convertToEntity(productDto);
+        ProductParams paramDetailsCreated = null;
+        if(paramDetails != null) {
+            paramDetailsCreated = productParamsService.addProductParams(paramDetails);
+        }
+        return convertToDto(paramDetailsCreated);
     }
 
     @RequestMapping(value = "/get/{productId}", method = RequestMethod.GET)
@@ -34,17 +38,34 @@ public class ProductParamsController {
         return convertToDto(productParamsService.getProductParam(productId));
     }
 
-    private Page<ProductParamsDto> convertToDtos(Page<ProductParams> productParams) {
-        return productParams.map(productParam -> convertToDto(productParam));
+    @RequestMapping(value = "/delete/{paramDetailId}", method = RequestMethod.GET)
+    public void deleteParamDetails(@PathVariable int productId) {
+        productParamsService.deleteProductParams(productId);
     }
 
-    private ProductParamsDto convertToDto(ProductParams product) {
-        ProductParamsDto productParamsDto = modelMapper.map(product, ProductParamsDto.class);
+    @RequestMapping(value = "/getAllProductParams", method = RequestMethod.GET, produces = "application/json")
+    public Page<ProductParamsDto> getAllProductParams(Pageable pageable) {
+        return convertToDtos(productParamsService.getAllProductParams(pageable));
+    }
+
+
+    private Page<ProductParamsDto> convertToDtos(Page<ProductParams> productParams) {
+        return productParams.map(productParamsToBeConverted -> convertToDto(productParamsToBeConverted));
+    }
+
+    private ProductParamsDto convertToDto(ProductParams productParams) {
+        ProductParamsDto productParamsDto = null;
+        if(productParams != null) {
+            productParamsDto = modelMapper.map(productParams, ProductParamsDto.class);
+        }
         return productParamsDto;
     }
 
     private ProductParams convertToEntity(ProductParamsDto productDto) {
-        ProductParams productParams = modelMapper.map(productDto, ProductParams.class);
+        ProductParams productParams = null;
+        if(productDto != null) {
+            productParams = modelMapper.map(productDto, ProductParams.class);
+        }
         return productParams;
     }
 
