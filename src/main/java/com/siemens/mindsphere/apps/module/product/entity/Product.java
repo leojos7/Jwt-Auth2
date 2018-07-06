@@ -27,8 +27,8 @@ public class Product {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "PRODUCT_PARAM_MAP",
-            joinColumns = { @JoinColumn(name = "PRODUCT_ID", referencedColumnName = "id") },
-            inverseJoinColumns = { @JoinColumn(name = "PARAM_DETAILS_ID", referencedColumnName = "id") })
+            joinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "PARAM_DETAILS_ID", referencedColumnName = "id")})
     private Set<ParamDetails> paramDetails;
 
     @Temporal(TemporalType.TIMESTAMP)

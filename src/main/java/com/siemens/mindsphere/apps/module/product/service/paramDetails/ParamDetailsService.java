@@ -8,15 +8,15 @@ import java.util.Set;
 
 public interface ParamDetailsService {
 
-    public ParamDetails addParamDetails(ParamDetails product);
+    ParamDetails addParamDetails(ParamDetails product);
 
-    public ParamDetails updateParamDetails(ParamDetails product);
+    ParamDetails updateParamDetails(ParamDetails product);
 
-    public void deleteParamDetail(Integer paramDetailsId);
+    void deleteParamDetail(Integer paramDetailsId);
 
-    public ParamDetails getParamDetail(Integer paramDetailsId);
+    ParamDetails getParamDetail(Integer paramDetailsId);
 
-    public Page<ParamDetails> getAllParamDetails(Pageable pageable);
+    Page<ParamDetails> getAllParamDetails(Pageable pageable);
 
     void deleteAllParamDetails(Set<ParamDetails> productParamsIds);
 

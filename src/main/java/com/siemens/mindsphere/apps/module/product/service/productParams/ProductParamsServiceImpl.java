@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.Optional;
 import java.util.Set;
 
@@ -24,9 +25,20 @@ public class ProductParamsServiceImpl implements ProductParamsService {
     }
 
     @Override
-    public ProductParams updateProductParams(ProductParams product) {
-        deleteProductParams(product.getId());
-        return productParamsRepository.save(product);
+    public ProductParams updateProductParams(ProductParams productParams) {
+        Optional<ProductParams> paramDetailsOptional = productParamsRepository.findById(productParams.getId());
+        ProductParams existingProductParams = null;
+        ProductParams newProductParams = null;
+        if (paramDetailsOptional.isPresent()) {
+            existingProductParams = paramDetailsOptional.get();
+            existingProductParams.setName(productParams.getName());
+            existingProductParams.setDescription(productParams.getDescription());
+            existingProductParams.setModifiedDate(new Date());
+            newProductParams = productParamsRepository.save(existingProductParams);
+        } else {
+            newProductParams = productParamsRepository.save(productParams);
+        }
+        return newProductParams;
     }
 
     @Override

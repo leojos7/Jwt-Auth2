@@ -43,6 +43,16 @@ public class ParamDetailsController {
         paramDetailsService.deleteParamDetail(paramDetailId);
     }
 
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public ParamDetailsDto updateParamDetails(@RequestBody ParamDetailsDto productDto) {
+        ParamDetails paramDetails = convertToEntity(productDto);
+        ParamDetails paramDetailsUpdated = null;
+        if (paramDetails != null) {
+            paramDetailsUpdated = paramDetailsService.updateParamDetails(paramDetails);
+        }
+        return convertToDto(paramDetailsUpdated);
+    }
+
     @RequestMapping(value = "/getAllParamDetails", method = RequestMethod.GET, produces = "application/json")
     public Page<ParamDetailsDto> getAllParamDetails(Pageable pageable) {
         return convertToDtos(paramDetailsService.getAllParamDetails(pageable));

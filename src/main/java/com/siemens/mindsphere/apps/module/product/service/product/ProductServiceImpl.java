@@ -3,7 +3,6 @@ package com.siemens.mindsphere.apps.module.product.service.product;
 import com.siemens.mindsphere.apps.module.product.entity.ParamDetails;
 import com.siemens.mindsphere.apps.module.product.entity.Product;
 import com.siemens.mindsphere.apps.module.product.exception.AlreadyExistingProductException;
-import com.siemens.mindsphere.apps.module.product.repository.ParamDetailsRespository;
 import com.siemens.mindsphere.apps.module.product.repository.ProductRepository;
 import com.siemens.mindsphere.apps.module.product.service.paramDetails.ParamDetailsService;
 import com.siemens.mindsphere.apps.module.product.service.productParams.ProductParamsService;
@@ -13,7 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Date;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -35,7 +34,7 @@ public class ProductServiceImpl implements ProductService {
         Predicate<ParamDetails> paramDetailsPredicate = paramDetails -> paramDetails != null
                 && paramDetails.getProductParams() != null
                 && paramDetails.getProductParams().getId() != null;
-        if(zDecoder(product.getCode()) == null) {
+        if (zDecoder(product.getCode()) != null) {
             throw new AlreadyExistingProductException("Already Existing Product");
         }
         if (product.getParamDetails() != null) {
@@ -56,7 +55,7 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProduct(Integer productId) {
         Optional<Product> existingProductOptional = productRepository.findById(productId);
         Product existingProduct = null;
-        if(existingProductOptional.isPresent()) {
+        if (existingProductOptional.isPresent()) {
             existingProduct = existingProductOptional.get();
             paramDetailsService.deleteAllParamDetails(existingProduct.getParamDetails());
             productRepository.deleteById(productId);
@@ -67,7 +66,24 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product updateProduct(Product product) {
-        return productRepository.save(product);
+        Optional<Product> productOptional = productRepository.findById(product.getId());
+        Product existingProduct = null;
+        Product newProduct = null;
+        if (productOptional.isPresent()) {
+            existingProduct = productOptional.get();
+            existingProduct.setName(product.getName());
+            existingProduct.setDescription(product.getDescription());
+            existingProduct.setAddedBy(product.getAddedBy());
+            existingProduct.setCode(product.getCode());
+            existingProduct.setStatus(product.getStatus());
+            existingProduct.setModifiedDate(new Date());
+            product.getParamDetails().stream()
+                    .forEach(paramDetails -> paramDetailsService.updateParamDetails(paramDetails));
+            newProduct = productRepository.save(existingProduct);
+        } else {
+            newProduct = productRepository.save(newProduct);
+        }
+        return newProduct;
     }
 
     @Override
@@ -79,7 +95,7 @@ public class ProductServiceImpl implements ProductService {
     public Product getProduct(Integer productId) {
         Optional<Product> existingProductOptional = productRepository.findById(productId);
         Product existingProduct = null;
-        if(existingProductOptional.isPresent()) {
+        if (existingProductOptional.isPresent()) {
             existingProduct = existingProductOptional.get();
         } else {
             // TODO throw custom exception
@@ -89,7 +105,7 @@ public class ProductServiceImpl implements ProductService {
 
     public Product zDecoder(String code) {
         Optional<Product> product = productRepository.findByCode(code).stream().findFirst();
-        if(product.isPresent()) {
+        if (product.isPresent()) {
             return product.get();
         } else {
             return null;
