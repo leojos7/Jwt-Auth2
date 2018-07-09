@@ -66,7 +66,7 @@ public class ProductController {
         return convertToDto(productService.zDecoder(code));
     }
 
-    private Page<ProductDto> convertToDtos(Page<Product> product) {
+    public Page<ProductDto> convertToDtos(Page<Product> product) {
         return product.map(productToMap -> {
             ProductDto productDto = null;
             try {

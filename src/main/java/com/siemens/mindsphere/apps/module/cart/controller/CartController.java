@@ -59,24 +59,16 @@ public class CartController {
         return convertToDtos(cartService.getCart(userId, pageable));
     }
 
-    private Page<CartDto> convertToDtos(Page<Cart> cart) {
-        return cart.map(cartToMap -> {
-            CartDto cartDto = null;
-            try {
-                cartDto = convertToDto(cartToMap);
-            } catch (NoUserFoundException e) {
-                e.getMessage();
-            }
-            return cartDto;
-        });
+    private Page<CartDto> convertToDtos(Page<Cart> carts) {
+        return carts.map(cartToMap -> convertToDto(cartToMap));
     }
 
-    private CartDto convertToDto(Cart cart) throws NoUserFoundException {
+    private CartDto convertToDto(Cart cart) {
         CartDto cartDto = null;
         if (cart != null) {
             cartDto = modelMapper.map(cart, CartDto.class);
-            cartDto.setLoginId(userService.getUser(cart.getLoginId().getUsername()).getUsername());
-            cartDto.setProductId(productService.getProduct(cart.getProductId().getId()).getId());
+            cartDto.setLoginId(cart.getLoginId().getUsername());
+            cartDto.setProductId(cart.getProductId().getId());
         }
         return cartDto;
     }
