@@ -1,25 +1,17 @@
-package com.siemens.mindsphere.apps.module.login.entity;
+package com.siemens.mindsphere.apps.module.login.dto;
 
-import javax.persistence.*;
-import javax.validation.constraints.Size;
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Set;
 
-@Entity
-public class User {
+public class UserDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(updatable = false, nullable = false)
-    @Size(min = 0, max = 50)
     private String username;
 
-    @Size(min = 0, max = 500)
     private String password;
 
-    @Size(min = 0, max = 500)
     private String fullName;
 
     private String mobileNumber;
@@ -28,17 +20,7 @@ public class User {
 
     private String otp;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createDate;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date modifiedDate;
-
-    @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
-    @JoinTable(name = "USER_AUTHORITY",
-            joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "id")})
-    private Set<Authority> authorities;
+    private Set<AuthorityDto> authorities;
 
     public Integer getId() {
         return id;
@@ -56,10 +38,12 @@ public class User {
         this.username = username;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
 
+    @JsonProperty
     public void setPassword(String password) {
         this.password = password;
     }
@@ -96,27 +80,11 @@ public class User {
         this.otp = otp;
     }
 
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Date getModifiedDate() {
-        return modifiedDate;
-    }
-
-    public void setModifiedDate(Date modifiedDate) {
-        this.modifiedDate = modifiedDate;
-    }
-
-    public Set<Authority> getAuthorities() {
+    public Set<AuthorityDto> getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities(Set<Authority> authorities) {
+    public void setAuthorities(Set<AuthorityDto> authorities) {
         this.authorities = authorities;
     }
 }

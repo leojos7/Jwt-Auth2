@@ -25,10 +25,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User addUser(User user, String authorityName) throws NoUserFoundException, AlreadyExistingUserException {
         User addedUser = null;
-        if (getUser(user.getUsername()) == null) {
+        if (getUserByUsername(user.getUsername()) == null) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setStatus(Boolean.TRUE);
-            user.setCreateDate(new Date());
             user.setAuthorities(CommonUtils.getAuthoritiesList(authorityName));
             userRepository.save(user);
         } else {
@@ -38,23 +37,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(String username) throws NoUserFoundException {
-        User user = getUser(username);
+    public void deleteUser(Integer userId) throws NoUserFoundException {
+        User user = getUserById(userId);
         if (user == null) {
-            throw new NoUserFoundException(username + " doesn't exist");
+            throw new NoUserFoundException(userId + " doesn't exist");
         }
         userRepository.delete(user);
     }
 
     @Override
     public User updateUser(User user) throws NoUserFoundException {
-        User oldUser = getUser(user.getUsername());
+        User oldUser = getUserById(user.getId());
         if (oldUser == null) {
             throw new NoUserFoundException(user.getUsername() + " doesn't exist");
         }
         oldUser.setModifiedDate(new Date());
-        oldUser.setFullName(user.getFullName());
-        oldUser.setMobileNumber(user.getMobileNumber());
+/*        oldUser.setFullName(user.getFullName());
+        oldUser.setMobileNumber(user.getMobileNumber());*/
         return userRepository.save(oldUser);
     }
 
@@ -64,8 +63,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(String username) {
+    public User getUserByUsername(String username) {
         User existingUser = userRepository.findByUsernameCaseInsensitive(username);
+        return existingUser;
+    }
+
+    @Override
+    public User getUserById(Integer id) {
+        User existingUser = userRepository.findById(id).get();
         return existingUser;
     }
 

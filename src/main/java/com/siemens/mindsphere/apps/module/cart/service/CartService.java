@@ -13,5 +13,5 @@ public interface CartService {
 
     Cart updateCart(Cart cart);
 
-    Page<Cart> getCart(String userId, Pageable pageable) throws NoUserFoundException;
+    Page<Cart> getCart(Integer userId, Pageable pageable) throws NoUserFoundException;
 }

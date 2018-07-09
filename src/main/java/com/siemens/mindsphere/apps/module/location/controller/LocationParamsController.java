@@ -43,7 +43,7 @@ public class LocationParamsController {
         }
         return convertToDto(locationUpdated);
     }
-    @RequestMapping(value = "/get/{userId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/get/{locationParamsId}", method = RequestMethod.GET)
     public LocationParamsDto getLocation(@PathVariable int locationParamsId) {
         return convertToDto(locationParamsService.getLocationParams(locationParamsId));
     }

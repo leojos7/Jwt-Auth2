@@ -10,11 +10,13 @@ public interface UserService {
 
     public User addUser(User user, String authorityName) throws NoUserFoundException, AlreadyExistingUserException;
 
-    public void deleteUser(String username) throws NoUserFoundException;
+    public void deleteUser(Integer userId) throws NoUserFoundException;
 
     public User updateUser(User user) throws NoUserFoundException;
 
     public Page<User> getAllUsers(Pageable pageable);
 
-    public User getUser(String username) throws NoUserFoundException;
+    public User getUserByUsername(String username) throws NoUserFoundException;
+
+    public User getUserById(Integer id) throws NoUserFoundException;
 }

@@ -27,7 +27,7 @@ public class ProductController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ProductDto addProduct(@RequestBody ProductDto productDto)
-            throws NoUserFoundException, AlreadyExistingProductException {
+            throws AlreadyExistingProductException {
         Product product = convertToEntity(productDto);
         Product productCreated = null;
         if (product != null) {
@@ -62,36 +62,27 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/decode/{code}", method = RequestMethod.GET)
-    public ProductDto zDecoder(@PathVariable String code) throws NoUserFoundException {
+    public ProductDto zDecoder(@PathVariable String code)  {
         return convertToDto(productService.zDecoder(code));
     }
 
     public Page<ProductDto> convertToDtos(Page<Product> product) {
-        return product.map(productToMap -> {
-            ProductDto productDto = null;
-            try {
-                productDto = convertToDto(productToMap);
-            } catch (NoUserFoundException e) {
-                e.getMessage();
-            }
-            return productDto;
-        });
+        return product.map(productToMap -> convertToDto(productToMap));
     }
 
-    private ProductDto convertToDto(Product product) throws NoUserFoundException {
+    private ProductDto convertToDto(Product product){
         ProductDto productDto = null;
         if (product != null) {
             productDto = modelMapper.map(product, ProductDto.class);
-            productDto.setAddedBy(userService.getUser(product.getAddedBy().getUsername()).getUsername());
+
         }
         return productDto;
     }
 
-    private Product convertToEntity(ProductDto productDto) throws NoUserFoundException {
+    private Product convertToEntity(ProductDto productDto){
         Product product = null;
         if (productDto != null) {
             product = modelMapper.map(productDto, Product.class);
-            product.setAddedBy(userService.getUser(productDto.getAddedBy()));
         } else {
 
         }

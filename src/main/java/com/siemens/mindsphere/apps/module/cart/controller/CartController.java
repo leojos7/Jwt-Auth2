@@ -55,7 +55,7 @@ public class CartController {
     }
 
     @RequestMapping(value = "/get/{userId}", method = RequestMethod.GET)
-    public Page<CartDto> getCart(@PathVariable String userId, Pageable pageable) throws NoUserFoundException {
+    public Page<CartDto> getCart(@PathVariable Integer userId, Pageable pageable) throws NoUserFoundException {
         return convertToDtos(cartService.getCart(userId, pageable));
     }
 
@@ -67,7 +67,7 @@ public class CartController {
         CartDto cartDto = null;
         if (cart != null) {
             cartDto = modelMapper.map(cart, CartDto.class);
-            cartDto.setLoginId(cart.getLoginId().getUsername());
+            cartDto.setLoginId(cart.getLoginId().getId());
             cartDto.setProductId(cart.getProductId().getId());
         }
         return cartDto;
@@ -77,7 +77,7 @@ public class CartController {
         Cart cart = null;
         if (cartDto != null) {
             cart = modelMapper.map(cartDto, Cart.class);
-            cart.setLoginId(userService.getUser(cartDto.getLoginId()));
+            cart.setLoginId(userService.getUserById(cartDto.getLoginId()));
             cart.setProductId(productService.getProduct(cartDto.getProductId()));
         } else {
 

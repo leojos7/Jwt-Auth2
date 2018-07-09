@@ -75,10 +75,8 @@ public class OrderController {
         OrderDto orderDto = null;
         if (order != null) {
             orderDto = modelMapper.map(order, OrderDto.class);
-            orderDto.setLoginId(order.getLoginId().getUsername());
             orderDto.setLocationId(order.getLocationId().getId());
             orderDto.setOrderStatusId(order.getOrderStatusId().getId());
-            orderDto.setUpdatedBy(order.getUpdatedBy().getUsername());
         }
         return orderDto;
     }
@@ -87,10 +85,10 @@ public class OrderController {
         Order order = null;
         if (orderDto != null) {
             order = modelMapper.map(orderDto, Order.class);
-            order.setLoginId(userService.getUser(orderDto.getLoginId()));
+            order.setLoginId(userService.getUserById(orderDto.getLoginId().getId()));
             order.setLocationId(locationService.getLocation(orderDto.getLocationId()));
             order.setOrderStatusId(orderStatusService.getOrderStatus(orderDto.getOrderStatusId()));
-            order.setUpdatedBy(userService.getUser(orderDto.getUpdatedBy()));
+            order.setUpdatedBy(userService.getUserById(orderDto.getUpdatedBy().getId()));
         } else {
 
         }

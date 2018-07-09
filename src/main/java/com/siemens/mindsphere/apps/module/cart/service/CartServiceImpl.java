@@ -57,8 +57,8 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Page<Cart> getCart(String userId, Pageable pageable) throws NoUserFoundException {
-        return cartRepository.findByLoginId(userService.getUser(userId), pageable);
+    public Page<Cart> getCart(Integer userId, Pageable pageable) throws NoUserFoundException {
+        return cartRepository.findByLoginId(userService.getUserById(userId), pageable);
     }
 
 }

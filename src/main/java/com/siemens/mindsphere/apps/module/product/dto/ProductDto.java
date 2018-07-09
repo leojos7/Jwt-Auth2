@@ -1,5 +1,7 @@
 package com.siemens.mindsphere.apps.module.product.dto;
 
+import com.siemens.mindsphere.apps.module.login.dto.UserDto;
+
 import java.util.Set;
 
 public class ProductDto {
@@ -11,7 +13,7 @@ public class ProductDto {
 
     private String description;
 
-    private String addedBy;
+    private UserDto addedBy;
 
     private String code;
 
@@ -43,11 +45,11 @@ public class ProductDto {
         this.description = description;
     }
 
-    public String getAddedBy() {
+    public UserDto getAddedBy() {
         return addedBy;
     }
 
-    public void setAddedBy(String addedBy) {
+    public void setAddedBy(UserDto addedBy) {
         this.addedBy = addedBy;
     }
 

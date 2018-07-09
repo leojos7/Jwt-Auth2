@@ -1,5 +1,6 @@
 package com.siemens.mindsphere.apps.module.order.dto;
 
+import com.siemens.mindsphere.apps.module.login.dto.UserDto;
 import com.siemens.mindsphere.apps.module.product.dto.ProductDto;
 
 import java.util.Set;
@@ -8,13 +9,13 @@ public class OrderDto {
 
     private Integer id;
 
-    private String loginId;
+    private UserDto loginId;
 
     private Integer locationId;
 
     private Integer orderStatusId;
 
-    private String updatedBy;
+    private UserDto updatedBy;
 
     private Set<OrderParamsDto> orderParams;
 
@@ -28,11 +29,11 @@ public class OrderDto {
         this.id = id;
     }
 
-    public String getLoginId() {
+    public UserDto getLoginId() {
         return loginId;
     }
 
-    public void setLoginId(String loginId) {
+    public void setLoginId(UserDto loginId) {
         this.loginId = loginId;
     }
 
@@ -52,11 +53,11 @@ public class OrderDto {
         this.orderStatusId = orderStatusId;
     }
 
-    public String getUpdatedBy() {
+    public UserDto getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy(String updatedBy) {
+    public void setUpdatedBy(UserDto updatedBy) {
         this.updatedBy = updatedBy;
     }
 

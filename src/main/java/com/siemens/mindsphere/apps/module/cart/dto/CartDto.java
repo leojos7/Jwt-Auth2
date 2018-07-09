@@ -4,7 +4,7 @@ public class CartDto {
 
     private Integer id;
 
-    private String loginId;
+    private Integer loginId;
 
     private Integer productId;
 
@@ -18,11 +18,11 @@ public class CartDto {
         this.id = id;
     }
 
-    public String getLoginId() {
+    public Integer getLoginId() {
         return loginId;
     }
 
-    public void setLoginId(String loginId) {
+    public void setLoginId(Integer loginId) {
         this.loginId = loginId;
     }
 
