@@ -3,7 +3,7 @@ package com.siemens.mindsphere.apps.module.cart.service;
 import com.siemens.mindsphere.apps.module.cart.entity.Cart;
 import com.siemens.mindsphere.apps.module.cart.repository.CartRepository;
 import com.siemens.mindsphere.apps.module.login.exception.NoUserFoundException;
-import com.siemens.mindsphere.apps.module.login.service.UserService;
+import com.siemens.mindsphere.apps.module.login.service.user.UserService;
 import com.siemens.mindsphere.apps.module.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

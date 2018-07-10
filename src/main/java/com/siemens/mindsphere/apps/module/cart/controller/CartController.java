@@ -4,7 +4,7 @@ import com.siemens.mindsphere.apps.module.cart.dto.CartDto;
 import com.siemens.mindsphere.apps.module.cart.entity.Cart;
 import com.siemens.mindsphere.apps.module.cart.service.CartService;
 import com.siemens.mindsphere.apps.module.login.exception.NoUserFoundException;
-import com.siemens.mindsphere.apps.module.login.service.UserService;
+import com.siemens.mindsphere.apps.module.login.service.user.UserService;
 import com.siemens.mindsphere.apps.module.product.service.product.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

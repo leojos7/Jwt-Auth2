@@ -28,6 +28,12 @@ public class User {
 
     private String otp;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "USER_PARAMS_MAP",
+            joinColumns = {@JoinColumn(name = "LOGIN_ID", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "USER_PARAM_ID", referencedColumnName = "id")})
+    private Set<UserParams> userParams;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
 
@@ -94,6 +100,14 @@ public class User {
 
     public void setOtp(String otp) {
         this.otp = otp;
+    }
+
+    public Set<UserParams> getUserParams() {
+        return userParams;
+    }
+
+    public void setUserParams(Set<UserParams> userParams) {
+        this.userParams = userParams;
     }
 
     public Date getCreateDate() {

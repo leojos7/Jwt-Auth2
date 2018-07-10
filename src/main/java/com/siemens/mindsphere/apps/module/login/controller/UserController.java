@@ -1,10 +1,12 @@
 package com.siemens.mindsphere.apps.module.login.controller;
 
+import com.siemens.mindsphere.apps.module.login.dto.UserDto;
 import com.siemens.mindsphere.apps.module.login.entity.User;
 import com.siemens.mindsphere.apps.module.login.exception.NoUserFoundException;
 import com.siemens.mindsphere.apps.module.login.exception.ParseException;
-import com.siemens.mindsphere.apps.module.login.service.UserService;
+import com.siemens.mindsphere.apps.module.login.service.user.UserService;
 import com.siemens.mindsphere.apps.module.login.utils.CommonUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,46 +27,69 @@ public class UserController {
     @Autowired
     public UserService userService;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @RequestMapping(value = "/delete/{userId}", method = RequestMethod.GET)
-    public String deleteEmployee(@PathVariable Integer userId)
+    public void deleteUser(@PathVariable Integer userId)
             throws NoUserFoundException, ParseException {
         userService.deleteUser(userId);
-        return "Deleted user";
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public User updateUser(@RequestHeader("Authorization") String authorization, @RequestBody User user)
-            throws NoUserFoundException {
-        return userService.updateUser(user);
+    public UserDto updateUser(@RequestBody UserDto userDto) throws NoUserFoundException {
+        User user = convertToEntity(userDto);
+        User userCreated = null;
+        if (user != null) {
+            userCreated = userService.updateUser(user);
+        }
+        return convertToDto(userCreated);
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = "application/json")
-    public User getUser(@RequestHeader("Authorization") String authorization)
+    public UserDto getUser(@RequestHeader("Authorization") String authorization)
             throws NoUserFoundException, ParseException {
         String username = CommonUtils.getUsernameFromAccessToken(authorization);
         User user = userService.getUserByUsername(username);
         if (user == null) {
             throw new NoUserFoundException(username + " doesn't exist");
         }
-        return user;
+        return convertToDto(user);
     }
 
     @RequestMapping(value = "/get/{username}", method = RequestMethod.GET, produces = "application/json")
-    public User getUserByName(@PathVariable String username)
-            throws NoUserFoundException, ParseException {
+    public UserDto getUserByName(@PathVariable String username) throws NoUserFoundException, ParseException {
         User user = userService.getUserByUsername(username);
         if (user == null) {
             throw new NoUserFoundException(username + " doesn't exist");
         }
-        return user;
+        return convertToDto(user);
     }
 
     @RequestMapping(value = "/get/{userId}", method = RequestMethod.GET, produces = "application/json")
-    public User getUserById(@PathVariable Integer userId)
-            throws NoUserFoundException, ParseException {
+    public UserDto getUserById(@PathVariable Integer userId) throws NoUserFoundException, ParseException {
         User user = userService.getUserById(userId);
         if (user == null) {
             throw new NoUserFoundException(userId + " doesn't exist");
+        }
+        return convertToDto(user);
+    }
+
+
+    private UserDto convertToDto(User user) {
+        UserDto userDto = null;
+        if (user != null) {
+            userDto = modelMapper.map(user, UserDto.class);
+        }
+        return userDto;
+    }
+
+    private User convertToEntity(UserDto userDto) {
+        User user = null;
+        if (userDto != null) {
+            user = modelMapper.map(userDto, User.class);
+        } else {
+
         }
         return user;
     }

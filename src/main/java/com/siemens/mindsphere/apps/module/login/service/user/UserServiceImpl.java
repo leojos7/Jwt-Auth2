@@ -1,4 +1,4 @@
-package com.siemens.mindsphere.apps.module.login.service;
+package com.siemens.mindsphere.apps.module.login.service.user;
 
 import com.siemens.mindsphere.apps.module.login.entity.User;
 import com.siemens.mindsphere.apps.module.login.exception.AlreadyExistingUserException;

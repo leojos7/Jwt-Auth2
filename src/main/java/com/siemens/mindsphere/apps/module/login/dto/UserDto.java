@@ -22,6 +22,8 @@ public class UserDto {
 
     private Set<AuthorityDto> authorities;
 
+    private Set<UserParamsDto> userParams;
+
     public Integer getId() {
         return id;
     }
@@ -78,6 +80,14 @@ public class UserDto {
 
     public void setOtp(String otp) {
         this.otp = otp;
+    }
+
+    public Set<UserParamsDto> getUserParams() {
+        return userParams;
+    }
+
+    public void setUserParams(Set<UserParamsDto> userParams) {
+        this.userParams = userParams;
     }
 
     public Set<AuthorityDto> getAuthorities() {
