@@ -1,17 +1,16 @@
 package com.siemens.mindsphere.apps.modules.product.entity;
 
+import com.siemens.mindsphere.apps.entity.BaseEntity;
 import com.siemens.mindsphere.apps.modules.login.entity.User;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity(name = "PRODUCT")
-public class Product {
+public class Product extends BaseEntity implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private static final long serialVersionUID = 1L;
 
     private String name;
 
@@ -30,20 +29,6 @@ public class Product {
             joinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "PARAM_DETAILS_ID", referencedColumnName = "id")})
     private Set<ParamDetails> paramDetails;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createDate;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date modifiedDate;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -83,22 +68,6 @@ public class Product {
 
     public void setStatus(Boolean status) {
         this.status = status;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Date getModifiedDate() {
-        return modifiedDate;
-    }
-
-    public void setModifiedDate(Date modifiedDate) {
-        this.modifiedDate = modifiedDate;
     }
 
     public Set<ParamDetails> getParamDetails() {

@@ -1,19 +1,19 @@
 package com.siemens.mindsphere.apps.modules.order.entity;
 
+import com.siemens.mindsphere.apps.entity.BaseEntity;
 import com.siemens.mindsphere.apps.modules.location.entity.Location;
 import com.siemens.mindsphere.apps.modules.login.entity.User;
 import com.siemens.mindsphere.apps.modules.product.entity.Product;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
 @Entity(name = "ORDER_DETAILS")
-public class Order {
+public class Order extends BaseEntity implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private static final long serialVersionUID = 1L;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "LOGIN_ID")
@@ -42,20 +42,6 @@ public class Order {
             joinColumns = {@JoinColumn(name = "ORDER_ID", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "id")})
     private Set<Product> products;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createDate;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date modifiedDate;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public User getLoginId() {
         return loginId;
@@ -105,19 +91,4 @@ public class Order {
         this.products = products;
     }
 
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Date getModifiedDate() {
-        return modifiedDate;
-    }
-
-    public void setModifiedDate(Date modifiedDate) {
-        this.modifiedDate = modifiedDate;
-    }
 }

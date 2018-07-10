@@ -1,17 +1,21 @@
 package com.siemens.mindsphere.apps.modules.cart.entity;
 
+import com.siemens.mindsphere.apps.entity.BaseEntity;
 import com.siemens.mindsphere.apps.modules.login.entity.User;
 import com.siemens.mindsphere.apps.modules.product.entity.Product;
 
-import javax.persistence.*;
-import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
+import javax.persistence.CascadeType;
+import javax.persistence.ManyToOne;
+import java.io.Serializable;
 
 @Entity(name = "CART")
-public class Cart {
+public class Cart extends BaseEntity implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private static final long serialVersionUID = 1L;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinColumn(name = "LOGIN_ID")
@@ -22,20 +26,6 @@ public class Cart {
     private Product productId;
 
     private Integer quantity;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createDate;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date modifiedDate;
-
-    public User getLoginId() {
-        return loginId;
-    }
-
-    public Integer getId() {
-        return id;
-    }
 
     public void setId(Integer id) {
         this.id = id;
@@ -61,19 +51,4 @@ public class Cart {
         this.quantity = quantity;
     }
 
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Date getModifiedDate() {
-        return modifiedDate;
-    }
-
-    public void setModifiedDate(Date modifiedDate) {
-        this.modifiedDate = modifiedDate;
-    }
 }

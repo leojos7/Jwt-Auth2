@@ -1,16 +1,16 @@
 package com.siemens.mindsphere.apps.modules.login.entity;
 
+import com.siemens.mindsphere.apps.entity.BaseEntity;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.Date;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-public class User {
+public class User extends BaseEntity implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private static final long serialVersionUID = 1L;
 
     @Column(updatable = false, nullable = false)
     @Size(min = 0, max = 50)
@@ -34,25 +34,11 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "USER_PARAM_ID", referencedColumnName = "id")})
     private Set<UserParams> userParams;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createDate;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date modifiedDate;
-
     @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinTable(name = "USER_AUTHORITY",
             joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "id")})
     private Set<Authority> authorities;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getUsername() {
         return username;
@@ -108,22 +94,6 @@ public class User {
 
     public void setUserParams(Set<UserParams> userParams) {
         this.userParams = userParams;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Date getModifiedDate() {
-        return modifiedDate;
-    }
-
-    public void setModifiedDate(Date modifiedDate) {
-        this.modifiedDate = modifiedDate;
     }
 
     public Set<Authority> getAuthorities() {
