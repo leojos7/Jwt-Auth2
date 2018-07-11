@@ -3,7 +3,7 @@ package com.siemens.mindsphere.apps.modules.login.utils;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.siemens.mindsphere.apps.modules.login.entity.Authority;
+import com.siemens.mindsphere.apps.modules.login.authority.entity.Authority;
 import com.siemens.mindsphere.apps.modules.login.exception.ParseException;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.util.StringUtils;

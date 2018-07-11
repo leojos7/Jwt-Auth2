@@ -1,7 +1,7 @@
 package com.siemens.mindsphere.apps.modules.cart.repository;
 
 import com.siemens.mindsphere.apps.modules.cart.entity.Cart;
-import com.siemens.mindsphere.apps.modules.login.entity.User;
+import com.siemens.mindsphere.apps.modules.login.user.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;

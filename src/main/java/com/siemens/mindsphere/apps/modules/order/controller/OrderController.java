@@ -2,7 +2,7 @@ package com.siemens.mindsphere.apps.modules.order.controller;
 
 import com.siemens.mindsphere.apps.modules.location.service.location.LocationService;
 import com.siemens.mindsphere.apps.modules.login.exception.NoUserFoundException;
-import com.siemens.mindsphere.apps.modules.login.service.user.UserService;
+import com.siemens.mindsphere.apps.modules.login.user.service.UserService;
 import com.siemens.mindsphere.apps.modules.order.dto.OrderDto;
 import com.siemens.mindsphere.apps.modules.order.entity.Order;
 import com.siemens.mindsphere.apps.modules.order.service.order.OrderService;

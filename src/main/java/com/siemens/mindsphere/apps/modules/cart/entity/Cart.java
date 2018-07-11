@@ -1,15 +1,15 @@
 package com.siemens.mindsphere.apps.modules.cart.entity;
 
 import com.siemens.mindsphere.apps.entity.BaseEntity;
-import com.siemens.mindsphere.apps.modules.login.entity.User;
+import com.siemens.mindsphere.apps.modules.login.user.entity.User;
 import com.siemens.mindsphere.apps.modules.product.entity.Product;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
 import javax.persistence.FetchType;
 import javax.persistence.CascadeType;
-import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
 @Entity(name = "CART")
@@ -27,8 +27,8 @@ public class Cart extends BaseEntity implements Serializable {
 
     private Integer quantity;
 
-    public void setId(Integer id) {
-        this.id = id;
+    public User getLoginId() {
+        return loginId;
     }
 
     public void setLoginId(User loginId) {

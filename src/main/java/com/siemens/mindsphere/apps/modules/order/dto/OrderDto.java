@@ -1,6 +1,6 @@
 package com.siemens.mindsphere.apps.modules.order.dto;
 
-import com.siemens.mindsphere.apps.modules.login.dto.UserDto;
+import com.siemens.mindsphere.apps.modules.login.user.dto.UserDto;
 import com.siemens.mindsphere.apps.modules.product.dto.ProductDto;
 
 import java.util.Set;

@@ -2,12 +2,11 @@ package com.siemens.mindsphere.apps.modules.order.entity;
 
 import com.siemens.mindsphere.apps.entity.BaseEntity;
 import com.siemens.mindsphere.apps.modules.location.entity.Location;
-import com.siemens.mindsphere.apps.modules.login.entity.User;
+import com.siemens.mindsphere.apps.modules.login.user.entity.User;
 import com.siemens.mindsphere.apps.modules.product.entity.Product;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Set;
 
 @Entity(name = "ORDER_DETAILS")

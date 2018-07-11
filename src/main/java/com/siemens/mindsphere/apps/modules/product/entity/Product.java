@@ -1,7 +1,7 @@
 package com.siemens.mindsphere.apps.modules.product.entity;
 
 import com.siemens.mindsphere.apps.entity.BaseEntity;
-import com.siemens.mindsphere.apps.modules.login.entity.User;
+import com.siemens.mindsphere.apps.modules.login.user.entity.User;
 
 import javax.persistence.*;
 import java.io.Serializable;

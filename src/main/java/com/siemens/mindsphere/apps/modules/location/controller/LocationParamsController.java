@@ -20,47 +20,47 @@ public class LocationParamsController {
     private ModelMapper modelMapper;
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public LocationParamsDto addLocation(@RequestBody LocationParamsDto locationParamsDto) {
-        LocationParams location = convertToEntity(locationParamsDto);
-        LocationParams locationParams = null;
-        if (location != null) {
-            locationParams = locationParamsService.addLocationParams(location);
+    public LocationParamsDto addLocationParam(@RequestBody LocationParamsDto locationParamsDto) {
+        LocationParams locationParams = convertToEntity(locationParamsDto);
+        LocationParams locationParamsCreated = null;
+        if (locationParams != null) {
+            locationParamsCreated = locationParamsService.addLocationParams(locationParams);
         }
-        return convertToDto(locationParams);
+        return convertToDto(locationParamsCreated);
     }
 
     @RequestMapping(value = "/delete/{locationId}", method = RequestMethod.GET)
-    public void deleteLocation(@PathVariable int locationId) {
+    public void deleteLocationParam(@PathVariable int locationId) {
         locationParamsService.deleteLocationParams(locationId);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public LocationParamsDto updateLocation(@RequestBody LocationParamsDto locationParamsDto) {
-        LocationParams location = convertToEntity(locationParamsDto);
-        LocationParams locationUpdated = null;
-        if (location != null) {
-            locationUpdated = locationParamsService.updateLocationParams(location);
+    public LocationParamsDto updateLocationParam(@RequestBody LocationParamsDto locationParamsDto) {
+        LocationParams locationParams = convertToEntity(locationParamsDto);
+        LocationParams locationParamsUpdated = null;
+        if (locationParams != null) {
+            locationParamsUpdated = locationParamsService.updateLocationParams(locationParams);
         }
-        return convertToDto(locationUpdated);
+        return convertToDto(locationParamsUpdated);
     }
     @RequestMapping(value = "/get/{locationParamsId}", method = RequestMethod.GET)
-    public LocationParamsDto getLocation(@PathVariable int locationParamsId) {
+    public LocationParamsDto getLocationParam(@PathVariable int locationParamsId) {
         return convertToDto(locationParamsService.getLocationParams(locationParamsId));
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
-    public Page<LocationParamsDto> getAllLocations(Pageable pageable) {
+    public Page<LocationParamsDto> getAllLocationParams(Pageable pageable) {
         return convertToDtos(locationParamsService.getAllLocationParams(pageable));
     }
 
-    private Page<LocationParamsDto> convertToDtos(Page<LocationParams> locations) {
-        return locations.map(locationsToMap -> convertToDto(locationsToMap));
+    private Page<LocationParamsDto> convertToDtos(Page<LocationParams> locationParams) {
+        return locationParams.map(locationParamToMap -> convertToDto(locationParamToMap));
     }
 
-    private LocationParamsDto convertToDto(LocationParams location) {
+    private LocationParamsDto convertToDto(LocationParams locationParams) {
         LocationParamsDto locationParamsDto = null;
-        if (location != null) {
-            locationParamsDto = modelMapper.map(location, LocationParamsDto.class);
+        if (locationParams != null) {
+            locationParamsDto = modelMapper.map(locationParams, LocationParamsDto.class);
         }
         return locationParamsDto;
     }

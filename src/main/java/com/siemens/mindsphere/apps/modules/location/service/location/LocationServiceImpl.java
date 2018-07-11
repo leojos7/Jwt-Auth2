@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -24,10 +25,11 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public Location addLocation(Location location) {
-        location.getLocationParams().stream()
-                .forEach(locationParams -> locationParamsService.addLocationParams(locationParams));
-        locationRepository.save(location);
-        return getLocation(location.getId());
+        location.setLocationParams(location.getLocationParams().stream()
+                .map(locationParams ->  locationParamsService.getLocationParams(locationParams.getId()))
+                .collect(Collectors.toSet()));
+        Location locationCreated = locationRepository.save(location);
+        return getLocation(locationCreated.getId());
     }
 
     @Override

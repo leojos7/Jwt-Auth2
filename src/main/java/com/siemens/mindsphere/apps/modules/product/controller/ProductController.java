@@ -1,7 +1,7 @@
 package com.siemens.mindsphere.apps.modules.product.controller;
 
 import com.siemens.mindsphere.apps.modules.login.exception.NoUserFoundException;
-import com.siemens.mindsphere.apps.modules.login.service.user.UserService;
+import com.siemens.mindsphere.apps.modules.login.user.service.UserService;
 import com.siemens.mindsphere.apps.modules.product.dto.ProductDto;
 import com.siemens.mindsphere.apps.modules.product.entity.Product;
 import com.siemens.mindsphere.apps.modules.product.exception.AlreadyExistingProductException;

@@ -6,13 +6,13 @@ import org.springframework.data.domain.Pageable;
 
 public interface LocationParamsService {
 
-    LocationParams addLocationParams(LocationParams cart);
+    LocationParams addLocationParams(LocationParams locationParams);
 
-    void deleteLocationParams(Integer cartId);
+    void deleteLocationParams(Integer locationParamsId);
 
-    LocationParams updateLocationParams(LocationParams cart);
+    LocationParams updateLocationParams(LocationParams locationParams);
 
-    LocationParams getLocationParams(Integer locationId);
+    LocationParams getLocationParams(Integer locationParamsId);
 
     Page<LocationParams> getAllLocationParams(Pageable pageable);
 }

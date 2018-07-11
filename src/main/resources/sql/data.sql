@@ -10,3 +10,5 @@ INSERT INTO user_authority (username,authority) VALUES ('rajith', 'ROLE_USER');
 INSERT INTO user_authority (username,authority) VALUES ('user', 'ROLE_USER');
 INSERT INTO user_authority (username,authority) VALUES ('admin', 'ROLE_USER');
 INSERT INTO user_authority (username,authority) VALUES ('admin', 'ROLE_ADMIN');
+
+INSERT INTO authority (id, name, CREATE_DATE , MODIFIED_DATE) VALUES (1,'ROLE_USER',CURDATE(), CURDATE());

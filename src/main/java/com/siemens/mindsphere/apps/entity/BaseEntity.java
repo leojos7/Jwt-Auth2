@@ -1,11 +1,6 @@
 package com.siemens.mindsphere.apps.entity;
 
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Temporal;
-import javax.persistence.GenerationType;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -16,7 +11,7 @@ public abstract class BaseEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Integer id;
+    private Integer id;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
@@ -46,5 +41,20 @@ public abstract class BaseEntity implements Serializable {
 
     public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }

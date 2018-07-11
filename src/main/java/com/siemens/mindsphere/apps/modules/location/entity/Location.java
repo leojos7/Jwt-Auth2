@@ -8,12 +8,12 @@ import java.util.Set;
 
 @Entity(name = "LOCATION")
 public class Location extends BaseEntity implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
 
     private String name;
 
-    @OneToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "LOCATION_PARAM_MAP",
             joinColumns = {@JoinColumn(name = "LOCATION_ID", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "LOCATION_PARAM_ID", referencedColumnName = "id")})
