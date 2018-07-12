@@ -14,6 +14,11 @@ public class User extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "USER_ID")
+    private Integer userId;
+
     @Column(updatable = false, nullable = false)
     @Size(min = 0, max = 50)
     private String username;
@@ -30,16 +35,24 @@ public class User extends BaseEntity implements Serializable {
 
     private String otp;
 
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
     @OneToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
-    @JoinTable(name = "USER_PARAMS_MAP",
-            joinColumns = {@JoinColumn(name = "LOGIN_ID", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "USER_PARAM_ID", referencedColumnName = "id")})
+    @JoinTable(name = "USER_PARAM_MAP",
+            joinColumns = {@JoinColumn(name = "LOGIN_ID", referencedColumnName = "USER_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "USER_PARAM_ID", referencedColumnName = "USER_PARAM_ID")})
     private Set<UserParams> userParams;
 
     @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinTable(name = "USER_AUTHORITY_MAP",
-            joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "id")})
+            joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "AUTHORITY_ID")})
     private Set<Authority> authorities;
 
     public String getUsername() {

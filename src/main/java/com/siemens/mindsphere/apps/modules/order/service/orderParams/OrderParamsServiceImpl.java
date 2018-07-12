@@ -33,7 +33,7 @@ public class OrderParamsServiceImpl implements OrderParamsService {
 
     @Override
     public OrderParams updateOrderParams(OrderParams orderParams) {
-        Optional<OrderParams> orderParamsOptional = orderParamsRepository.findById(orderParams.getId());
+        Optional<OrderParams> orderParamsOptional = orderParamsRepository.findById(orderParams.getOrderParamId());
         OrderParams existingOrderParams = null;
         OrderParams newOrderParams = null;
         if (orderParamsOptional.isPresent()) {

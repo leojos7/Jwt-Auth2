@@ -2,12 +2,18 @@ package com.siemens.mindsphere.apps.modules.location.controller;
 
 import com.siemens.mindsphere.apps.modules.location.dto.LocationDto;
 import com.siemens.mindsphere.apps.modules.location.entity.Location;
+import com.siemens.mindsphere.apps.modules.location.entity.LocationParams;
+import com.siemens.mindsphere.apps.modules.location.entity.LocationParamMapping;
+import com.siemens.mindsphere.apps.modules.location.entity.LocationParamsPK;
 import com.siemens.mindsphere.apps.modules.location.service.location.LocationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/secure/user/location")
@@ -61,6 +67,9 @@ public class LocationController {
         LocationDto locationDto = null;
         if (location != null) {
             locationDto = modelMapper.map(location, LocationDto.class);
+            location.getLocationParamMapping().stream().forEach(locationParamMapping -> {
+                modelMapper.map(locationParamMapping.getLocationParamsPK().getLocationParams(),LocationParams.class);
+            });
         }
         return locationDto;
     }
@@ -69,6 +78,18 @@ public class LocationController {
         Location location = null;
         if (locationDto != null) {
             location = modelMapper.map(locationDto, Location.class);
+            Set<LocationParamMapping> locationParamMappings = new HashSet();
+            Location finalLocation = location;
+            locationDto.getLocationParams().stream().forEach(locationParamsDto -> {
+                LocationParamMapping locationParamMapping = new LocationParamMapping();
+                LocationParamsPK locationParamsPK = new LocationParamsPK();
+                LocationParams locationParams = modelMapper.map(locationParamsDto, LocationParams.class);
+                locationParamMapping.setLocationParamsPK(locationParamsPK);
+                locationParamMapping.setLocation(finalLocation);
+                locationParamMapping.setLocationParams(locationParams);
+                locationParamMappings.add(locationParamMapping);
+            });
+            location.setLocationParamMapping(locationParamMappings);
         } else {
 
         }

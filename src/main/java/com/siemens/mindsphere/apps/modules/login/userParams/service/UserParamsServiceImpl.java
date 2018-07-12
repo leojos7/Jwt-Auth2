@@ -33,7 +33,7 @@ public class UserParamsServiceImpl implements UserParamsService {
 
     @Override
     public UserParams updateUserParams(UserParams userParams) {
-        Optional<UserParams> userParamsOptional = userParamsRepository.findById(userParams.getId());
+        Optional<UserParams> userParamsOptional = userParamsRepository.findById(userParams.getUserParamId());
         UserParams existingUserParams = null;
         UserParams newUserParams = null;
         if (userParamsOptional.isPresent()) {

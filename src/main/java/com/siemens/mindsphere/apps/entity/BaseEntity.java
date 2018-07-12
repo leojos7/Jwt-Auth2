@@ -9,23 +9,11 @@ public abstract class BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date modifiedDate;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Date getCreateDate() {
         return createDate;

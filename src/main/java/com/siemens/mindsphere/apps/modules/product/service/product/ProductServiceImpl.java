@@ -33,7 +33,7 @@ public class ProductServiceImpl implements ProductService {
     public Product addProduct(Product product) throws AlreadyExistingProductException {
         Predicate<ParamDetails> paramDetailsPredicate = paramDetails -> paramDetails != null
                 && paramDetails.getProductParams() != null
-                && paramDetails.getProductParams().getId() != null;
+                && paramDetails.getProductParams().getProductParamId() != null;
         if (zDecoder(product.getCode()) != null) {
             throw new AlreadyExistingProductException("Already Existing Product");
         }
@@ -41,14 +41,14 @@ public class ProductServiceImpl implements ProductService {
             product.getParamDetails().stream()
                     .filter(paramDetailsPredicate)
                     .forEach(paramDetails -> {
-                        if (productParamsService.getProductParam(paramDetails.getProductParams().getId()) != null) {
+                        if (productParamsService.getProductParam(paramDetails.getProductParams().getProductParamId()) != null) {
                             paramDetails.setProductParams(
-                                    productParamsService.getProductParam(paramDetails.getProductParams().getId()));
+                                    productParamsService.getProductParam(paramDetails.getProductParams().getProductParamId()));
                         }
                     });
         }
         productRepository.save(product);
-        return getProduct(product.getId());
+        return getProduct(product.getProductId());
     }
 
     @Override
@@ -66,7 +66,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product updateProduct(Product product) {
-        Optional<Product> productOptional = productRepository.findById(product.getId());
+        Optional<Product> productOptional = productRepository.findById(product.getProductId());
         Product existingProduct = null;
         Product newProduct = null;
         if (productOptional.isPresent()) {

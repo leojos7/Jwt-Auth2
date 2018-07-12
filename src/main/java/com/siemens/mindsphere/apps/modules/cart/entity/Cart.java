@@ -4,18 +4,18 @@ import com.siemens.mindsphere.apps.entity.BaseEntity;
 import com.siemens.mindsphere.apps.modules.login.user.entity.User;
 import com.siemens.mindsphere.apps.modules.product.entity.Product;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.ManyToOne;
-import javax.persistence.JoinColumn;
-import javax.persistence.FetchType;
-import javax.persistence.CascadeType;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity(name = "CART")
 public class Cart extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "CART_ID")
+    private Integer cardId;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinColumn(name = "LOGIN_ID")
@@ -26,6 +26,14 @@ public class Cart extends BaseEntity implements Serializable {
     private Product productId;
 
     private Integer quantity;
+
+    public Integer getCardId() {
+        return cardId;
+    }
+
+    public void setCardId(Integer cardId) {
+        this.cardId = cardId;
+    }
 
     public User getLoginId() {
         return loginId;

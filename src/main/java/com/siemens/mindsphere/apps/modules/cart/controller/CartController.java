@@ -67,8 +67,8 @@ public class CartController {
         CartDto cartDto = null;
         if (cart != null) {
             cartDto = modelMapper.map(cart, CartDto.class);
-            cartDto.setLoginId(cart.getLoginId().getId());
-            cartDto.setProductId(cart.getProductId().getId());
+            cartDto.setLoginId(cart.getLoginId().getUserId());
+            cartDto.setProductId(cart.getProductId().getProductId());
         }
         return cartDto;
     }

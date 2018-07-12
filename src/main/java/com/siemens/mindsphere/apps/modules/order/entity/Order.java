@@ -9,18 +9,23 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
-@Entity(name = "ORDER_DETAILS")
+@Entity(name = "ORDER_DETAIL")
 public class Order extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ORDER_DETAIL_ID")
+    private Integer orderDetailId;
+
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "LOGIN_ID")
     private User loginId;
-
+/*
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "LOCATION_ID")
-    private Location locationId;
+    private Location locationId;*/
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ORDER_STATUS_ID")
@@ -32,15 +37,23 @@ public class Order extends BaseEntity implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "ORDER_PARAM_MAP",
-            joinColumns = {@JoinColumn(name = "ORDER_ID", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "ORDER_PARAM_ID", referencedColumnName = "id")})
+            joinColumns = {@JoinColumn(name = "ORDER_DETAIL_ID", referencedColumnName = "ORDER_DETAIL_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "ORDER_PARAM_ID", referencedColumnName = "ORDER_PARAM_ID")})
     private Set<OrderParams> orderParams;
 
     @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinTable(name = "ORDER_PRODUCT_MAP",
-            joinColumns = {@JoinColumn(name = "ORDER_ID", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "id")})
+            joinColumns = {@JoinColumn(name = "ORDER_DETAIL_ID", referencedColumnName = "ORDER_DETAIL_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "PRODUCT_ID")})
     private Set<Product> products;
+
+    public Integer getOrderDetailId() {
+        return orderDetailId;
+    }
+
+    public void setOrderDetailId(Integer orderDetailId) {
+        this.orderDetailId = orderDetailId;
+    }
 
     public User getLoginId() {
         return loginId;
@@ -50,6 +63,7 @@ public class Order extends BaseEntity implements Serializable {
         this.loginId = loginId;
     }
 
+/*
     public Location getLocationId() {
         return locationId;
     }
@@ -57,6 +71,7 @@ public class Order extends BaseEntity implements Serializable {
     public void setLocationId(Location locationId) {
         this.locationId = locationId;
     }
+*/
 
     public OrderStatus getOrderStatusId() {
         return orderStatusId;

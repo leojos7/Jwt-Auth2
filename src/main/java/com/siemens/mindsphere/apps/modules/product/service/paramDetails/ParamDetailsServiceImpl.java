@@ -30,7 +30,7 @@ public class ParamDetailsServiceImpl implements ParamDetailsService {
 
     @Override
     public ParamDetails updateParamDetails(ParamDetails paramDetails) {
-        Optional<ParamDetails> paramDetailsOptional = paramDetailsRepository.findById(paramDetails.getId());
+        Optional<ParamDetails> paramDetailsOptional = paramDetailsRepository.findById(paramDetails.getParamDetailId());
         ParamDetails existingParamDetails = null;
         ParamDetails newParamDetails = null;
         if (paramDetailsOptional.isPresent()) {

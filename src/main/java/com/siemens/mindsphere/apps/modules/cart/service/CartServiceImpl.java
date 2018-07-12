@@ -42,7 +42,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart updateCart(Cart cart) {
-        Optional<Cart> cartOptional = cartRepository.findById(cart.getId());
+        Optional<Cart> cartOptional = cartRepository.findById(cart.getCardId());
         Cart existingCart = null;
         Cart newCart = null;
         if (cartOptional.isPresent()) {

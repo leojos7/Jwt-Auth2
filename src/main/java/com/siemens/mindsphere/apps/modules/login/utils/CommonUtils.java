@@ -17,7 +17,7 @@ public class CommonUtils {
     public static Set<Authority> getAuthoritiesList(String authorityName) {
         Set<Authority> authorities = new HashSet<>();
         Authority authority = new Authority();
-        authority.setId(1);
+        authority.setAuthorityId(1);
         authority.setName(authorityName);
         authorities.add(authority);
         return authorities;

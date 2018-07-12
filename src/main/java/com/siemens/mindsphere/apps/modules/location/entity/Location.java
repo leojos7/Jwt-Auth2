@@ -6,18 +6,48 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
-@Entity(name = "LOCATION")
+@Entity
+@Table(name = "LOCATION")
 public class Location extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "LOCATION_ID")
+    private Integer locationId;
+
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "LOCATION_PARAM_MAP",
-            joinColumns = {@JoinColumn(name = "LOCATION_ID", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "LOCATION_PARAM_ID", referencedColumnName = "id")})
-    private Set<LocationParams> locationParams;
+    @OneToMany(mappedBy = "locationParamsPK.locationParams", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+    private Set<LocationParamMapping> locationParamMapping;
+
+    public Location() {
+        super();
+    }
+
+    public Location(String name) {
+        this.name = name;
+    }
+
+    public Location(Integer locationId, String name, Set<LocationParamMapping> locationParamMapping) {
+        this.locationId = locationId;
+        this.name = name;
+        this.locationParamMapping = locationParamMapping;
+    }
+
+
+    public Location(Integer locationId) {
+        this.locationId = locationId;
+    }
+
+    public Integer getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(Integer locationId) {
+        this.locationId = locationId;
+    }
 
     public String getName() {
         return name;
@@ -27,12 +57,13 @@ public class Location extends BaseEntity implements Serializable {
         this.name = name;
     }
 
-    public Set<LocationParams> getLocationParams() {
-        return locationParams;
+    public Set<LocationParamMapping> getLocationParamMapping() {
+        return locationParamMapping;
     }
 
-    public void setLocationParams(Set<LocationParams> locationParams) {
-        this.locationParams = locationParams;
+    public void setLocationParamMapping(Set<LocationParamMapping> locationParamMapping) {
+        this.locationParamMapping = locationParamMapping;
     }
+
 
 }

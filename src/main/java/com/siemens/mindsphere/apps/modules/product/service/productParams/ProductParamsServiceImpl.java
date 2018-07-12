@@ -26,7 +26,7 @@ public class ProductParamsServiceImpl implements ProductParamsService {
 
     @Override
     public ProductParams updateProductParams(ProductParams productParams) {
-        Optional<ProductParams> paramDetailsOptional = productParamsRepository.findById(productParams.getId());
+        Optional<ProductParams> paramDetailsOptional = productParamsRepository.findById(productParams.getProductParamId());
         ProductParams existingProductParams = null;
         ProductParams newProductParams = null;
         if (paramDetailsOptional.isPresent()) {

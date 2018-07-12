@@ -12,6 +12,11 @@ public class Product extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "PRODUCT_ID")
+    private Integer productId;
+
     private String name;
 
     private String description;
@@ -26,9 +31,17 @@ public class Product extends BaseEntity implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "PRODUCT_PARAM_MAP",
-            joinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "PARAM_DETAILS_ID", referencedColumnName = "id")})
+            joinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "PRODUCT_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "PARAM_DETAIL_ID", referencedColumnName = "PARAM_DETAIL_ID")})
     private Set<ParamDetails> paramDetails;
+
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
+    }
 
     public String getName() {
         return name;

@@ -33,7 +33,7 @@ public class LocationParamsServiceImpl implements LocationParamsService {
 
     @Override
     public LocationParams updateLocationParams(LocationParams locationParams) {
-        Optional<LocationParams> locationParamsOptional = locationParamsRepository.findById(locationParams.getId());
+        Optional<LocationParams> locationParamsOptional = locationParamsRepository.findById(locationParams.getLocationParamsId());
         LocationParams existingLocationParams = null;
         LocationParams newLocationParams = null;
         if (locationParamsOptional.isPresent()) {

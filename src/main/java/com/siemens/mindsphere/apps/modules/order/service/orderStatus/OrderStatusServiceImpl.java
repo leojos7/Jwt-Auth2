@@ -25,7 +25,7 @@ public class OrderStatusServiceImpl implements OrderStatusService {
 
     @Override
     public OrderStatus updateOrderStatus(OrderStatus orderStatus) {
-        Optional<OrderStatus> orderStatusOptional = orderStatusRepository.findById(orderStatus.getId());
+        Optional<OrderStatus> orderStatusOptional = orderStatusRepository.findById(orderStatus.getOrderStatusId());
         OrderStatus existingOrderStatus = null;
         OrderStatus newOrderStatus = null;
         if (orderStatusOptional.isPresent()) {

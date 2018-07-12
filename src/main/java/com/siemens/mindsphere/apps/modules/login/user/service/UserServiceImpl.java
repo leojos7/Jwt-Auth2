@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(User user) throws NoUserFoundException {
-        User oldUser = getUserById(user.getId());
+        User oldUser = getUserById(user.getUserId());
         if (oldUser == null) {
             throw new NoUserFoundException(user.getUsername() + " doesn't exist");
         }

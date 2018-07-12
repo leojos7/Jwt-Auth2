@@ -33,7 +33,7 @@ public class AuthorityServiceImpl implements AuthorityService {
 
     @Override
     public Authority updateAuthority(Authority authority) {
-        Optional<Authority> authorityOptional = authorityRepository.findById(authority.getId());
+        Optional<Authority> authorityOptional = authorityRepository.findById(authority.getAuthorityId());
         Authority existingAuthority = null;
         Authority newAuthority = null;
         if (authorityOptional.isPresent()) {

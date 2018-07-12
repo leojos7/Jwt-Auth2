@@ -5,10 +5,15 @@ import com.siemens.mindsphere.apps.entity.BaseEntity;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity(name = "PARAM_DETAILS")
+@Entity(name = "PARAM_DETAIL")
 public class ParamDetails extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "PARAM_DETAIL_ID")
+    private Integer paramDetailId;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "PRODUCT_PARAM_ID")
@@ -24,6 +29,14 @@ public class ParamDetails extends BaseEntity implements Serializable {
 
     public void setProductParams(ProductParams productParams) {
         this.productParams = productParams;
+    }
+
+    public Integer getParamDetailId() {
+        return paramDetailId;
+    }
+
+    public void setParamDetailId(Integer paramDetailId) {
+        this.paramDetailId = paramDetailId;
     }
 
     public String getValue() {

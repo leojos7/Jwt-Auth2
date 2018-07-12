@@ -1,6 +1,7 @@
 package com.siemens.mindsphere.apps.modules.location.service.location;
 
 import com.siemens.mindsphere.apps.modules.location.entity.Location;
+import com.siemens.mindsphere.apps.modules.location.repository.LocationParamsMapRespository;
 import com.siemens.mindsphere.apps.modules.location.repository.LocationRepository;
 import com.siemens.mindsphere.apps.modules.location.service.locationParams.LocationParamsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -23,13 +23,31 @@ public class LocationServiceImpl implements LocationService {
     @Autowired
     private LocationParamsService locationParamsService;
 
+    @Autowired
+    private LocationParamsMapRespository locationParamsMapRespository;
+
     @Override
     public Location addLocation(Location location) {
+
+        Location locationCreated = locationRepository.save(location);
+
+/*        location.getLocationParamMapping().stream()
+                .forEach(locationParamMapping -> {
+//                    locationParamMapping.setLocationParams(locationParamsService.getLocationParams(
+//                                    locationParamMapping.getLocationParamsPK().getLocation_param_id()));
+                    locationParamMapping.setLocation(locationCreated);
+//                    locationParamMapping.getLocationParamsPK().setLocation_id(locationCreated.getLocationId());
+                    locationParamsMapRespository.save(locationParamMapping);
+                });*/
+
+
+
+
+/*
         location.setLocationParams(location.getLocationParams().stream()
                 .map(locationParams ->  locationParamsService.getLocationParams(locationParams.getId()))
-                .collect(Collectors.toSet()));
-        Location locationCreated = locationRepository.save(location);
-        return getLocation(locationCreated.getId());
+                .collect(Collectors.toSet()));*/
+        return getLocation(locationCreated.getLocationId());
     }
 
     @Override
@@ -42,15 +60,17 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public Location updateLocation(Location location) {
-        Optional<Location> locationOptional = locationRepository.findById(location.getId());
+        Optional<Location> locationOptional = locationRepository.findById(location.getLocationId());
         Location existingLocation = null;
         Location newLocation = null;
         if (locationOptional.isPresent()) {
             existingLocation = locationOptional.get();
             existingLocation.setName(location.getName());
             existingLocation.setModifiedDate(new Date());
-            location.getLocationParams().stream()
-                    .forEach(locationParams -> locationParamsService.updateLocationParams(locationParams));
+           /* location.getLocationParamMapping().stream()
+                    .forEach(locationParamsMapping -> {
+                        locationParamsService.updateLocationParams(locationParamsMapping.getLocationParams());
+                    });*/
             newLocation = locationRepository.save(existingLocation);
         } else {
             newLocation = locationRepository.save(location);
