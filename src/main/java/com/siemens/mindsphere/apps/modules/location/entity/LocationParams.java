@@ -17,6 +17,9 @@ public class LocationParams extends BaseParamsEntity implements Serializable {
     private Integer LocationParamsId;
 
 
+    @OneToMany(mappedBy = "locationParams")
+    private Set<LocationParamMapping> locationParamMapping;
+
     public Integer getLocationParamsId() {
         return LocationParamsId;
     }

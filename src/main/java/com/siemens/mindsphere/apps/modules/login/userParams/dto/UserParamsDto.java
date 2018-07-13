@@ -8,6 +8,9 @@ public class UserParamsDto {
 
     private String description;
 
+    public UserParamsDto() {
+    }
+
     public Integer getId() {
         return id;
     }

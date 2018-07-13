@@ -4,14 +4,22 @@ import com.siemens.mindsphere.apps.modules.location.service.location.LocationSer
 import com.siemens.mindsphere.apps.modules.login.exception.NoUserFoundException;
 import com.siemens.mindsphere.apps.modules.login.user.service.UserService;
 import com.siemens.mindsphere.apps.modules.order.dto.OrderDto;
+import com.siemens.mindsphere.apps.modules.order.dto.ProductDetailsDto;
 import com.siemens.mindsphere.apps.modules.order.entity.Order;
+import com.siemens.mindsphere.apps.modules.order.entity.OrderProductMapping;
 import com.siemens.mindsphere.apps.modules.order.service.order.OrderService;
 import com.siemens.mindsphere.apps.modules.order.service.orderStatus.OrderStatusService;
+import com.siemens.mindsphere.apps.modules.product.dto.ProductDto;
+import com.siemens.mindsphere.apps.modules.product.entity.Product;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/secure/user/order")
@@ -33,7 +41,7 @@ public class OrderController {
     private OrderStatusService orderStatusService;
 
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = "application/json")
     public OrderDto addOrder(@RequestBody OrderDto orderDto) throws NoUserFoundException {
         Order order = convertToEntity(orderDto);
         Order orderCreated = null;
@@ -72,11 +80,17 @@ public class OrderController {
     }
 
     private OrderDto convertToDto(Order order) {
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
         OrderDto orderDto = null;
         if (order != null) {
             orderDto = modelMapper.map(order, OrderDto.class);
-//            orderDto.setLocationId(order.getLocationId().getId());
+            orderDto.setLocationId(order.getLocationId().getLocationId());
             orderDto.setOrderStatusId(order.getOrderStatusId().getOrderStatusId());
+            orderDto.setProducts(order.getOrderProductMappings().stream()
+                    .map(orderProductMapping -> new ProductDetailsDto(
+                            modelMapper.map(orderProductMapping.getProduct(), ProductDto.class),
+                            orderProductMapping.getQuantity()))
+                    .collect(Collectors.toSet()));
         }
         return orderDto;
     }
@@ -86,9 +100,21 @@ public class OrderController {
         if (orderDto != null) {
             order = modelMapper.map(orderDto, Order.class);
             order.setLoginId(userService.getUserById(orderDto.getLoginId().getId()));
-//            order.setLocationId(locationService.getLocation(orderDto.getLocationId()));
+            order.setLocationId(locationService.getLocation(orderDto.getLocationId()));
             order.setOrderStatusId(orderStatusService.getOrderStatus(orderDto.getOrderStatusId()));
             order.setUpdatedBy(userService.getUserById(orderDto.getUpdatedBy().getId()));
+            Set<OrderProductMapping> orderProductMappings = new HashSet();
+            Order finalOrder = order;
+            orderDto.getProducts().stream()
+                    .forEach(productDtoIntegerEntry -> {
+                        OrderProductMapping orderProductMapping = new OrderProductMapping();
+                        Product product = modelMapper.map(productDtoIntegerEntry, Product.class);
+                        orderProductMapping.setOrder(finalOrder);
+                        orderProductMapping.setProduct(product);
+                        orderProductMapping.setQuantity(productDtoIntegerEntry.getQuantity());
+                        orderProductMappings.add(orderProductMapping);
+            });
+            order.setOrderProductMappings(orderProductMappings);
         } else {
 
         }

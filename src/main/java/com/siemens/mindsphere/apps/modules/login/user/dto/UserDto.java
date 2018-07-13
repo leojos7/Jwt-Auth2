@@ -23,6 +23,9 @@ public class UserDto {
 
     private String otp;
 
+    public UserDto() {
+    }
+
     private Set<AuthorityDto> authorities;
 
     private Set<UserParamsDto> userParams;

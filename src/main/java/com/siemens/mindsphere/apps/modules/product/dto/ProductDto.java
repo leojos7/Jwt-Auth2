@@ -21,6 +21,9 @@ public class ProductDto {
 
     private Set<ParamDetailsDto> paramDetails;
 
+    public ProductDto() {
+    }
+
     public Integer getId() {
         return id;
     }

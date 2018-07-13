@@ -3,7 +3,6 @@ package com.siemens.mindsphere.apps.modules.order.entity;
 import com.siemens.mindsphere.apps.entity.BaseEntity;
 import com.siemens.mindsphere.apps.modules.location.entity.Location;
 import com.siemens.mindsphere.apps.modules.login.user.entity.User;
-import com.siemens.mindsphere.apps.modules.product.entity.Product;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -22,10 +21,10 @@ public class Order extends BaseEntity implements Serializable {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "LOGIN_ID")
     private User loginId;
-/*
+
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "LOCATION_ID")
-    private Location locationId;*/
+    private Location locationId;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ORDER_STATUS_ID")
@@ -41,11 +40,12 @@ public class Order extends BaseEntity implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "ORDER_PARAM_ID", referencedColumnName = "ORDER_PARAM_ID")})
     private Set<OrderParams> orderParams;
 
-    @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    /*@ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinTable(name = "ORDER_PRODUCT_MAP",
             joinColumns = {@JoinColumn(name = "ORDER_DETAIL_ID", referencedColumnName = "ORDER_DETAIL_ID")},
-            inverseJoinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "PRODUCT_ID")})
-    private Set<Product> products;
+            inverseJoinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "PRODUCT_ID")})*/
+    private Set<OrderProductMapping> orderProductMappings;
 
     public Integer getOrderDetailId() {
         return orderDetailId;
@@ -63,7 +63,6 @@ public class Order extends BaseEntity implements Serializable {
         this.loginId = loginId;
     }
 
-/*
     public Location getLocationId() {
         return locationId;
     }
@@ -71,7 +70,6 @@ public class Order extends BaseEntity implements Serializable {
     public void setLocationId(Location locationId) {
         this.locationId = locationId;
     }
-*/
 
     public OrderStatus getOrderStatusId() {
         return orderStatusId;
@@ -97,12 +95,12 @@ public class Order extends BaseEntity implements Serializable {
         this.orderParams = orderParams;
     }
 
-    public Set<Product> getProducts() {
-        return products;
+    public Set<OrderProductMapping> getOrderProductMappings() {
+        return orderProductMappings;
     }
 
-    public void setProducts(Set<Product> products) {
-        this.products = products;
+    public void setOrderProductMappings(Set<OrderProductMapping> orderProductMappings) {
+        this.orderProductMappings = orderProductMappings;
     }
 
 }

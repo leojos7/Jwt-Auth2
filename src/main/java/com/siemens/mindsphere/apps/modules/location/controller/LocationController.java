@@ -1,10 +1,10 @@
 package com.siemens.mindsphere.apps.modules.location.controller;
 
 import com.siemens.mindsphere.apps.modules.location.dto.LocationDto;
+import com.siemens.mindsphere.apps.modules.location.dto.LocationParamsDto;
 import com.siemens.mindsphere.apps.modules.location.entity.Location;
 import com.siemens.mindsphere.apps.modules.location.entity.LocationParams;
 import com.siemens.mindsphere.apps.modules.location.entity.LocationParamMapping;
-import com.siemens.mindsphere.apps.modules.location.entity.LocationParamsPK;
 import com.siemens.mindsphere.apps.modules.location.service.location.LocationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/secure/user/location")
@@ -67,9 +68,11 @@ public class LocationController {
         LocationDto locationDto = null;
         if (location != null) {
             locationDto = modelMapper.map(location, LocationDto.class);
-            location.getLocationParamMapping().stream().forEach(locationParamMapping -> {
-                modelMapper.map(locationParamMapping.getLocationParamsPK().getLocationParams(),LocationParams.class);
-            });
+            locationDto.setLocationParams(
+                    location.getLocationParamMapping().stream()
+                            .map(locationParamMapping -> modelMapper.map(
+                                    locationParamMapping.getLocationParams(), LocationParamsDto.class))
+                            .collect(Collectors.toSet()));
         }
         return locationDto;
     }
@@ -82,9 +85,7 @@ public class LocationController {
             Location finalLocation = location;
             locationDto.getLocationParams().stream().forEach(locationParamsDto -> {
                 LocationParamMapping locationParamMapping = new LocationParamMapping();
-                LocationParamsPK locationParamsPK = new LocationParamsPK();
                 LocationParams locationParams = modelMapper.map(locationParamsDto, LocationParams.class);
-                locationParamMapping.setLocationParamsPK(locationParamsPK);
                 locationParamMapping.setLocation(finalLocation);
                 locationParamMapping.setLocationParams(locationParams);
                 locationParamMappings.add(locationParamMapping);

@@ -8,6 +8,9 @@ public class LocationParamsDto {
 
     private String description;
 
+    public LocationParamsDto() {
+    }
+
     public Integer getId() {
         return id;
     }

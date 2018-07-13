@@ -10,6 +10,9 @@ public class CartDto {
 
     private Integer quantity;
 
+    public CartDto() {
+    }
+
     public Integer getId() {
         return id;
     }

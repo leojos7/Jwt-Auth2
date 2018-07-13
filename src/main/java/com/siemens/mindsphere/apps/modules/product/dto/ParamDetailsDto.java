@@ -10,6 +10,9 @@ public class ParamDetailsDto {
 
     private String code;
 
+    public ParamDetailsDto() {
+    }
+
     public Integer getId() {
         return id;
     }

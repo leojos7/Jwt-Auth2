@@ -1,7 +1,6 @@
 package com.siemens.mindsphere.apps.modules.order.dto;
 
 import com.siemens.mindsphere.apps.modules.login.user.dto.UserDto;
-import com.siemens.mindsphere.apps.modules.product.dto.ProductDto;
 
 import java.util.Set;
 
@@ -19,7 +18,10 @@ public class OrderDto {
 
     private Set<OrderParamsDto> orderParams;
 
-    private Set<ProductDto> products;
+    private Set<ProductDetailsDto> products;
+
+    public OrderDto() {
+    }
 
     public Integer getId() {
         return id;
@@ -69,11 +71,11 @@ public class OrderDto {
         this.orderParams = orderParams;
     }
 
-    public Set<ProductDto> getProducts() {
+    public Set<ProductDetailsDto> getProducts() {
         return products;
     }
 
-    public void setProducts(Set<ProductDto> products) {
+    public void setProducts(Set<ProductDetailsDto> products) {
         this.products = products;
     }
 }
