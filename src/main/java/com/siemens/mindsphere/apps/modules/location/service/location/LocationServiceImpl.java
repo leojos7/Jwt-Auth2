@@ -1,16 +1,20 @@
 package com.siemens.mindsphere.apps.modules.location.service.location;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.siemens.mindsphere.apps.modules.location.entity.Location;
-import com.siemens.mindsphere.apps.modules.location.repository.LocationParamsMapRespository;
 import com.siemens.mindsphere.apps.modules.location.repository.LocationRepository;
 import com.siemens.mindsphere.apps.modules.location.service.locationParams.LocationParamsService;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -23,30 +27,15 @@ public class LocationServiceImpl implements LocationService {
     @Autowired
     private LocationParamsService locationParamsService;
 
-    @Autowired
-    private LocationParamsMapRespository locationParamsMapRespository;
 
     @Override
     public Location addLocation(Location location) {
-
-        Location locationCreated = locationRepository.save(location);
-
-/*        location.getLocationParamMapping().stream()
+        location.getLocationParamMapping().stream()
                 .forEach(locationParamMapping -> {
-//                    locationParamMapping.setLocationParams(locationParamsService.getLocationParams(
-//                                    locationParamMapping.getLocationParamsPK().getLocation_param_id()));
-                    locationParamMapping.setLocation(locationCreated);
-//                    locationParamMapping.getLocationParamsPK().setLocation_id(locationCreated.getLocationId());
-                    locationParamsMapRespository.save(locationParamMapping);
-                });*/
-
-
-
-
-/*
-        location.setLocationParams(location.getLocationParams().stream()
-                .map(locationParams ->  locationParamsService.getLocationParams(locationParams.getId()))
-                .collect(Collectors.toSet()));*/
+                    locationParamMapping.setLocationParams(locationParamsService.getLocationParams(
+                                    locationParamMapping.getLocationParams().getLocationParamsId()));
+                });
+        Location locationCreated = locationRepository.save(location);
         return getLocation(locationCreated.getLocationId());
     }
 
@@ -67,10 +56,10 @@ public class LocationServiceImpl implements LocationService {
             existingLocation = locationOptional.get();
             existingLocation.setName(location.getName());
             existingLocation.setModifiedDate(new Date());
-           /* location.getLocationParamMapping().stream()
+           location.getLocationParamMapping().stream()
                     .forEach(locationParamsMapping -> {
                         locationParamsService.updateLocationParams(locationParamsMapping.getLocationParams());
-                    });*/
+                    });
             newLocation = locationRepository.save(existingLocation);
         } else {
             newLocation = locationRepository.save(location);
@@ -90,6 +79,25 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public Page<Location> getAllLocations(Pageable pageable) {
         return locationRepository.findAll(pageable);
+    }
+
+
+    @Test
+    public void test() {
+        ObjectMapper mapperObj = new ObjectMapper();
+        Map<Location, String> inputMap = new HashMap<>();
+        Location location = new Location();
+        location.setName("Leo");
+        location.setLocationId(1);
+        inputMap.put(location, "http://java2novice.com");
+        // convert map to JSON String
+        try {
+        String jsonResp = mapperObj.writeValueAsString(inputMap);
+        System.out.println(jsonResp);
+        } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+        }
     }
 
 }

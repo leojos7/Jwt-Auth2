@@ -3,6 +3,7 @@ package com.siemens.mindsphere.apps.modules.order.service.order;
 import com.siemens.mindsphere.apps.modules.order.entity.Order;
 import com.siemens.mindsphere.apps.modules.order.repository.OrderRepository;
 import com.siemens.mindsphere.apps.modules.order.service.orderParams.OrderParamsService;
+import com.siemens.mindsphere.apps.modules.product.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,9 +23,18 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderParamsService orderParamsService;
 
+    @Autowired
+    private ProductService productService;
+
     @Override
     public Order addOrder(Order order) {
-        return orderRepository.save(order);
+        order.getOrderProductMappings().stream()
+                .forEach(orderProductMapping -> {
+                    orderProductMapping.setProduct(productService.getProduct(
+                            orderProductMapping.getProduct().getProductId()));
+                });
+        Order orderCreated = orderRepository.save(order);
+        return getOrder(orderCreated.getOrderDetailId());
     }
 
     @Override

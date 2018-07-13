@@ -8,6 +8,9 @@ public class OrderParamsDto {
 
     private String description;
 
+    public OrderParamsDto() {
+    }
+
     public Integer getId() {
         return id;
     }

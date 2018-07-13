@@ -8,6 +8,9 @@ public class OrderStatusDto {
 
     private String description;
 
+    public OrderStatusDto() {
+    }
+
     public Integer getId() {
         return id;
     }

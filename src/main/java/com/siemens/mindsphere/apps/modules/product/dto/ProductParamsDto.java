@@ -8,6 +8,9 @@ public class ProductParamsDto {
 
     private String description;
 
+    public ProductParamsDto() {
+    }
+
     public Integer getId() {
         return id;
     }

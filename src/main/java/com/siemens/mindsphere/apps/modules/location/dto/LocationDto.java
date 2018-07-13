@@ -10,6 +10,9 @@ public class LocationDto {
 
     private Set<LocationParamsDto> locationParams;
 
+    public LocationDto() {
+    }
+
     public Integer getId() {
         return id;
     }

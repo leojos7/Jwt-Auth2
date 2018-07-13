@@ -6,6 +6,9 @@ public class AuthorityDto {
 
     private String name;
 
+    public AuthorityDto() {
+    }
+
     public Integer getId() {
         return id;
     }
