@@ -33,6 +33,12 @@ public class OrderServiceImpl implements OrderService {
                     orderProductMapping.setProduct(productService.getProduct(
                             orderProductMapping.getProduct().getProductId()));
                 });
+        order.getOrderParamMappings().stream()
+                .forEach(orderParamMapping -> {
+                    orderParamMapping.setOrderParam(orderParamsService.getOrderParams(
+                            orderParamMapping.getOrderParam().getOrderParamId())
+                    );
+                });
         Order orderCreated = orderRepository.save(order);
         return getOrder(orderCreated.getOrderDetailId());
     }
@@ -55,8 +61,8 @@ public class OrderServiceImpl implements OrderService {
             existingOrder.setOrderStatusId(order.getOrderStatusId());
             existingOrder.setUpdatedBy(order.getUpdatedBy());
             existingOrder.setModifiedDate(new Date());
-            order.getOrderParams().stream()
-                    .forEach(locationParams -> orderParamsService.updateOrderParams(locationParams));
+            order.getOrderParamMappings().stream()
+                    .forEach(locationParams -> orderParamsService.updateOrderParams(locationParams.getOrderParam()));
             newOrder = orderRepository.save(existingOrder);
         } else {
             newOrder = orderRepository.save(order);

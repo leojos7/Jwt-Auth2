@@ -34,17 +34,10 @@ public class Order extends BaseEntity implements Serializable {
     @JoinColumn(name = "UPDATED_BY")
     private User updatedBy;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "ORDER_PARAM_MAP",
-            joinColumns = {@JoinColumn(name = "ORDER_DETAIL_ID", referencedColumnName = "ORDER_DETAIL_ID")},
-            inverseJoinColumns = {@JoinColumn(name = "ORDER_PARAM_ID", referencedColumnName = "ORDER_PARAM_ID")})
-    private Set<OrderParams> orderParams;
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<OrderParamMapping> orderParamMappings;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    /*@ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
-    @JoinTable(name = "ORDER_PRODUCT_MAP",
-            joinColumns = {@JoinColumn(name = "ORDER_DETAIL_ID", referencedColumnName = "ORDER_DETAIL_ID")},
-            inverseJoinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "PRODUCT_ID")})*/
     private Set<OrderProductMapping> orderProductMappings;
 
     public Integer getOrderDetailId() {
@@ -87,12 +80,12 @@ public class Order extends BaseEntity implements Serializable {
         this.updatedBy = updatedBy;
     }
 
-    public Set<OrderParams> getOrderParams() {
-        return orderParams;
+    public Set<OrderParamMapping> getOrderParamMappings() {
+        return orderParamMappings;
     }
 
-    public void setOrderParams(Set<OrderParams> orderParams) {
-        this.orderParams = orderParams;
+    public void setOrderParamMappings(Set<OrderParamMapping> orderParamMappings) {
+        this.orderParamMappings = orderParamMappings;
     }
 
     public Set<OrderProductMapping> getOrderProductMappings() {

@@ -28,7 +28,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
-    @Override
+/*    @Override
     public void configure(WebSecurity web) throws Exception {
 
         web.ignoring()
@@ -39,7 +39,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/mindsphere/resetpassword")
                 .antMatchers("/mindsphere/hello");
 
-    }
+    }*/
 
     @Override
     @Bean

@@ -4,8 +4,11 @@ import com.siemens.mindsphere.apps.modules.location.service.location.LocationSer
 import com.siemens.mindsphere.apps.modules.login.exception.NoUserFoundException;
 import com.siemens.mindsphere.apps.modules.login.user.service.UserService;
 import com.siemens.mindsphere.apps.modules.order.dto.OrderDto;
+import com.siemens.mindsphere.apps.modules.order.dto.OrderParamDto;
 import com.siemens.mindsphere.apps.modules.order.dto.ProductDetailsDto;
 import com.siemens.mindsphere.apps.modules.order.entity.Order;
+import com.siemens.mindsphere.apps.modules.order.entity.OrderParam;
+import com.siemens.mindsphere.apps.modules.order.entity.OrderParamMapping;
 import com.siemens.mindsphere.apps.modules.order.entity.OrderProductMapping;
 import com.siemens.mindsphere.apps.modules.order.service.order.OrderService;
 import com.siemens.mindsphere.apps.modules.order.service.orderStatus.OrderStatusService;
@@ -91,6 +94,14 @@ public class OrderController {
                             modelMapper.map(orderProductMapping.getProduct(), ProductDto.class),
                             orderProductMapping.getQuantity()))
                     .collect(Collectors.toSet()));
+            orderDto.setOrderParams(order.getOrderParamMappings().stream()
+                    .map(orderParamMapping -> {
+                        OrderParamDto orderParamDto =
+                                modelMapper.map(orderParamMapping.getOrderParam(), OrderParamDto.class);
+                        orderParamDto.setValue(orderParamMapping.getValue());
+                        return orderParamDto;
+                    })
+                    .collect(Collectors.toSet()));
         }
         return orderDto;
     }
@@ -115,6 +126,17 @@ public class OrderController {
                         orderProductMappings.add(orderProductMapping);
             });
             order.setOrderProductMappings(orderProductMappings);
+            Set<OrderParamMapping> orderParamMappings = new HashSet();
+            orderDto.getOrderParams().stream()
+                    .forEach(orderParamDto -> {
+                        OrderParamMapping orderParamMapping = new OrderParamMapping();
+                        OrderParam orderParam = modelMapper.map(orderParamDto, OrderParam.class);
+                        orderParamMapping.setOrder(finalOrder);
+                        orderParamMapping.setOrderParam(orderParam);
+                        orderParamMapping.setValue(orderParamDto.getValue());
+                        orderParamMappings.add(orderParamMapping);
+                    });
+            order.setOrderParamMappings(orderParamMappings);
         } else {
 
         }

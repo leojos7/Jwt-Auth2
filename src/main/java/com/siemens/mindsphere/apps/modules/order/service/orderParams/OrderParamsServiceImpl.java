@@ -1,6 +1,6 @@
 package com.siemens.mindsphere.apps.modules.order.service.orderParams;
 
-import com.siemens.mindsphere.apps.modules.order.entity.OrderParams;
+import com.siemens.mindsphere.apps.modules.order.entity.OrderParam;
 import com.siemens.mindsphere.apps.modules.order.repository.OrderParamsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,46 +19,46 @@ public class OrderParamsServiceImpl implements OrderParamsService {
     private OrderParamsRepository orderParamsRepository;
 
     @Override
-    public OrderParams addOrderParams(OrderParams orderParams) {
-        return orderParamsRepository.save(orderParams);
+    public OrderParam addOrderParams(OrderParam orderParam) {
+        return orderParamsRepository.save(orderParam);
     }
 
     @Override
     public void deleteOrderParams(Integer orderParamsId) {
-        Optional<OrderParams> orderParamsOptional = orderParamsRepository.findById(orderParamsId);
+        Optional<OrderParam> orderParamsOptional = orderParamsRepository.findById(orderParamsId);
         if (orderParamsOptional.isPresent()) {
             orderParamsRepository.delete(orderParamsOptional.get());
         }
     }
 
     @Override
-    public OrderParams updateOrderParams(OrderParams orderParams) {
-        Optional<OrderParams> orderParamsOptional = orderParamsRepository.findById(orderParams.getOrderParamId());
-        OrderParams existingOrderParams = null;
-        OrderParams newOrderParams = null;
+    public OrderParam updateOrderParams(OrderParam orderParam) {
+        Optional<OrderParam> orderParamsOptional = orderParamsRepository.findById(orderParam.getOrderParamId());
+        OrderParam existingOrderParam = null;
+        OrderParam newOrderParam = null;
         if (orderParamsOptional.isPresent()) {
-            existingOrderParams = orderParamsOptional.get();
-            existingOrderParams.setName(orderParams.getName());
-            existingOrderParams.setDescription(orderParams.getDescription());
-            existingOrderParams.setModifiedDate(new Date());
-            newOrderParams = orderParamsRepository.save(existingOrderParams);
+            existingOrderParam = orderParamsOptional.get();
+            existingOrderParam.setName(orderParam.getName());
+            existingOrderParam.setDescription(orderParam.getDescription());
+            existingOrderParam.setModifiedDate(new Date());
+            newOrderParam = orderParamsRepository.save(existingOrderParam);
         } else {
-            newOrderParams = orderParamsRepository.save(orderParams);
+            newOrderParam = orderParamsRepository.save(orderParam);
         }
-        return newOrderParams;
+        return newOrderParam;
     }
 
     @Override
-    public OrderParams getOrderParams(Integer orderParamsId) {
-        OrderParams orderParams = null;
+    public OrderParam getOrderParams(Integer orderParamsId) {
+        OrderParam orderParam = null;
         if(orderParamsRepository.findById(orderParamsId).isPresent()) {
-            orderParams = orderParamsRepository.findById(orderParamsId).get();
+            orderParam = orderParamsRepository.findById(orderParamsId).get();
         }
-        return orderParams;
+        return orderParam;
     }
 
     @Override
-    public Page<OrderParams> getAllOrderParams(Pageable pageable) {
+    public Page<OrderParam> getAllOrderParams(Pageable pageable) {
         return orderParamsRepository.findAll(pageable);
     }
 

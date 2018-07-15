@@ -1,6 +1,6 @@
 package com.siemens.mindsphere.apps.modules.order.dto;
 
-public class OrderParamsDto {
+public class OrderParamDto {
 
     private Integer id;
 
@@ -8,7 +8,16 @@ public class OrderParamsDto {
 
     private String description;
 
-    public OrderParamsDto() {
+    private String value;
+
+    public OrderParamDto() {
+    }
+
+    public OrderParamDto(Integer id, String name, String description, String value) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.value = value;
     }
 
     public Integer getId() {
@@ -35,4 +44,11 @@ public class OrderParamsDto {
         this.description = description;
     }
 
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 }

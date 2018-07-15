@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.siemens.mindsphere.apps.modules.location.entity.Location;
 import com.siemens.mindsphere.apps.modules.location.repository.LocationRepository;
 import com.siemens.mindsphere.apps.modules.location.service.locationParams.LocationParamsService;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -79,25 +78,6 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public Page<Location> getAllLocations(Pageable pageable) {
         return locationRepository.findAll(pageable);
-    }
-
-
-    @Test
-    public void test() {
-        ObjectMapper mapperObj = new ObjectMapper();
-        Map<Location, String> inputMap = new HashMap<>();
-        Location location = new Location();
-        location.setName("Leo");
-        location.setLocationId(1);
-        inputMap.put(location, "http://java2novice.com");
-        // convert map to JSON String
-        try {
-        String jsonResp = mapperObj.writeValueAsString(inputMap);
-        System.out.println(jsonResp);
-        } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-        }
     }
 
 }

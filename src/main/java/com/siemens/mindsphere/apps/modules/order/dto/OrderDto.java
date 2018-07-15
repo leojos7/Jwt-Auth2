@@ -16,7 +16,7 @@ public class OrderDto {
 
     private UserDto updatedBy;
 
-    private Set<OrderParamsDto> orderParams;
+    private Set<OrderParamDto> orderParams;
 
     private Set<ProductDetailsDto> products;
 
@@ -63,11 +63,11 @@ public class OrderDto {
         this.updatedBy = updatedBy;
     }
 
-    public Set<OrderParamsDto> getOrderParams() {
+    public Set<OrderParamDto> getOrderParams() {
         return orderParams;
     }
 
-    public void setOrderParams(Set<OrderParamsDto> orderParams) {
+    public void setOrderParams(Set<OrderParamDto> orderParams) {
         this.orderParams = orderParams;
     }
 

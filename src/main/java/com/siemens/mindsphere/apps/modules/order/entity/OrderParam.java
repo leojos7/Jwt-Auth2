@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity(name = "ORDER_PARAM")
-public class OrderParams extends BaseParamsEntity implements Serializable {
+public class OrderParam extends BaseParamsEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

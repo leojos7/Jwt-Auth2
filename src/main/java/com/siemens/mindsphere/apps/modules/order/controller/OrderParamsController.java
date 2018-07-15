@@ -1,7 +1,7 @@
 package com.siemens.mindsphere.apps.modules.order.controller;
 
-import com.siemens.mindsphere.apps.modules.order.dto.OrderParamsDto;
-import com.siemens.mindsphere.apps.modules.order.entity.OrderParams;
+import com.siemens.mindsphere.apps.modules.order.dto.OrderParamDto;
+import com.siemens.mindsphere.apps.modules.order.entity.OrderParam;
 import com.siemens.mindsphere.apps.modules.order.service.orderParams.OrderParamsService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,59 +20,59 @@ public class OrderParamsController {
     private ModelMapper modelMapper;
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public OrderParamsDto addLocation(@RequestBody OrderParamsDto orderParamsDto) {
-        OrderParams location = convertToEntity(orderParamsDto);
-        OrderParams orderParams = null;
+    public OrderParamDto addOrderParams(@RequestBody OrderParamDto orderParamDto) {
+        OrderParam location = convertToEntity(orderParamDto);
+        OrderParam orderParam = null;
         if (location != null) {
-            orderParams = orderParamsService.addOrderParams(location);
+            orderParam = orderParamsService.addOrderParams(location);
         }
-        return convertToDto(orderParams);
+        return convertToDto(orderParam);
     }
 
-    @RequestMapping(value = "/delete/{locationId}", method = RequestMethod.GET)
-    public void deleteLocation(@PathVariable int locationId) {
-        orderParamsService.deleteOrderParams(locationId);
+    @RequestMapping(value = "/delete/{orderParamsId}", method = RequestMethod.GET)
+    public void deleteOrderParams(@PathVariable int orderParamsId) {
+        orderParamsService.deleteOrderParams(orderParamsId);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public OrderParamsDto updateLocation(@RequestBody OrderParamsDto orderParamsDto) {
-        OrderParams location = convertToEntity(orderParamsDto);
-        OrderParams locationUpdated = null;
+    public OrderParamDto updateOrderParams(@RequestBody OrderParamDto orderParamDto) {
+        OrderParam location = convertToEntity(orderParamDto);
+        OrderParam locationUpdated = null;
         if (location != null) {
             locationUpdated = orderParamsService.updateOrderParams(location);
         }
         return convertToDto(locationUpdated);
     }
-    @RequestMapping(value = "/get/{userId}", method = RequestMethod.GET)
-    public OrderParamsDto getLocation(@PathVariable int locationParamsId) {
-        return convertToDto(orderParamsService.getOrderParams(locationParamsId));
+    @RequestMapping(value = "/get/{orderParamsId}", method = RequestMethod.GET)
+    public OrderParamDto getOrderParams(@PathVariable int orderParamsId) {
+        return convertToDto(orderParamsService.getOrderParams(orderParamsId));
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
-    public Page<OrderParamsDto> getAllLocations(Pageable pageable) {
+    public Page<OrderParamDto> getAllOrderParams(Pageable pageable) {
         return convertToDtos(orderParamsService.getAllOrderParams(pageable));
     }
 
-    private Page<OrderParamsDto> convertToDtos(Page<OrderParams> orderParams) {
+    private Page<OrderParamDto> convertToDtos(Page<OrderParam> orderParams) {
         return orderParams.map(locationsToMap -> convertToDto(locationsToMap));
     }
 
-    private OrderParamsDto convertToDto(OrderParams orderParams) {
-        OrderParamsDto orderParamsDto = null;
-        if (orderParams != null) {
-            orderParamsDto = modelMapper.map(orderParams, OrderParamsDto.class);
+    private OrderParamDto convertToDto(OrderParam orderParam) {
+        OrderParamDto orderParamDto = null;
+        if (orderParam != null) {
+            orderParamDto = modelMapper.map(orderParam, OrderParamDto.class);
         }
-        return orderParamsDto;
+        return orderParamDto;
     }
 
-    private OrderParams convertToEntity(OrderParamsDto orderParamsDto) {
-        OrderParams orderParams = null;
-        if (orderParamsDto != null) {
-            orderParams = modelMapper.map(orderParamsDto, OrderParams.class);
+    private OrderParam convertToEntity(OrderParamDto orderParamDto) {
+        OrderParam orderParam = null;
+        if (orderParamDto != null) {
+            orderParam = modelMapper.map(orderParamDto, OrderParam.class);
         } else {
 
         }
-        return orderParams;
+        return orderParam;
     }
 
 }
