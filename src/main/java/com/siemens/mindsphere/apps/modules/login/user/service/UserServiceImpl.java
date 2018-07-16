@@ -1,8 +1,9 @@
 package com.siemens.mindsphere.apps.modules.login.user.service;
 
+import com.siemens.mindsphere.apps.exception.ErrorMappings;
 import com.siemens.mindsphere.apps.modules.login.user.entity.User;
 import com.siemens.mindsphere.apps.modules.login.exception.AlreadyExistingUserException;
-import com.siemens.mindsphere.apps.modules.login.exception.NoUserFoundException;
+import com.siemens.mindsphere.apps.modules.login.exception.UserNotFoundException;
 import com.siemens.mindsphere.apps.modules.login.user.repository.UserRepository;
 import com.siemens.mindsphere.apps.modules.login.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -23,9 +25,9 @@ public class UserServiceImpl implements UserService {
     protected PasswordEncoder passwordEncoder;
 
     @Override
-    public User addUser(User user, String authorityName) throws NoUserFoundException, AlreadyExistingUserException {
+    public User addUser(User user, String authorityName) throws AlreadyExistingUserException {
         User addedUser = null;
-        if (getUserByUsername(user.getUsername()) == null) {
+        if (userRepository.findByUsernameCaseInsensitive(user.getUsername()) == null) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setStatus(Boolean.TRUE);
             user.setAuthorities(CommonUtils.getAuthoritiesList(authorityName));
@@ -37,20 +39,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(Integer userId) throws NoUserFoundException {
+    public void deleteUser(Integer userId) throws UserNotFoundException {
         User user = getUserById(userId);
-        if (user == null) {
-            throw new NoUserFoundException(userId + " doesn't exist");
-        }
         userRepository.delete(user);
     }
 
     @Override
-    public User updateUser(User user) throws NoUserFoundException {
+    public User updateUser(User user) throws UserNotFoundException {
         User oldUser = getUserById(user.getUserId());
-        if (oldUser == null) {
-            throw new NoUserFoundException(user.getUsername() + " doesn't exist");
-        }
         oldUser.setModifiedDate(new Date());
 /*        oldUser.setFullName(user.getFullName());
         oldUser.setMobileNumber(user.getMobileNumber());*/
@@ -63,14 +59,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByUsername(String username) {
+    public User getUserByUsername(String username) throws UserNotFoundException {
+
         User existingUser = userRepository.findByUsernameCaseInsensitive(username);
+        if(existingUser == null) {
+            throw new UserNotFoundException(ErrorMappings.USER_NOT_FOUND_CODE, ErrorMappings.USER_NOT_FOUND_MESSAGE);
+        }
         return existingUser;
     }
 
     @Override
-    public User getUserById(Integer id) {
-        User existingUser = userRepository.findById(id).get();
+    public User getUserById(Integer id) throws UserNotFoundException{
+        Optional<User> userOptional = userRepository.findById(id);
+        User existingUser = null;
+        if(userOptional.isPresent()) {
+            existingUser = userOptional.get();
+        } else {
+            throw new UserNotFoundException(ErrorMappings.USER_NOT_FOUND_CODE, ErrorMappings.USER_NOT_FOUND_MESSAGE);
+        }
         return existingUser;
     }
 

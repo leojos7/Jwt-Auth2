@@ -1,12 +1,15 @@
 package com.siemens.mindsphere.apps.modules.cart.dto;
 
+import com.siemens.mindsphere.apps.modules.login.user.dto.UserDto;
+import com.siemens.mindsphere.apps.modules.product.dto.ProductDto;
+
 public class CartDto {
 
     private Integer id;
 
-    private Integer loginId;
+    private UserDto user;
 
-    private Integer productId;
+    private ProductDto product;
 
     private Integer quantity;
 
@@ -21,20 +24,20 @@ public class CartDto {
         this.id = id;
     }
 
-    public Integer getLoginId() {
-        return loginId;
+    public UserDto getUser() {
+        return user;
     }
 
-    public void setLoginId(Integer loginId) {
-        this.loginId = loginId;
+    public void setUser(UserDto user) {
+        this.user = user;
     }
 
-    public Integer getProductId() {
-        return productId;
+    public ProductDto getProduct() {
+        return product;
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setProduct(ProductDto product) {
+        this.product = product;
     }
 
     public Integer getQuantity() {

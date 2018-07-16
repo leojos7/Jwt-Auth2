@@ -2,7 +2,7 @@ package com.siemens.mindsphere.apps.modules.cart.service;
 
 import com.siemens.mindsphere.apps.modules.cart.entity.Cart;
 import com.siemens.mindsphere.apps.modules.cart.repository.CartRepository;
-import com.siemens.mindsphere.apps.modules.login.exception.NoUserFoundException;
+import com.siemens.mindsphere.apps.modules.login.exception.UserNotFoundException;
 import com.siemens.mindsphere.apps.modules.login.user.service.UserService;
 import com.siemens.mindsphere.apps.modules.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +57,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Page<Cart> getCart(Integer userId, Pageable pageable) throws NoUserFoundException {
+    public Page<Cart> getCart(Integer userId, Pageable pageable) throws UserNotFoundException {
         return cartRepository.findByLoginId(userService.getUserById(userId), pageable);
     }
 

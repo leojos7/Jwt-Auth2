@@ -29,7 +29,7 @@ public class Product extends BaseEntity implements Serializable {
 
     private Boolean status;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinTable(name = "PRODUCT_PARAM_MAP",
             joinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "PRODUCT_ID")},
             inverseJoinColumns = {@JoinColumn(name = "PARAM_DETAIL_ID", referencedColumnName = "PARAM_DETAIL_ID")})

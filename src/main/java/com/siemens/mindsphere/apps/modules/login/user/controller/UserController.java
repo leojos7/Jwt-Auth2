@@ -2,7 +2,7 @@ package com.siemens.mindsphere.apps.modules.login.user.controller;
 
 import com.siemens.mindsphere.apps.modules.login.user.dto.UserDto;
 import com.siemens.mindsphere.apps.modules.login.user.entity.User;
-import com.siemens.mindsphere.apps.modules.login.exception.NoUserFoundException;
+import com.siemens.mindsphere.apps.modules.login.exception.UserNotFoundException;
 import com.siemens.mindsphere.apps.modules.login.exception.ParseException;
 import com.siemens.mindsphere.apps.modules.login.user.service.UserService;
 import com.siemens.mindsphere.apps.modules.login.utils.CommonUtils;
@@ -27,12 +27,12 @@ public class UserController {
 
     @RequestMapping(value = "/delete/{userId}", method = RequestMethod.GET)
     public void deleteUser(@PathVariable Integer userId)
-            throws NoUserFoundException, ParseException {
+            throws UserNotFoundException, ParseException {
         userService.deleteUser(userId);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public UserDto updateUser(@RequestBody UserDto userDto) throws NoUserFoundException {
+    public UserDto updateUser(@RequestBody UserDto userDto) throws UserNotFoundException {
         User user = convertToEntity(userDto);
         User userCreated = null;
         if (user != null) {
@@ -43,30 +43,21 @@ public class UserController {
 
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = "application/json")
     public UserDto getUser(@RequestHeader("Authorization") String authorization)
-            throws NoUserFoundException, ParseException {
+            throws UserNotFoundException, ParseException {
         String username = CommonUtils.getUsernameFromAccessToken(authorization);
         User user = userService.getUserByUsername(username);
-        if (user == null) {
-            throw new NoUserFoundException(username + " doesn't exist");
-        }
         return convertToDto(user);
     }
 
     @RequestMapping(value = "/getUserByName/{username}", method = RequestMethod.GET, produces = "application/json")
-    public UserDto getUserByName(@PathVariable String username) throws NoUserFoundException, ParseException {
+    public UserDto getUserByName(@PathVariable String username) throws UserNotFoundException, ParseException {
         User user = userService.getUserByUsername(username);
-        if (user == null) {
-            throw new NoUserFoundException(username + " doesn't exist");
-        }
         return convertToDto(user);
     }
 
     @RequestMapping(value = "/getUserById/{userId}", method = RequestMethod.GET, produces = "application/json")
-    public UserDto getUserById(@PathVariable Integer userId) throws NoUserFoundException, ParseException {
+    public UserDto getUserById(@PathVariable Integer userId) throws UserNotFoundException, ParseException {
         User user = userService.getUserById(userId);
-        if (user == null) {
-            throw new NoUserFoundException(userId + " doesn't exist");
-        }
         return convertToDto(user);
     }
 

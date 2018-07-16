@@ -2,6 +2,7 @@ package com.siemens.mindsphere.apps.modules.location.service.location;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.siemens.mindsphere.apps.modules.location.entity.Location;
+import com.siemens.mindsphere.apps.modules.location.entity.LocationParamMapping;
 import com.siemens.mindsphere.apps.modules.location.repository.LocationRepository;
 import com.siemens.mindsphere.apps.modules.location.service.locationParams.LocationParamsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 @Service
 @Transactional
@@ -26,14 +29,19 @@ public class LocationServiceImpl implements LocationService {
     @Autowired
     private LocationParamsService locationParamsService;
 
+    Predicate<LocationParamMapping> locationParamMappingPredicate =
+            locationParamMapping -> locationParamMapping.getLocationParams() != null &&
+                    locationParamMapping.getLocationParams().getLocationParamsId() != null;
+
+    Consumer<LocationParamMapping> setExistingLocationParams = locationParamMapping ->
+            locationParamMapping.setLocationParams(locationParamsService.getLocationParams(
+                    locationParamMapping.getLocationParams().getLocationParamsId()));
 
     @Override
     public Location addLocation(Location location) {
         location.getLocationParamMapping().stream()
-                .forEach(locationParamMapping -> {
-                    locationParamMapping.setLocationParams(locationParamsService.getLocationParams(
-                                    locationParamMapping.getLocationParams().getLocationParamsId()));
-                });
+                .filter(locationParamMappingPredicate)
+                .forEach(setExistingLocationParams);
         Location locationCreated = locationRepository.save(location);
         return getLocation(locationCreated.getLocationId());
     }

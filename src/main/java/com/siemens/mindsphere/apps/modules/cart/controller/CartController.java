@@ -3,8 +3,10 @@ package com.siemens.mindsphere.apps.modules.cart.controller;
 import com.siemens.mindsphere.apps.modules.cart.dto.CartDto;
 import com.siemens.mindsphere.apps.modules.cart.entity.Cart;
 import com.siemens.mindsphere.apps.modules.cart.service.CartService;
-import com.siemens.mindsphere.apps.modules.login.exception.NoUserFoundException;
+import com.siemens.mindsphere.apps.modules.login.exception.UserNotFoundException;
+import com.siemens.mindsphere.apps.modules.login.user.dto.UserDto;
 import com.siemens.mindsphere.apps.modules.login.user.service.UserService;
+import com.siemens.mindsphere.apps.modules.product.dto.ProductDto;
 import com.siemens.mindsphere.apps.modules.product.service.product.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,7 @@ public class CartController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public CartDto addToCart(@RequestBody CartDto cartDto)
-            throws NoUserFoundException {
+            throws UserNotFoundException {
         Cart cart = convertToEntity(cartDto);
         Cart cartCreated = null;
         if (cart != null) {
@@ -45,7 +47,7 @@ public class CartController {
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public CartDto updateCart(@RequestBody CartDto cartDto) throws NoUserFoundException {
+    public CartDto updateCart(@RequestBody CartDto cartDto) throws UserNotFoundException {
         Cart cart = convertToEntity(cartDto);
         Cart cartUpdated = null;
         if (cart != null) {
@@ -55,7 +57,7 @@ public class CartController {
     }
 
     @RequestMapping(value = "/get/{userId}", method = RequestMethod.GET)
-    public Page<CartDto> getCart(@PathVariable Integer userId, Pageable pageable) throws NoUserFoundException {
+    public Page<CartDto> getCart(@PathVariable Integer userId, Pageable pageable) throws UserNotFoundException {
         return convertToDtos(cartService.getCart(userId, pageable));
     }
 
@@ -67,18 +69,18 @@ public class CartController {
         CartDto cartDto = null;
         if (cart != null) {
             cartDto = modelMapper.map(cart, CartDto.class);
-            cartDto.setLoginId(cart.getLoginId().getUserId());
-            cartDto.setProductId(cart.getProductId().getProductId());
+            cartDto.setUser(modelMapper.map(cart.getLoginId(), UserDto.class));
+            cartDto.setProduct(modelMapper.map(cart.getProductId(),ProductDto.class));
         }
         return cartDto;
     }
 
-    private Cart convertToEntity(CartDto cartDto) throws NoUserFoundException {
+    private Cart convertToEntity(CartDto cartDto) throws UserNotFoundException {
         Cart cart = null;
         if (cartDto != null) {
             cart = modelMapper.map(cartDto, Cart.class);
-            cart.setLoginId(userService.getUserById(cartDto.getLoginId()));
-            cart.setProductId(productService.getProduct(cartDto.getProductId()));
+            cart.setLoginId(userService.getUserById(cartDto.getUser().getId()));
+            cart.setProductId(productService.getProduct(cartDto.getProduct().getProductId()));
         } else {
 
         }

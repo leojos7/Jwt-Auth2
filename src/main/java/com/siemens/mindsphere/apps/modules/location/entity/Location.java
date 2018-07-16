@@ -19,7 +19,7 @@ public class Location extends BaseEntity implements Serializable {
 
     private String name;
 
-    @OneToMany(mappedBy = "location", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "location", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<LocationParamMapping> locationParamMapping;
 
     public Location() {

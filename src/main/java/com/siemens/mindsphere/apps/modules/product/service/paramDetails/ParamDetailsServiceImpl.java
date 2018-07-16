@@ -24,8 +24,21 @@ public class ParamDetailsServiceImpl implements ParamDetailsService {
     private ProductParamsService productParamsService;
 
     @Override
-    public ParamDetails addParamDetails(ParamDetails product) {
-        return paramDetailsRepository.save(product);
+    public ParamDetails addParamDetails(ParamDetails paramDetails) {
+
+        if(paramDetails != null && paramDetails.getProductParams() != null ) {
+
+            if(paramDetails.getProductParams().getProductParamId() != null) {
+                paramDetails.setProductParams(productParamsService.getProductParam(
+                        paramDetails.getProductParams().getProductParamId()));
+            } else {
+                paramDetails.setProductParams(productParamsService.addProductParams(
+                        paramDetails.getProductParams()));
+            }
+        }
+
+
+        return paramDetailsRepository.save(paramDetails);
     }
 
     @Override

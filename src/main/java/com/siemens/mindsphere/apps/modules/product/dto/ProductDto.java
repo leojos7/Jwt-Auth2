@@ -7,7 +7,7 @@ import java.util.Set;
 public class ProductDto {
 
 
-    private Integer id;
+    private Integer productId;
 
     private String name;
 
@@ -24,12 +24,12 @@ public class ProductDto {
     public ProductDto() {
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getProductId() {
+        return productId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
     public String getName() {

@@ -8,9 +8,9 @@ import java.util.Set;
 
 public interface ParamDetailsService {
 
-    ParamDetails addParamDetails(ParamDetails product);
+    ParamDetails addParamDetails(ParamDetails paramDetails);
 
-    ParamDetails updateParamDetails(ParamDetails product);
+    ParamDetails updateParamDetails(ParamDetails paramDetails);
 
     void deleteParamDetail(Integer paramDetailsId);
 

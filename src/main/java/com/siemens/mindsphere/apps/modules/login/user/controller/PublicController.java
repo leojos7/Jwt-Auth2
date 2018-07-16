@@ -3,7 +3,7 @@ package com.siemens.mindsphere.apps.modules.login.user.controller;
 import com.siemens.mindsphere.apps.modules.login.user.dto.UserDto;
 import com.siemens.mindsphere.apps.modules.login.user.entity.User;
 import com.siemens.mindsphere.apps.modules.login.exception.AlreadyExistingUserException;
-import com.siemens.mindsphere.apps.modules.login.exception.NoUserFoundException;
+import com.siemens.mindsphere.apps.modules.login.exception.UserNotFoundException;
 import com.siemens.mindsphere.apps.modules.login.user.service.UserService;
 import com.siemens.mindsphere.apps.modules.login.utils.Authorities;
 import org.modelmapper.ModelMapper;
@@ -24,7 +24,7 @@ public class PublicController {
     private ModelMapper modelMapper;
 
     @RequestMapping(value = "/sign-up", method = RequestMethod.POST)
-    public UserDto signUp(@RequestBody UserDto userDto) throws AlreadyExistingUserException, NoUserFoundException {
+    public UserDto signUp(@RequestBody UserDto userDto) throws AlreadyExistingUserException {
         User user = convertToEntity(userDto);
         User userCreated = null;
         if (user != null) {
@@ -34,7 +34,7 @@ public class PublicController {
     }
 
     @RequestMapping(value = "/sales/sign-up", method = RequestMethod.POST)
-    public UserDto salesSignUp(@RequestBody UserDto userDto) throws AlreadyExistingUserException, NoUserFoundException {
+    public UserDto salesSignUp(@RequestBody UserDto userDto) throws AlreadyExistingUserException {
         User user = convertToEntity(userDto);
         User userCreated = null;
         if (user != null) {

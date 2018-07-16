@@ -1,7 +1,7 @@
 package com.siemens.mindsphere.apps.modules.order.controller;
 
 import com.siemens.mindsphere.apps.modules.location.service.location.LocationService;
-import com.siemens.mindsphere.apps.modules.login.exception.NoUserFoundException;
+import com.siemens.mindsphere.apps.modules.login.exception.UserNotFoundException;
 import com.siemens.mindsphere.apps.modules.login.user.service.UserService;
 import com.siemens.mindsphere.apps.modules.order.dto.OrderDto;
 import com.siemens.mindsphere.apps.modules.order.dto.OrderParamDto;
@@ -45,7 +45,7 @@ public class OrderController {
 
 
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = "application/json")
-    public OrderDto addOrder(@RequestBody OrderDto orderDto) throws NoUserFoundException {
+    public OrderDto addOrder(@RequestBody OrderDto orderDto) throws UserNotFoundException {
         Order order = convertToEntity(orderDto);
         Order orderCreated = null;
         if (order != null) {
@@ -60,7 +60,7 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public OrderDto updateOrder(@RequestBody OrderDto orderDto) throws NoUserFoundException {
+    public OrderDto updateOrder(@RequestBody OrderDto orderDto) throws UserNotFoundException {
         Order order = convertToEntity(orderDto);
         Order orderUpdated = null;
         if (order != null) {
@@ -106,7 +106,7 @@ public class OrderController {
         return orderDto;
     }
 
-    private Order convertToEntity(OrderDto orderDto) throws NoUserFoundException {
+    private Order convertToEntity(OrderDto orderDto) throws UserNotFoundException {
         Order order = null;
         if (orderDto != null) {
             order = modelMapper.map(orderDto, Order.class);

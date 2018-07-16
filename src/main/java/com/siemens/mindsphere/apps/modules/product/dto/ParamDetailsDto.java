@@ -2,7 +2,7 @@ package com.siemens.mindsphere.apps.modules.product.dto;
 
 public class ParamDetailsDto {
 
-    private Integer id;
+    private Integer paramDetailId;
 
     private ProductParamsDto productParams;
 
@@ -13,12 +13,12 @@ public class ParamDetailsDto {
     public ParamDetailsDto() {
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getParamDetailId() {
+        return paramDetailId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setParamDetailId(Integer paramDetailId) {
+        this.paramDetailId = paramDetailId;
     }
 
     public ProductParamsDto getProductParams() {

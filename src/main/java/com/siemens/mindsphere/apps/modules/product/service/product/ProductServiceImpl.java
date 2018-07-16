@@ -12,9 +12,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -31,21 +31,24 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product addProduct(Product product) throws AlreadyExistingProductException {
-        Predicate<ParamDetails> paramDetailsPredicate = paramDetails -> paramDetails != null
-                && paramDetails.getProductParams() != null
-                && paramDetails.getProductParams().getProductParamId() != null;
         if (zDecoder(product.getCode()) != null) {
             throw new AlreadyExistingProductException("Already Existing Product");
         }
         if (product.getParamDetails() != null) {
-            product.getParamDetails().stream()
-                    .filter(paramDetailsPredicate)
-                    .forEach(paramDetails -> {
-                        if (productParamsService.getProductParam(paramDetails.getProductParams().getProductParamId()) != null) {
-                            paramDetails.setProductParams(
-                                    productParamsService.getProductParam(paramDetails.getProductParams().getProductParamId()));
+
+            Set<ParamDetails> updatedParamDetailsSet = new HashSet<>();
+            updatedParamDetailsSet.addAll(product.getParamDetails().stream()
+                    .filter(Objects::nonNull)
+                    .map(paramDetails -> {
+                        if(paramDetails.getParamDetailId() != null) {
+                            return paramDetailsService.getParamDetail(paramDetails.getParamDetailId());
+                        } else {
+                            return paramDetailsService.addParamDetails(paramDetails);
                         }
-                    });
+                    })
+                    .collect(Collectors.toSet()));
+
+            product.setParamDetails(updatedParamDetailsSet);
         }
         productRepository.save(product);
         return getProduct(product.getProductId());
