@@ -1,22 +1,22 @@
 package com.siemens.mindsphere.apps.modules.login.user.service;
 
 import com.siemens.mindsphere.apps.modules.login.user.entity.User;
-import com.siemens.mindsphere.apps.modules.login.exception.AlreadyExistingUserException;
-import com.siemens.mindsphere.apps.modules.login.exception.UserNotFoundException;
+import com.siemens.mindsphere.apps.modules.exception.AlreadyExistingResourceException;
+import com.siemens.mindsphere.apps.modules.exception.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface UserService {
 
-    public User addUser(User user, String authorityName) throws AlreadyExistingUserException;
+    public User addUser(User user, String authorityName) throws AlreadyExistingResourceException;
 
-    public void deleteUser(Integer userId) throws UserNotFoundException;
+    public void deleteUser(Integer userId) throws ResourceNotFoundException;
 
-    public User updateUser(User user) throws UserNotFoundException;
+    public User updateUser(User user) throws ResourceNotFoundException;
 
     public Page<User> getAllUsers(Pageable pageable);
 
-    public User getUserByUsername(String username) throws UserNotFoundException;
+    public User getUserByUsername(String username) throws ResourceNotFoundException;
 
-    public User getUserById(Integer id) throws UserNotFoundException;
+    public User getUserById(Integer id) throws ResourceNotFoundException;
 }

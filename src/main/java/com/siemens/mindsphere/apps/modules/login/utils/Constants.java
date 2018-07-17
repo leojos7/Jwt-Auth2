@@ -6,5 +6,6 @@ public class Constants {
     public static final String WRITE = "write";
     public static final String PASSWORD_GRANT_TYPE = "password";
     public static final String SUCCESSFULLY_SAVED = "Successfully saved ";
+    public static final String bearer_ = "Bearer ";
 
 }

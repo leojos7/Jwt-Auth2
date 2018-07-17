@@ -3,7 +3,7 @@ package com.siemens.mindsphere.apps.modules.cart.controller;
 import com.siemens.mindsphere.apps.modules.cart.dto.CartDto;
 import com.siemens.mindsphere.apps.modules.cart.entity.Cart;
 import com.siemens.mindsphere.apps.modules.cart.service.CartService;
-import com.siemens.mindsphere.apps.modules.login.exception.UserNotFoundException;
+import com.siemens.mindsphere.apps.modules.exception.ResourceNotFoundException;
 import com.siemens.mindsphere.apps.modules.login.user.dto.UserDto;
 import com.siemens.mindsphere.apps.modules.login.user.service.UserService;
 import com.siemens.mindsphere.apps.modules.product.dto.ProductDto;
@@ -32,7 +32,7 @@ public class CartController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public CartDto addToCart(@RequestBody CartDto cartDto)
-            throws UserNotFoundException {
+            throws ResourceNotFoundException {
         Cart cart = convertToEntity(cartDto);
         Cart cartCreated = null;
         if (cart != null) {
@@ -47,7 +47,7 @@ public class CartController {
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public CartDto updateCart(@RequestBody CartDto cartDto) throws UserNotFoundException {
+    public CartDto updateCart(@RequestBody CartDto cartDto) throws ResourceNotFoundException {
         Cart cart = convertToEntity(cartDto);
         Cart cartUpdated = null;
         if (cart != null) {
@@ -57,7 +57,7 @@ public class CartController {
     }
 
     @RequestMapping(value = "/get/{userId}", method = RequestMethod.GET)
-    public Page<CartDto> getCart(@PathVariable Integer userId, Pageable pageable) throws UserNotFoundException {
+    public Page<CartDto> getCart(@PathVariable Integer userId, Pageable pageable) throws ResourceNotFoundException {
         return convertToDtos(cartService.getCart(userId, pageable));
     }
 
@@ -75,11 +75,11 @@ public class CartController {
         return cartDto;
     }
 
-    private Cart convertToEntity(CartDto cartDto) throws UserNotFoundException {
+    private Cart convertToEntity(CartDto cartDto) throws ResourceNotFoundException {
         Cart cart = null;
         if (cartDto != null) {
             cart = modelMapper.map(cartDto, Cart.class);
-            cart.setLoginId(userService.getUserById(cartDto.getUser().getId()));
+            cart.setLoginId(userService.getUserById(cartDto.getUser().getUserId()));
             cart.setProductId(productService.getProduct(cartDto.getProduct().getProductId()));
         } else {
 

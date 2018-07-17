@@ -1,7 +1,7 @@
 package com.siemens.mindsphere.apps.modules.order.controller;
 
 import com.siemens.mindsphere.apps.modules.location.service.location.LocationService;
-import com.siemens.mindsphere.apps.modules.login.exception.UserNotFoundException;
+import com.siemens.mindsphere.apps.modules.exception.ResourceNotFoundException;
 import com.siemens.mindsphere.apps.modules.login.user.service.UserService;
 import com.siemens.mindsphere.apps.modules.order.dto.OrderDto;
 import com.siemens.mindsphere.apps.modules.order.dto.OrderParamDto;
@@ -45,7 +45,7 @@ public class OrderController {
 
 
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = "application/json")
-    public OrderDto addOrder(@RequestBody OrderDto orderDto) throws UserNotFoundException {
+    public OrderDto addOrder(@RequestBody OrderDto orderDto) throws ResourceNotFoundException {
         Order order = convertToEntity(orderDto);
         Order orderCreated = null;
         if (order != null) {
@@ -60,7 +60,7 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public OrderDto updateOrder(@RequestBody OrderDto orderDto) throws UserNotFoundException {
+    public OrderDto updateOrder(@RequestBody OrderDto orderDto) throws ResourceNotFoundException {
         Order order = convertToEntity(orderDto);
         Order orderUpdated = null;
         if (order != null) {
@@ -106,14 +106,14 @@ public class OrderController {
         return orderDto;
     }
 
-    private Order convertToEntity(OrderDto orderDto) throws UserNotFoundException {
+    private Order convertToEntity(OrderDto orderDto) throws ResourceNotFoundException {
         Order order = null;
         if (orderDto != null) {
             order = modelMapper.map(orderDto, Order.class);
-            order.setLoginId(userService.getUserById(orderDto.getLoginId().getId()));
+            order.setLoginId(userService.getUserById(orderDto.getLoginId().getUserId()));
             order.setLocationId(locationService.getLocation(orderDto.getLocationId()));
             order.setOrderStatusId(orderStatusService.getOrderStatus(orderDto.getOrderStatusId()));
-            order.setUpdatedBy(userService.getUserById(orderDto.getUpdatedBy().getId()));
+            order.setUpdatedBy(userService.getUserById(orderDto.getUpdatedBy().getUserId()));
             Set<OrderProductMapping> orderProductMappings = new HashSet();
             Order finalOrder = order;
             orderDto.getProducts().stream()

@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/secure/user/authority")
+@RequestMapping("/secure/admin/authority")
 public class AuthorityController {
 
     @Autowired

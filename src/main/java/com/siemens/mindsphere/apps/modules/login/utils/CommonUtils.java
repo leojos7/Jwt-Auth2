@@ -4,13 +4,17 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.siemens.mindsphere.apps.modules.login.authority.entity.Authority;
-import com.siemens.mindsphere.apps.modules.login.exception.ParseException;
+import com.siemens.mindsphere.apps.exception.ParseException;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+
+import static com.siemens.mindsphere.apps.exception.ErrorMappings.ALREADY_EXISTING_USER_CODE;
+import static com.siemens.mindsphere.apps.exception.ErrorMappings.ALREADY_EXISTING_USER_MESSAGE;
+import static com.siemens.mindsphere.apps.modules.login.utils.Constants.bearer_;
 
 public class CommonUtils {
 
@@ -27,7 +31,7 @@ public class CommonUtils {
         String username = null;
         try {
             if (!StringUtils.isEmpty(authorization)) {
-                String[] jwtToken = authorization.split("Bearer ");
+                String[] jwtToken = authorization.split(bearer_);
                 if (jwtToken[1] != null) {
                     String[] split_string = jwtToken[1].split("\\.");
                     Base64 base64Url = new Base64(true);
@@ -38,9 +42,8 @@ public class CommonUtils {
                 }
             }
         } catch (Exception e) {
-            throw new ParseException("Excpetion while parsing access token to get the username");
+            throw new ParseException(ALREADY_EXISTING_USER_CODE, ALREADY_EXISTING_USER_MESSAGE);
         }
-
         return username;
     }
 

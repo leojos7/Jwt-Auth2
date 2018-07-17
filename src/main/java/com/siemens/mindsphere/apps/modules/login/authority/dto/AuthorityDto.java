@@ -2,19 +2,19 @@ package com.siemens.mindsphere.apps.modules.login.authority.dto;
 
 public class AuthorityDto {
 
-    private Integer id;
+    private Integer authorityId;
 
     private String name;
 
     public AuthorityDto() {
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getAuthorityId() {
+        return authorityId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setAuthorityId(Integer authorityId) {
+        this.authorityId = authorityId;
     }
 
     public String getName() {

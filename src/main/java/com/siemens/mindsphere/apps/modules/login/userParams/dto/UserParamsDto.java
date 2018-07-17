@@ -2,7 +2,7 @@ package com.siemens.mindsphere.apps.modules.login.userParams.dto;
 
 public class UserParamsDto {
 
-    private Integer id;
+    private Integer userParamId;
 
     private String name;
 
@@ -11,12 +11,12 @@ public class UserParamsDto {
     public UserParamsDto() {
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getUserParamId() {
+        return userParamId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUserParamId(Integer userParamId) {
+        this.userParamId = userParamId;
     }
 
     public String getName() {

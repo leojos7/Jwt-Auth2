@@ -1,17 +1,22 @@
 package com.siemens.mindsphere.apps.modules.product.controller;
 
-import com.siemens.mindsphere.apps.modules.login.exception.UserNotFoundException;
+import com.siemens.mindsphere.apps.modules.exception.AlreadyExistingResourceException;
+import com.siemens.mindsphere.apps.modules.exception.ResourceNotFoundException;
 import com.siemens.mindsphere.apps.modules.login.user.service.UserService;
 import com.siemens.mindsphere.apps.modules.login.utils.CommonUtils;
 import com.siemens.mindsphere.apps.modules.product.dto.ProductDto;
 import com.siemens.mindsphere.apps.modules.product.entity.Product;
-import com.siemens.mindsphere.apps.modules.product.exception.AlreadyExistingProductException;
 import com.siemens.mindsphere.apps.modules.product.service.product.ProductService;
+import com.siemens.mindsphere.apps.modules.product.validator.ProductValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+
+
+import javax.validation.Valid;
 
 import static com.siemens.mindsphere.apps.modules.login.utils.Constants.SUCCESSFULLY_SAVED;
 
@@ -28,10 +33,18 @@ public class ProductController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private ProductValidator productValidator;
+
+    @InitBinder("productDto")
+    public void setupBinder(WebDataBinder binder) {
+        binder.addValidators(productValidator);
+    }
+
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addProduct(@RequestHeader("Authorization") String authorization,
-                                 @RequestBody ProductDto productDto)
-            throws AlreadyExistingProductException, UserNotFoundException {
+                             @Valid @RequestBody ProductDto productDto)
+            throws AlreadyExistingResourceException, ResourceNotFoundException {
         String username = CommonUtils.getUsernameFromAccessToken(authorization);
         Product product = convertToEntity(productDto, username);
         Integer productId = null;
@@ -42,13 +55,13 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/delete/{productId}", method = RequestMethod.GET)
-    public void deleteProduct(@PathVariable int productId) {
+    public void deleteProduct(@PathVariable int productId) throws ResourceNotFoundException {
         productService.deleteProduct(productId);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ProductDto updateProduct(@RequestHeader("Authorization") String authorization,
-                                    @RequestBody ProductDto productDto) throws UserNotFoundException {
+                                    @RequestBody ProductDto productDto) throws ResourceNotFoundException {
         String username = CommonUtils.getUsernameFromAccessToken(authorization);
         Product product = convertToEntity(productDto, username);
         Product productUpdated = null;
@@ -59,7 +72,7 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/get/{productId}", method = RequestMethod.GET)
-    public ProductDto getProduct(@PathVariable int productId) {
+    public ProductDto getProduct(@PathVariable int productId) throws ResourceNotFoundException {
         return convertToDto(productService.getProduct(productId));
     }
 
@@ -69,7 +82,7 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/decode/{code}", method = RequestMethod.GET)
-    public ProductDto zDecoder(@PathVariable String code) {
+    public ProductDto zDecoder(@PathVariable String code) throws ResourceNotFoundException {
         return convertToDto(productService.zDecoder(code));
     }
 
@@ -81,12 +94,11 @@ public class ProductController {
         ProductDto productDto = null;
         if (product != null) {
             productDto = modelMapper.map(product, ProductDto.class);
-
         }
         return productDto;
     }
 
-    private Product convertToEntity(ProductDto productDto, String username) throws UserNotFoundException {
+    private Product convertToEntity(ProductDto productDto, String username) throws ResourceNotFoundException {
         Product product = null;
 
         if (productDto != null) {
@@ -97,4 +109,5 @@ public class ProductController {
         }
         return product;
     }
+
 }

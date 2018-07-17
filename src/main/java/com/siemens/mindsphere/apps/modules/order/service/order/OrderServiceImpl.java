@@ -1,6 +1,9 @@
 package com.siemens.mindsphere.apps.modules.order.service.order;
 
+import com.siemens.mindsphere.apps.modules.exception.ResourceNotFoundException;
 import com.siemens.mindsphere.apps.modules.order.entity.Order;
+import com.siemens.mindsphere.apps.modules.order.entity.OrderParamMapping;
+import com.siemens.mindsphere.apps.modules.order.entity.OrderProductMapping;
 import com.siemens.mindsphere.apps.modules.order.repository.OrderRepository;
 import com.siemens.mindsphere.apps.modules.order.service.orderParams.OrderParamsService;
 import com.siemens.mindsphere.apps.modules.product.service.product.ProductService;
@@ -27,18 +30,15 @@ public class OrderServiceImpl implements OrderService {
     private ProductService productService;
 
     @Override
-    public Order addOrder(Order order) {
-        order.getOrderProductMappings().stream()
-                .forEach(orderProductMapping -> {
-                    orderProductMapping.setProduct(productService.getProduct(
-                            orderProductMapping.getProduct().getProductId()));
-                });
-        order.getOrderParamMappings().stream()
-                .forEach(orderParamMapping -> {
-                    orderParamMapping.setOrderParam(orderParamsService.getOrderParams(
-                            orderParamMapping.getOrderParam().getOrderParamId())
-                    );
-                });
+    public Order addOrder(Order order) throws ResourceNotFoundException {
+
+        for(OrderProductMapping orderProductMapping :order.getOrderProductMappings()) {
+            orderProductMapping.setProduct(productService.getProduct(orderProductMapping.getProduct().getProductId()));
+        }
+        for(OrderParamMapping orderParamMapping : order.getOrderParamMappings()) {
+            orderParamMapping.setOrderParam(orderParamsService.getOrderParams(orderParamMapping.getOrderParam().getOrderParamId()));
+        }
+
         Order orderCreated = orderRepository.save(order);
         return getOrder(orderCreated.getOrderDetailId());
     }

@@ -52,7 +52,8 @@ public class UserDetailsService implements org.springframework.security.core.use
             grantedAuthorities.add(grantedAuthority);
         }
 
-        return new org.springframework.security.core.userdetails.User(userFromDatabase.getUsername(), userFromDatabase.getPassword(), grantedAuthorities);
+        return new org.springframework.security.core.userdetails.User(userFromDatabase.getUsername(),
+                userFromDatabase.getPassword(), grantedAuthorities);
 
     }
 

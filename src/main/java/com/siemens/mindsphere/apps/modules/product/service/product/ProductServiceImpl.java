@@ -1,8 +1,8 @@
 package com.siemens.mindsphere.apps.modules.product.service.product;
 
-import com.siemens.mindsphere.apps.modules.product.entity.ParamDetails;
+import com.siemens.mindsphere.apps.modules.exception.AlreadyExistingResourceException;
+import com.siemens.mindsphere.apps.modules.exception.ResourceNotFoundException;
 import com.siemens.mindsphere.apps.modules.product.entity.Product;
-import com.siemens.mindsphere.apps.modules.product.exception.AlreadyExistingProductException;
 import com.siemens.mindsphere.apps.modules.product.repository.ProductRepository;
 import com.siemens.mindsphere.apps.modules.product.service.paramDetails.ParamDetailsService;
 import com.siemens.mindsphere.apps.modules.product.service.productParams.ProductParamsService;
@@ -11,10 +11,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import static com.siemens.mindsphere.apps.exception.ErrorMappings.*;
 
 @Service
 @Transactional
@@ -30,14 +32,12 @@ public class ProductServiceImpl implements ProductService {
     private ParamDetailsService paramDetailsService;
 
     @Override
-    public Product addProduct(Product product) throws AlreadyExistingProductException {
-        if (zDecoder(product.getCode()) != null) {
-            throw new AlreadyExistingProductException("Already Existing Product");
+    public Product addProduct(Product product) throws AlreadyExistingResourceException, ResourceNotFoundException {
+        if (!CollectionUtils.isEmpty(productRepository.findByCode(product.getCode()))) {
+            throw new AlreadyExistingResourceException(ALREADY_EXISTING_PRODUCT_CODE, ALREADY_EXISTING_PRODUCT_MESSAGE);
         }
         if (product.getParamDetails() != null) {
-
-            Set<ParamDetails> updatedParamDetailsSet = new HashSet<>();
-            updatedParamDetailsSet.addAll(product.getParamDetails().stream()
+            product.setParamDetails(product.getParamDetails().stream()
                     .filter(Objects::nonNull)
                     .map(paramDetails -> {
                         if(paramDetails.getParamDetailId() != null) {
@@ -47,15 +47,13 @@ public class ProductServiceImpl implements ProductService {
                         }
                     })
                     .collect(Collectors.toSet()));
-
-            product.setParamDetails(updatedParamDetailsSet);
         }
         productRepository.save(product);
         return getProduct(product.getProductId());
     }
 
     @Override
-    public void deleteProduct(Integer productId) {
+    public void deleteProduct(Integer productId) throws ResourceNotFoundException {
         Optional<Product> existingProductOptional = productRepository.findById(productId);
         Product existingProduct = null;
         if (existingProductOptional.isPresent()) {
@@ -63,17 +61,15 @@ public class ProductServiceImpl implements ProductService {
             paramDetailsService.deleteAllParamDetails(existingProduct.getParamDetails());
             productRepository.deleteById(productId);
         } else {
-            // TODO throw custom exception
+            throw new ResourceNotFoundException(PRODUCT_NOT_FOUND_CODE, PRODUCT_NOT_FOUND_MESSAGE);
         }
     }
 
     @Override
-    public Product updateProduct(Product product) {
-        Optional<Product> productOptional = productRepository.findById(product.getProductId());
-        Product existingProduct = null;
+    public Product updateProduct(Product product) throws ResourceNotFoundException {
+        Product existingProduct = getProduct(product.getProductId());
         Product newProduct = null;
-        if (productOptional.isPresent()) {
-            existingProduct = productOptional.get();
+        if (existingProduct != null) {
             existingProduct.setName(product.getName());
             existingProduct.setDescription(product.getDescription());
             existingProduct.setAddedBy(product.getAddedBy());
@@ -95,23 +91,23 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getProduct(Integer productId) {
+    public Product getProduct(Integer productId) throws ResourceNotFoundException {
         Optional<Product> existingProductOptional = productRepository.findById(productId);
-        Product existingProduct = null;
         if (existingProductOptional.isPresent()) {
-            existingProduct = existingProductOptional.get();
+            return existingProductOptional.get();
         } else {
-            // TODO throw custom exception
+            throw new ResourceNotFoundException(PRODUCT_NOT_FOUND_CODE, PRODUCT_NOT_FOUND_MESSAGE);
         }
-        return existingProduct;
     }
 
-    public Product zDecoder(String code) {
-        Optional<Product> product = productRepository.findByCode(code).stream().findFirst();
-        if (product.isPresent()) {
-            return product.get();
+    public Product zDecoder(String code) throws ResourceNotFoundException {
+        Optional<Product> existingProductOptional = productRepository.findByCode(code) != null
+                && !productRepository.findByCode(code).isEmpty() ?
+                productRepository.findByCode(code).stream().findFirst() : Optional.empty();
+        if (existingProductOptional.isPresent()) {
+            return existingProductOptional.get();
         } else {
-            return null;
+            throw new ResourceNotFoundException(PRODUCT_NOT_FOUND_CODE, PRODUCT_NOT_FOUND_MESSAGE);
         }
     }
 

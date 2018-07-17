@@ -1,5 +1,7 @@
 package com.siemens.mindsphere.apps.modules.product.dto;
 
+import javax.validation.constraints.NotNull;
+
 public class ParamDetailsDto {
 
     private Integer paramDetailId;
