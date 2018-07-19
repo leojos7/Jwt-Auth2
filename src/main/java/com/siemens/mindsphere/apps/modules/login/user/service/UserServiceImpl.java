@@ -1,11 +1,10 @@
 package com.siemens.mindsphere.apps.modules.login.user.service;
 
 import com.siemens.mindsphere.apps.exception.ErrorMappings;
-import com.siemens.mindsphere.apps.modules.login.user.entity.User;
 import com.siemens.mindsphere.apps.modules.exception.AlreadyExistingResourceException;
 import com.siemens.mindsphere.apps.modules.exception.ResourceNotFoundException;
+import com.siemens.mindsphere.apps.modules.login.user.entity.User;
 import com.siemens.mindsphere.apps.modules.login.user.repository.UserRepository;
-import com.siemens.mindsphere.apps.modules.login.userParams.entity.UserParams;
 import com.siemens.mindsphere.apps.modules.login.userParams.service.UserParamsService;
 import com.siemens.mindsphere.apps.modules.login.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +20,7 @@ import java.util.stream.Collectors;
 
 import static com.siemens.mindsphere.apps.exception.ErrorMappings.ALREADY_EXISTING_USER_CODE;
 import static com.siemens.mindsphere.apps.exception.ErrorMappings.ALREADY_EXISTING_USER_MESSAGE;
+import static com.siemens.mindsphere.apps.modules.login.utils.Constants.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
         User addedUser = null;
         if (userRepository.findByUsernameCaseInsensitive(user.getUsername()) == null) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            user.setStatus(Boolean.TRUE);
+            user.setStatus(Boolean.FALSE);
             user.setAuthorities(CommonUtils.getAuthoritiesList(authorityName));
             if (user.getUserParams() != null) {
                 user.setUserParams(user.getUserParams().stream()
@@ -68,11 +68,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(User user) throws ResourceNotFoundException {
-        User oldUser = getUserById(user.getUserId());
-        oldUser.setModifiedDate(new Date());
-/*        oldUser.setFullName(user.getFullName());
-        oldUser.setMobileNumber(user.getMobileNumber());*/
-        return userRepository.save(oldUser);
+        User existingUser = getUserById(user.getUserId());
+        User newUser = null;
+        if (existingUser != null) {
+            existingUser.setOtp(user.getOtp());
+            existingUser.setFullName(user.getFullName());
+            existingUser.setModifiedDate(new Date());
+            user.getUserParams().stream()
+                    .forEach(userParams -> userParamsService.updateUserParams(userParams));
+            newUser = userRepository.save(existingUser);
+        } else {
+            newUser = userRepository.save(newUser);
+        }
+        return newUser;
     }
 
     @Override
@@ -101,5 +109,60 @@ public class UserServiceImpl implements UserService {
         }
         return existingUser;
     }
+
+    @Override
+    public String sentOtp(String username) throws ResourceNotFoundException {
+        String otp = CommonUtils.generateOTP();
+        User existingUser = getUserByUsername(username);
+        existingUser.setOtp(otp);
+        updateUser(existingUser);
+        return OTP_GENERATED;
+    }
+
+    @Override
+    public String changePasswordWithOTP(String username, String newPassword, String otp)
+            throws ResourceNotFoundException {
+        User existingUser = getUserByUsername(username);
+        String responseMessage = null;
+        if (existingUser.getOtp().equalsIgnoreCase(otp)) {
+            existingUser.setPassword(passwordEncoder.encode(newPassword));
+            existingUser.setModifiedDate(new Date());
+            userRepository.save(existingUser);
+            responseMessage = PASSWORD_RESET_SUCCESS;
+        } else {
+            responseMessage = ENTER_CORRECT_OTP;
+        }
+        return responseMessage;
+    }
+
+    @Override
+    public String resetPassword(String username, String newPassword) throws ResourceNotFoundException {
+        User existingUser = getUserByUsername(username);
+        existingUser.setPassword(passwordEncoder.encode(newPassword));
+        existingUser.setModifiedDate(new Date());
+        userRepository.save(existingUser);
+        return PASSWORD_RESET_SUCCESS;
+    }
+
+    @Override
+    public String updateUserRole(User user) throws ResourceNotFoundException {
+        User existingUser = getUserById(user.getUserId());
+        if (existingUser != null) {
+            existingUser.setAuthorities(user.getAuthorities());
+            userRepository.save(existingUser);
+        }
+        return ROLE_UPDATED;
+    }
+
+    @Override
+    public String activateUser(String username) throws ResourceNotFoundException {
+        User existingUser = getUserByUsername(username);
+        if (existingUser != null) {
+            existingUser.setStatus(Boolean.TRUE);
+            userRepository.save(existingUser);
+        }
+        return USER_ACTIVATED;
+    }
+
 
 }

@@ -1,7 +1,7 @@
 package com.siemens.mindsphere.apps.modules.order.controller;
 
-import com.siemens.mindsphere.apps.modules.location.service.location.LocationService;
 import com.siemens.mindsphere.apps.modules.exception.ResourceNotFoundException;
+import com.siemens.mindsphere.apps.modules.location.service.location.LocationService;
 import com.siemens.mindsphere.apps.modules.login.user.service.UserService;
 import com.siemens.mindsphere.apps.modules.order.dto.OrderDto;
 import com.siemens.mindsphere.apps.modules.order.dto.OrderParamDto;
@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/secure/user/order")
 public class OrderController {
@@ -44,7 +45,10 @@ public class OrderController {
     private OrderStatusService orderStatusService;
 
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/add",
+            method = RequestMethod.POST,
+            produces = "application/json",
+            consumes = "application/json")
     public OrderDto addOrder(@RequestBody OrderDto orderDto) throws ResourceNotFoundException {
         Order order = convertToEntity(orderDto);
         Order orderCreated = null;
@@ -54,12 +58,16 @@ public class OrderController {
         return convertToDto(orderCreated);
     }
 
-    @RequestMapping(value = "/delete/{orderId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete/{orderId}",
+            method = RequestMethod.GET)
     public void deleteOrder(@PathVariable int orderId) {
         orderService.deleteOrder(orderId);
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/update",
+            method = RequestMethod.POST,
+            produces = "application/json",
+            consumes = "application/json")
     public OrderDto updateOrder(@RequestBody OrderDto orderDto) throws ResourceNotFoundException {
         Order order = convertToEntity(orderDto);
         Order orderUpdated = null;
@@ -68,12 +76,16 @@ public class OrderController {
         }
         return convertToDto(orderUpdated);
     }
-    @RequestMapping(value = "/get/{orderId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/get/{orderId}",
+            method = RequestMethod.GET,
+            produces = "application/json")
     public OrderDto getOrder(@PathVariable int orderId) {
         return convertToDto(orderService.getOrder(orderId));
     }
 
-    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    @RequestMapping(value = "/get",
+            method = RequestMethod.GET,
+            produces = "application/json")
     public Page<OrderDto> getAllOrders(Pageable pageable) {
         return convertToDtos(orderService.getAllOrders(pageable));
     }

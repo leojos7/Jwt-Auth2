@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/secure/user/paramDetails")
 public class ParamDetailsController {
@@ -22,7 +23,10 @@ public class ParamDetailsController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/add",
+            method = RequestMethod.POST,
+            produces = "application/json",
+            consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public ParamDetailsDto addParamDetails(@RequestBody ParamDetailsDto productDto) throws ParseException {
         ParamDetails paramDetails = convertToEntity(productDto);
@@ -33,17 +37,23 @@ public class ParamDetailsController {
         return convertToDto(paramDetailsCreated);
     }
 
-    @RequestMapping(value = "/get/{paramDetailId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/get/{paramDetailId}",
+            method = RequestMethod.GET,
+            produces = "application/json")
     public ParamDetailsDto getParamDetails(@PathVariable int paramDetailId) {
         return convertToDto(paramDetailsService.getParamDetail(paramDetailId));
     }
 
-    @RequestMapping(value = "/delete/{paramDetailId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete/{paramDetailId}",
+            method = RequestMethod.GET)
     public void deleteParamDetails(@PathVariable int paramDetailId) {
         paramDetailsService.deleteParamDetail(paramDetailId);
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/update",
+            method = RequestMethod.POST,
+            produces = "application/json",
+            consumes = "application/json")
     public ParamDetailsDto updateParamDetails(@RequestBody ParamDetailsDto productDto) {
         ParamDetails paramDetails = convertToEntity(productDto);
         ParamDetails paramDetailsUpdated = null;
@@ -53,7 +63,9 @@ public class ParamDetailsController {
         return convertToDto(paramDetailsUpdated);
     }
 
-    @RequestMapping(value = "/getAllParamDetails", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/getAllParamDetails",
+            method = RequestMethod.GET,
+            produces = "application/json")
     public Page<ParamDetailsDto> getAllParamDetails(Pageable pageable) {
         return convertToDtos(paramDetailsService.getAllParamDetails(pageable));
     }

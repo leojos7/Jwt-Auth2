@@ -43,9 +43,11 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .and()
                 .authorizeRequests()
                 .antMatchers("/public/").permitAll()
-                .antMatchers("/secure/admin/**").access("hasRole('ROLE_ADMIN')")
-                .antMatchers("/secure/user/**").access("hasRole('ROLE_USER')")
-                .antMatchers("/secure/sales/**").access("hasRole('ROLE_SALES')")
+                .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
+                .antMatchers("/user/**").access("hasRole('ROLE_ADMIN')")
+                .antMatchers("/sales/**").access("hasRole('ROLE_ADMIN')")
+                .antMatchers("/user/**").access("hasRole('ROLE_USER')")
+                .antMatchers("/sales/**").access("hasRole('ROLE_SALES')")
                 .antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll();
     }
 

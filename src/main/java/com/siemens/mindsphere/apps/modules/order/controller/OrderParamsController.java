@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/secure/user/orderParams")
 public class OrderParamsController {
@@ -19,7 +20,10 @@ public class OrderParamsController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/add",
+            method = RequestMethod.POST,
+            produces = "application/json",
+            consumes = "application/json")
     public OrderParamDto addOrderParams(@RequestBody OrderParamDto orderParamDto) {
         OrderParam location = convertToEntity(orderParamDto);
         OrderParam orderParam = null;
@@ -29,12 +33,16 @@ public class OrderParamsController {
         return convertToDto(orderParam);
     }
 
-    @RequestMapping(value = "/delete/{orderParamsId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete/{orderParamsId}",
+            method = RequestMethod.GET)
     public void deleteOrderParams(@PathVariable int orderParamsId) {
         orderParamsService.deleteOrderParams(orderParamsId);
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/update",
+            method = RequestMethod.POST,
+            produces = "application/json",
+            consumes = "application/json")
     public OrderParamDto updateOrderParams(@RequestBody OrderParamDto orderParamDto) {
         OrderParam location = convertToEntity(orderParamDto);
         OrderParam locationUpdated = null;
@@ -43,12 +51,16 @@ public class OrderParamsController {
         }
         return convertToDto(locationUpdated);
     }
-    @RequestMapping(value = "/get/{orderParamsId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/get/{orderParamsId}",
+            method = RequestMethod.GET,
+            produces = "application/json")
     public OrderParamDto getOrderParams(@PathVariable int orderParamsId) {
         return convertToDto(orderParamsService.getOrderParams(orderParamsId));
     }
 
-    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    @RequestMapping(value = "/get",
+            method = RequestMethod.GET,
+            produces = "application/json")
     public Page<OrderParamDto> getAllOrderParams(Pageable pageable) {
         return convertToDtos(orderParamsService.getAllOrderParams(pageable));
     }

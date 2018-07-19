@@ -15,11 +15,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-
 import javax.validation.Valid;
 
 import static com.siemens.mindsphere.apps.modules.login.utils.Constants.SUCCESSFULLY_SAVED;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/secure/user/product")
 public class ProductController {
@@ -41,7 +41,9 @@ public class ProductController {
         binder.addValidators(productValidator);
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/add",
+            method = RequestMethod.POST,
+            consumes = "application/json")
     public String addProduct(@RequestHeader("Authorization") String authorization,
                              @Valid @RequestBody ProductDto productDto)
             throws AlreadyExistingResourceException, ResourceNotFoundException {
@@ -54,12 +56,16 @@ public class ProductController {
         return SUCCESSFULLY_SAVED + "product with id "+productId;
     }
 
-    @RequestMapping(value = "/delete/{productId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete/{productId}",
+            method = RequestMethod.GET)
     public void deleteProduct(@PathVariable int productId) throws ResourceNotFoundException {
         productService.deleteProduct(productId);
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/update",
+            method = RequestMethod.POST,
+            produces = "application/json",
+            consumes = "application/json")
     public ProductDto updateProduct(@RequestHeader("Authorization") String authorization,
                                     @RequestBody ProductDto productDto) throws ResourceNotFoundException {
         String username = CommonUtils.getUsernameFromAccessToken(authorization);
@@ -71,17 +77,23 @@ public class ProductController {
         return convertToDto(productUpdated);
     }
 
-    @RequestMapping(value = "/get/{productId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/get/{productId}",
+            method = RequestMethod.GET,
+            produces = "application/json")
     public ProductDto getProduct(@PathVariable int productId) throws ResourceNotFoundException {
         return convertToDto(productService.getProduct(productId));
     }
 
-    @RequestMapping(value = "/getAllProducts", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/getAllProducts",
+            method = RequestMethod.GET,
+            produces = "application/json")
     public Page<ProductDto> getAllProducts(Pageable pageable) {
         return convertToDtos(productService.getAllProducts(pageable));
     }
 
-    @RequestMapping(value = "/decode/{code}", method = RequestMethod.GET)
+    @RequestMapping(value = "/decode/{code}",
+            method = RequestMethod.GET,
+            produces = "application/json")
     public ProductDto zDecoder(@PathVariable String code) throws ResourceNotFoundException {
         return convertToDto(productService.zDecoder(code));
     }

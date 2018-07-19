@@ -49,7 +49,7 @@ public class AuthorityController {
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
-    public Page<AuthorityDto> getAllLocations(Pageable pageable) {
+    public Page<AuthorityDto> getAllAuthorities(Pageable pageable) {
         return convertToDtos(authorityService.getAllAuthorities(pageable));
     }
 

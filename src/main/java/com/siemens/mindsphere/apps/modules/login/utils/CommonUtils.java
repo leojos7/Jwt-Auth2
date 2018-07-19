@@ -3,8 +3,8 @@ package com.siemens.mindsphere.apps.modules.login.utils;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.siemens.mindsphere.apps.modules.login.authority.entity.Authority;
 import com.siemens.mindsphere.apps.exception.ParseException;
+import com.siemens.mindsphere.apps.modules.login.authority.entity.Authority;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.util.StringUtils;
 
@@ -54,6 +54,12 @@ public class CommonUtils {
         JsonNode rootNode = mapper.readTree(json);
         username = rootNode.get("user_name").textValue();
         return username;
+    }
+
+    public static String generateOTP() {
+        int randomPin   =(int)(Math.random()*9000)+1000;
+        String otp  =String.valueOf(randomPin);
+        return otp;
     }
 
 }

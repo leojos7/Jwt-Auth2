@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/secure/user/orderStatus")
 public class OrderStatusController {
@@ -19,7 +20,10 @@ public class OrderStatusController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/add",
+            method = RequestMethod.POST,
+            produces = "application/json",
+            consumes = "application/json")
     public OrderStatusDto getOrderStatus(@RequestBody OrderStatusDto orderStatusDto) {
         OrderStatus orderStatus = convertToEntity(orderStatusDto);
         OrderStatus orderStatusCreated = null;
@@ -29,7 +33,9 @@ public class OrderStatusController {
         return convertToDto(orderStatusCreated);
     }
 
-    @RequestMapping(value = "/get/{orderStatusId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/get/{orderStatusId}",
+            method = RequestMethod.GET,
+            produces = "application/json")
     public OrderStatusDto getOrderStatus(@PathVariable int orderStatusId) {
         return convertToDto(orderStatusService.getOrderStatus(orderStatusId));
     }
@@ -39,7 +45,10 @@ public class OrderStatusController {
         orderStatusService.deleteOrderStatus(orderStatusId);
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/update",
+            method = RequestMethod.POST,
+            produces = "application/json",
+            consumes = "application/json")
     public OrderStatusDto updateOrderStatus(@RequestBody OrderStatusDto orderStatusDto) {
         OrderStatus orderStatus = convertToEntity(orderStatusDto);
         OrderStatus orderStatusUpdated = null;
@@ -49,7 +58,9 @@ public class OrderStatusController {
         return convertToDto(orderStatusUpdated);
     }
 
-    @RequestMapping(value = "/getAllOrderStatus", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/getAllOrderStatus",
+            method = RequestMethod.GET,
+            produces = "application/json")
     public Page<OrderStatusDto> getAllOrderStatus(Pageable pageable) {
         return convertToDtos(orderStatusService.getAllOrderStatus(pageable));
     }

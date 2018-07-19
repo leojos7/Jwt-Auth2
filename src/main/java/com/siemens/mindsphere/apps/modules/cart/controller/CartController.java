@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/secure/user/cart")
 public class CartController {
@@ -30,7 +31,9 @@ public class CartController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/add",
+            method = RequestMethod.POST,
+            consumes = "application/json")
     public CartDto addToCart(@RequestBody CartDto cartDto)
             throws ResourceNotFoundException {
         Cart cart = convertToEntity(cartDto);
@@ -46,7 +49,9 @@ public class CartController {
         cartService.deleteFromCart(cartId);
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/update",
+            method = RequestMethod.POST,
+            produces = "application/json")
     public CartDto updateCart(@RequestBody CartDto cartDto) throws ResourceNotFoundException {
         Cart cart = convertToEntity(cartDto);
         Cart cartUpdated = null;
@@ -56,7 +61,9 @@ public class CartController {
         return convertToDto(cartUpdated);
     }
 
-    @RequestMapping(value = "/get/{userId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/get/{userId}",
+            method = RequestMethod.GET,
+            produces = "application/json")
     public Page<CartDto> getCart(@PathVariable Integer userId, Pageable pageable) throws ResourceNotFoundException {
         return convertToDtos(cartService.getCart(userId, pageable));
     }

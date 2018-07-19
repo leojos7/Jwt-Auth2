@@ -1,6 +1,8 @@
 package com.siemens.mindsphere.apps.entity;
 
-import javax.persistence.*;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.util.Date;
 

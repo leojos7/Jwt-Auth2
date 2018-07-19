@@ -1,6 +1,5 @@
 package com.siemens.mindsphere.apps.modules.location.service.location;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.siemens.mindsphere.apps.modules.location.entity.Location;
 import com.siemens.mindsphere.apps.modules.location.entity.LocationParamMapping;
 import com.siemens.mindsphere.apps.modules.location.repository.LocationRepository;
@@ -11,10 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;

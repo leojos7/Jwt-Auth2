@@ -1,8 +1,8 @@
 package com.siemens.mindsphere.apps.modules.login.security.service;
 
 import com.siemens.mindsphere.apps.modules.login.authority.entity.Authority;
-import com.siemens.mindsphere.apps.modules.login.user.entity.User;
 import com.siemens.mindsphere.apps.modules.login.security.exception.UserNotActivatedException;
+import com.siemens.mindsphere.apps.modules.login.user.entity.User;
 import com.siemens.mindsphere.apps.modules.login.user.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

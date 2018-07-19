@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/secure/user/productParams")
 public class ProductParamsController {
@@ -19,7 +20,10 @@ public class ProductParamsController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/add",
+            method = RequestMethod.POST,
+            produces = "application/json",
+            consumes = "application/json")
     public ProductParamsDto addProductParams(@RequestBody ProductParamsDto productDto) {
         ProductParams productParams = convertToEntity(productDto);
         ProductParams productParamsCreated = null;
@@ -29,7 +33,9 @@ public class ProductParamsController {
         return convertToDto(productParamsCreated);
     }
 
-    @RequestMapping(value = "/get/{productParamsId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/get/{productParamsId}",
+            method = RequestMethod.GET,
+            produces = "application/json")
     public ProductParamsDto getProductParams(@PathVariable int productParamsId) {
         return convertToDto(productParamsService.getProductParam(productParamsId));
     }
@@ -39,7 +45,10 @@ public class ProductParamsController {
         productParamsService.deleteProductParams(productParamsId);
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/update",
+            method = RequestMethod.POST,
+            produces = "application/json",
+            consumes = "application/json")
     public ProductParamsDto updateProductParams(@RequestBody ProductParamsDto productDto) {
         ProductParams productParams = convertToEntity(productDto);
         ProductParams productParamsUpdated = null;
@@ -49,7 +58,9 @@ public class ProductParamsController {
         return convertToDto(productParamsUpdated);
     }
 
-    @RequestMapping(value = "/getAllProductParams", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/getAllProductParams",
+            method = RequestMethod.GET,
+            produces = "application/json")
     public Page<ProductParamsDto> getAllProductParams(Pageable pageable) {
         return convertToDtos(productParamsService.getAllProductParams(pageable));
     }

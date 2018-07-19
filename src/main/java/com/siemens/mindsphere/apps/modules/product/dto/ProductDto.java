@@ -3,7 +3,6 @@ package com.siemens.mindsphere.apps.modules.product.dto;
 import com.siemens.mindsphere.apps.modules.login.user.dto.UserDto;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 public class ProductDto {
