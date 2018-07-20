@@ -1,28 +1,26 @@
-package com.siemens.mindsphere.apps.modules.product.dto;
+package com.siemens.mindsphere.apps.modules.login.privilege.dto;
 
 import java.util.Date;
 
-public class ProductParamsDto {
+public class PrivilegeDto {
 
-    private Integer productParamId;
+    private Integer privilegeId;
 
     private String name;
-
-    private String description;
 
     private Date createDate;
 
     private Date modifiedDate;
 
-    public ProductParamsDto() {
+    public PrivilegeDto() {
     }
 
-    public Integer getProductParamId() {
-        return productParamId;
+    public Integer getPrivilegeId() {
+        return privilegeId;
     }
 
-    public void setProductParamId(Integer productParamId) {
-        this.productParamId = productParamId;
+    public void setPrivilegeId(Integer privilegeId) {
+        this.privilegeId = privilegeId;
     }
 
     public String getName() {
@@ -31,14 +29,6 @@ public class ProductParamsDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Date getCreateDate() {

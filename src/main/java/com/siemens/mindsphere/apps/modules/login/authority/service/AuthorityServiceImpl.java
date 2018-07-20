@@ -2,6 +2,8 @@ package com.siemens.mindsphere.apps.modules.login.authority.service;
 
 import com.siemens.mindsphere.apps.modules.login.authority.entity.Authority;
 import com.siemens.mindsphere.apps.modules.login.authority.repository.AuthorityRepository;
+import com.siemens.mindsphere.apps.modules.login.privilege.entity.Privilege;
+import com.siemens.mindsphere.apps.modules.login.privilege.service.PrivilegeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +19,9 @@ public class AuthorityServiceImpl implements AuthorityService {
 
     @Autowired
     private AuthorityRepository authorityRepository;
+
+    @Autowired
+    private PrivilegeService privilegeService;
 
     @Override
     public Authority addAuthority(Authority authority) {
@@ -40,6 +45,7 @@ public class AuthorityServiceImpl implements AuthorityService {
             existingAuthority = authorityOptional.get();
             existingAuthority.setName(authority.getName());
             existingAuthority.setModifiedDate(new Date());
+            existingAuthority.setPrivileges(authority.getPrivileges());
             newAuthority = authorityRepository.save(existingAuthority);
         } else {
             newAuthority = authorityRepository.save(authority);

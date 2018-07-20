@@ -33,15 +33,20 @@ public class UserParamsServiceImpl implements UserParamsService {
 
     @Override
     public UserParams updateUserParams(UserParams userParams) {
-        Optional<UserParams> userParamsOptional = userParamsRepository.findById(userParams.getUserParamId());
+        Optional<UserParams> userParamsOptional = null ;
+
         UserParams existingUserParams = null;
         UserParams newUserParams = null;
-        if (userParamsOptional.isPresent()) {
-            existingUserParams = userParamsOptional.get();
-            existingUserParams.setName(userParams.getName());
-            existingUserParams.setDescription(userParams.getDescription());
-            existingUserParams.setModifiedDate(new Date());
-            newUserParams = userParamsRepository.save(existingUserParams);
+
+        if(userParams.getUserParamId() != null) {
+            userParamsOptional = userParamsRepository.findById(userParams.getUserParamId());
+            if (userParamsOptional.isPresent()) {
+                existingUserParams = userParamsOptional.get();
+                existingUserParams.setName(userParams.getName());
+                existingUserParams.setDescription(userParams.getDescription());
+                existingUserParams.setModifiedDate(new Date());
+                newUserParams = userParamsRepository.save(existingUserParams);
+            }
         } else {
             newUserParams = userParamsRepository.save(userParams);
         }

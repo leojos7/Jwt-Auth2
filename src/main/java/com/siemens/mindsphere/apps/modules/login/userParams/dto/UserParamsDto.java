@@ -1,5 +1,7 @@
 package com.siemens.mindsphere.apps.modules.login.userParams.dto;
 
+import java.util.Date;
+
 public class UserParamsDto {
 
     private Integer userParamId;
@@ -7,6 +9,10 @@ public class UserParamsDto {
     private String name;
 
     private String description;
+
+    private Date createDate;
+
+    private Date modifiedDate;
 
     public UserParamsDto() {
     }
@@ -35,4 +41,19 @@ public class UserParamsDto {
         this.description = description;
     }
 
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
 }

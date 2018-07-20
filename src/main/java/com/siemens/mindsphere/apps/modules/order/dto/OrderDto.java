@@ -2,6 +2,7 @@ package com.siemens.mindsphere.apps.modules.order.dto;
 
 import com.siemens.mindsphere.apps.modules.login.user.dto.UserDto;
 
+import java.util.Date;
 import java.util.Set;
 
 public class OrderDto {
@@ -19,6 +20,10 @@ public class OrderDto {
     private Set<OrderParamDto> orderParams;
 
     private Set<ProductDetailsDto> products;
+
+    private Date createDate;
+
+    private Date modifiedDate;
 
     public OrderDto() {
     }
@@ -77,5 +82,21 @@ public class OrderDto {
 
     public void setProducts(Set<ProductDetailsDto> products) {
         this.products = products;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
     }
 }

@@ -9,5 +9,4 @@ public interface UserRepository extends PagingAndSortingRepository<User, Integer
 
     @Query("SELECT u FROM User u WHERE LOWER(u.username) = LOWER(:username)")
     User findByUsernameCaseInsensitive(@Param("username") String username);
-
 }

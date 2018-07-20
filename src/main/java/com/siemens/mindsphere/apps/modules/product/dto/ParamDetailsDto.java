@@ -1,5 +1,7 @@
 package com.siemens.mindsphere.apps.modules.product.dto;
 
+import java.util.Date;
+
 public class ParamDetailsDto {
 
     private Integer paramDetailId;
@@ -9,6 +11,10 @@ public class ParamDetailsDto {
     private String value;
 
     private String code;
+
+    private Date createDate;
+
+    private Date modifiedDate;
 
     public ParamDetailsDto() {
     }
@@ -45,4 +51,19 @@ public class ParamDetailsDto {
         this.code = code;
     }
 
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
 }

@@ -19,7 +19,8 @@ public class AuthorityController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/add",
+            method = RequestMethod.POST)
     public AuthorityDto addAuthority(@RequestBody AuthorityDto authorityDto) {
         Authority authority = convertToEntity(authorityDto);
         Authority authorityCreated = null;
@@ -29,12 +30,14 @@ public class AuthorityController {
         return convertToDto(authorityCreated);
     }
 
-    @RequestMapping(value = "/delete/{authorityId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete/{authorityId}",
+            method = RequestMethod.GET)
     public void deleteAuthority(@PathVariable int authorityId) {
         authorityService.deleteAuthority(authorityId);
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/update",
+            method = RequestMethod.POST)
     public AuthorityDto updateAuthority(@RequestBody AuthorityDto authorityDto) {
         Authority authority = convertToEntity(authorityDto);
         Authority authorityUpdated = null;
@@ -43,12 +46,14 @@ public class AuthorityController {
         }
         return convertToDto(authorityUpdated);
     }
-    @RequestMapping(value = "/get/{authorityId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/get/{authorityId}",
+            method = RequestMethod.GET)
     public AuthorityDto getAuthority(@PathVariable int authorityId) {
         return convertToDto(authorityService.getAuthority(authorityId));
     }
 
-    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    @RequestMapping(value = "/get",
+            method = RequestMethod.GET)
     public Page<AuthorityDto> getAllAuthorities(Pageable pageable) {
         return convertToDtos(authorityService.getAllAuthorities(pageable));
     }

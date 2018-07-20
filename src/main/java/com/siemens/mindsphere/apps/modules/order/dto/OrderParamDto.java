@@ -1,5 +1,7 @@
 package com.siemens.mindsphere.apps.modules.order.dto;
 
+import java.util.Date;
+
 public class OrderParamDto {
 
     private Integer id;
@@ -9,6 +11,10 @@ public class OrderParamDto {
     private String description;
 
     private String value;
+
+    private Date createDate;
+
+    private Date modifiedDate;
 
     public OrderParamDto() {
     }
@@ -50,5 +56,21 @@ public class OrderParamDto {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface UserService {
 
-    public User addUser(User user, String authorityName) throws AlreadyExistingResourceException;
+    public User addUser(User user) throws AlreadyExistingResourceException;
 
     public void deleteUser(Integer userId) throws ResourceNotFoundException;
 

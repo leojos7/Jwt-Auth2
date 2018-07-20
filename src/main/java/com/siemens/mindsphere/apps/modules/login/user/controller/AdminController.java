@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/secure/admin")
@@ -28,8 +30,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/updateUserRole",
-            method = RequestMethod.POST,
-            consumes = "application/json")
+            method = RequestMethod.POST)
     public String updateRoleOfUsers(@RequestBody UserDto userDto) throws ResourceNotFoundException {
         User user = convertToEntity(userDto);
         String userCreated = null;
@@ -40,8 +41,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/activateUser",
-            method = RequestMethod.POST,
-            consumes = "application/json")
+            method = RequestMethod.POST)
     public String activateUser(@RequestBody UserDto userDto)
             throws ResourceNotFoundException, ParseException {
         return userService.activateUser(userDto.getUsername());

@@ -3,6 +3,7 @@ package com.siemens.mindsphere.apps.modules.product.dto;
 import com.siemens.mindsphere.apps.modules.login.user.dto.UserDto;
 
 import javax.validation.constraints.NotBlank;
+import java.util.Date;
 import java.util.Set;
 
 public class ProductDto {
@@ -20,6 +21,10 @@ public class ProductDto {
     private String code;
 
     private Boolean status;
+
+    private Date createDate;
+
+    private Date modifiedDate;
 
     private Set<ParamDetailsDto> paramDetails;
 
@@ -80,5 +85,21 @@ public class ProductDto {
 
     public void setParamDetails(Set<ParamDetailsDto> paramDetails) {
         this.paramDetails = paramDetails;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
     }
 }

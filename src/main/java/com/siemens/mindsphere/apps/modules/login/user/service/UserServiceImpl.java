@@ -1,6 +1,7 @@
 package com.siemens.mindsphere.apps.modules.login.user.service;
 
 import com.siemens.mindsphere.apps.exception.ErrorMappings;
+import com.siemens.mindsphere.apps.modules.email.EmailService;
 import com.siemens.mindsphere.apps.modules.exception.AlreadyExistingResourceException;
 import com.siemens.mindsphere.apps.modules.exception.ResourceNotFoundException;
 import com.siemens.mindsphere.apps.modules.login.user.entity.User;
@@ -34,13 +35,17 @@ public class UserServiceImpl implements UserService {
     @Autowired
     protected PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private EmailService emailService;
+
     @Override
-    public User addUser(User user, String authorityName) throws AlreadyExistingResourceException {
+    public User addUser(User user) throws AlreadyExistingResourceException {
         User addedUser = null;
         if (userRepository.findByUsernameCaseInsensitive(user.getUsername()) == null) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            if(user.getPassword() != null) {
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
+            }
             user.setStatus(Boolean.FALSE);
-            user.setAuthorities(CommonUtils.getAuthoritiesList(authorityName));
             if (user.getUserParams() != null) {
                 user.setUserParams(user.getUserParams().stream()
                         .filter(Objects::nonNull)
@@ -54,6 +59,7 @@ public class UserServiceImpl implements UserService {
                         .collect(Collectors.toSet()));
             }
             addedUser = userRepository.save(user);
+
         } else {
             throw new AlreadyExistingResourceException(ALREADY_EXISTING_USER_CODE, ALREADY_EXISTING_USER_MESSAGE);
         }

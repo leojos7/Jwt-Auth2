@@ -30,8 +30,7 @@ public class UserController {
 
     @RequestMapping(value = "/update",
             method = RequestMethod.POST,
-            produces = "application/json",
-            consumes = "application/json")
+            produces = "application/json")
     public UserDto updateUser(@RequestBody UserDto userDto) throws ResourceNotFoundException {
         User user = convertToEntity(userDto);
         User userCreated = null;

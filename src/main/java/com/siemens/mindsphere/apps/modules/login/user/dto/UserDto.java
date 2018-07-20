@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.siemens.mindsphere.apps.modules.login.authority.dto.AuthorityDto;
 import com.siemens.mindsphere.apps.modules.login.userParams.dto.UserParamsDto;
 
+import java.util.Date;
 import java.util.Set;
 
 public class UserDto {
@@ -26,6 +27,10 @@ public class UserDto {
     private Set<AuthorityDto> authorities;
 
     private Set<UserParamsDto> userParams;
+
+    private Date createDate;
+
+    private Date modifiedDate;
 
     public UserDto() {
     }
@@ -102,5 +107,21 @@ public class UserDto {
 
     public void setAuthorities(Set<AuthorityDto> authorities) {
         this.authorities = authorities;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
     }
 }
