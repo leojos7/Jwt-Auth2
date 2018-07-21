@@ -1,4 +1,4 @@
-package com.siemens.mindsphere.apps.modules.login.utils;
+package com.siemens.mindsphere.apps.common.enums;
 
 public enum Authorities {
 

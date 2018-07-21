@@ -1,14 +1,14 @@
-package com.siemens.mindsphere.apps.modules.exception;
+package com.siemens.mindsphere.apps.common.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.CONFLICT)
-public class AlreadyExistingResourceException extends Exception {
+@ResponseStatus(HttpStatus.REQUEST_TIMEOUT)
+public class TokenExpiredException extends Exception {
 
     private Long errorCode;
 
-    public AlreadyExistingResourceException(Long errorCode, String message) {
+    public TokenExpiredException(Long errorCode, String message) {
         super(message);
         this.errorCode = errorCode;
     }

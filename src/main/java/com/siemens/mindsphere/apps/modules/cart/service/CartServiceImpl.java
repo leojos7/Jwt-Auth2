@@ -2,7 +2,7 @@ package com.siemens.mindsphere.apps.modules.cart.service;
 
 import com.siemens.mindsphere.apps.modules.cart.entity.Cart;
 import com.siemens.mindsphere.apps.modules.cart.repository.CartRepository;
-import com.siemens.mindsphere.apps.modules.exception.ResourceNotFoundException;
+import com.siemens.mindsphere.apps.common.exception.ResourceNotFoundException;
 import com.siemens.mindsphere.apps.modules.login.user.service.UserService;
 import com.siemens.mindsphere.apps.modules.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;

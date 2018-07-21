@@ -1,4 +1,4 @@
-package com.siemens.mindsphere.apps.modules.login.utils;
+package com.siemens.mindsphere.apps.common.cors;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

@@ -12,4 +12,10 @@ public interface ErrorMappings {
     public static final String PRODUCT_NOT_FOUND_MESSAGE = "Product not found in Database, Please check whether it is an existing product or not";
     public static final long ALREADY_EXISTING_PRODUCT_CODE = 2001;
     public static final String ALREADY_EXISTING_PRODUCT_MESSAGE = "Product is already in Database, Please check the existing product Ids";
+
+    public static final long MAIL_NOT_SENT_CODE = 3000;
+    public static final String MAIL_NOT_SENT_MASSAGE = "Mail not sent, Please check the configuration";
+
+    public static final long TOKEN_EXPIRED_CODE = 4000;
+    public static final String TOKEN_EXPIRED_MASSAGE = "Mail not sent, Please check the configuration";
 }

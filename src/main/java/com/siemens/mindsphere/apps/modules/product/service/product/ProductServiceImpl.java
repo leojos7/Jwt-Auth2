@@ -1,7 +1,7 @@
 package com.siemens.mindsphere.apps.modules.product.service.product;
 
-import com.siemens.mindsphere.apps.modules.exception.AlreadyExistingResourceException;
-import com.siemens.mindsphere.apps.modules.exception.ResourceNotFoundException;
+import com.siemens.mindsphere.apps.common.exception.AlreadyExistingResourceException;
+import com.siemens.mindsphere.apps.common.exception.ResourceNotFoundException;
 import com.siemens.mindsphere.apps.modules.product.entity.Product;
 import com.siemens.mindsphere.apps.modules.product.repository.ProductRepository;
 import com.siemens.mindsphere.apps.modules.product.service.paramDetails.ParamDetailsService;

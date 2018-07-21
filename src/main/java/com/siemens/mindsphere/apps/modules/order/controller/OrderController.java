@@ -1,6 +1,6 @@
 package com.siemens.mindsphere.apps.modules.order.controller;
 
-import com.siemens.mindsphere.apps.modules.exception.ResourceNotFoundException;
+import com.siemens.mindsphere.apps.common.exception.ResourceNotFoundException;
 import com.siemens.mindsphere.apps.modules.location.service.location.LocationService;
 import com.siemens.mindsphere.apps.modules.login.user.service.UserService;
 import com.siemens.mindsphere.apps.modules.order.dto.OrderDto;

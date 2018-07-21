@@ -3,7 +3,7 @@ package com.siemens.mindsphere.apps.modules.cart.controller;
 import com.siemens.mindsphere.apps.modules.cart.dto.CartDto;
 import com.siemens.mindsphere.apps.modules.cart.entity.Cart;
 import com.siemens.mindsphere.apps.modules.cart.service.CartService;
-import com.siemens.mindsphere.apps.modules.exception.ResourceNotFoundException;
+import com.siemens.mindsphere.apps.common.exception.ResourceNotFoundException;
 import com.siemens.mindsphere.apps.modules.login.user.dto.UserDto;
 import com.siemens.mindsphere.apps.modules.login.user.service.UserService;
 import com.siemens.mindsphere.apps.modules.product.dto.ProductDto;

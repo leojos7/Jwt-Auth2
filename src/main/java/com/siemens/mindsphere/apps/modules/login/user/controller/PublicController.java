@@ -1,14 +1,16 @@
 package com.siemens.mindsphere.apps.modules.login.user.controller;
 
 import com.siemens.mindsphere.apps.common.dto.ResponseDto;
+import com.siemens.mindsphere.apps.common.exception.MailNotSentException;
+import com.siemens.mindsphere.apps.common.exception.TokenExpiredException;
 import com.siemens.mindsphere.apps.exception.ParseException;
-import com.siemens.mindsphere.apps.modules.exception.AlreadyExistingResourceException;
-import com.siemens.mindsphere.apps.modules.exception.ResourceNotFoundException;
+import com.siemens.mindsphere.apps.common.exception.AlreadyExistingResourceException;
+import com.siemens.mindsphere.apps.common.exception.ResourceNotFoundException;
 import com.siemens.mindsphere.apps.modules.login.user.dto.UserDto;
 import com.siemens.mindsphere.apps.modules.login.user.entity.User;
 import com.siemens.mindsphere.apps.modules.login.user.service.UserService;
-import com.siemens.mindsphere.apps.modules.login.utils.Authorities;
-import com.siemens.mindsphere.apps.modules.login.utils.CommonUtils;
+import com.siemens.mindsphere.apps.common.enums.Authorities;
+import com.siemens.mindsphere.apps.common.utils.CommonUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +42,7 @@ public class PublicController {
 
     @RequestMapping(value = "/forgotPassword",
             method = RequestMethod.POST)
-    public ResponseDto forgotPassword(@RequestBody UserDto userDto) throws ResourceNotFoundException, ParseException {
+    public ResponseDto forgotPassword(@RequestBody UserDto userDto) throws ResourceNotFoundException, ParseException, MailNotSentException {
         ResponseDto responseDto = new ResponseDto();
         if(userDto.getUsername() != null) {
             responseDto.setMessage(userService.forgotPassword(userDto.getUsername()));
@@ -50,7 +52,8 @@ public class PublicController {
 
     @RequestMapping(value = "/resetPassword",
             method = RequestMethod.POST)
-    public ResponseDto resetPassword(@RequestBody UserDto userDto) throws ResourceNotFoundException, ParseException {
+    public ResponseDto resetPassword(@RequestBody UserDto userDto)
+            throws ResourceNotFoundException, ParseException, TokenExpiredException {
         ResponseDto responseDto = new ResponseDto();
         if(userDto.getUsername() != null && userDto.getPassword() != null) {
             responseDto.setMessage(userService.resetPassword(userDto.getUsername(), userDto.getPassword()));

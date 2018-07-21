@@ -1,7 +1,7 @@
 package com.siemens.mindsphere.apps.modules.cart.service;
 
 import com.siemens.mindsphere.apps.modules.cart.entity.Cart;
-import com.siemens.mindsphere.apps.modules.exception.ResourceNotFoundException;
+import com.siemens.mindsphere.apps.common.exception.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

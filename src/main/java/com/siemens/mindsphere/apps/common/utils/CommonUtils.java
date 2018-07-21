@@ -1,22 +1,31 @@
-package com.siemens.mindsphere.apps.modules.login.utils;
+package com.siemens.mindsphere.apps.common.utils;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.siemens.mindsphere.apps.common.exception.TokenExpiredException;
+import com.siemens.mindsphere.apps.exception.ErrorMappings;
 import com.siemens.mindsphere.apps.exception.ParseException;
-import com.siemens.mindsphere.apps.modules.email.EmailService;
 import com.siemens.mindsphere.apps.modules.login.authority.entity.Authority;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.commons.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
+import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
+import java.security.Key;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import static com.siemens.mindsphere.apps.exception.ErrorMappings.ALREADY_EXISTING_USER_CODE;
 import static com.siemens.mindsphere.apps.exception.ErrorMappings.ALREADY_EXISTING_USER_MESSAGE;
-import static com.siemens.mindsphere.apps.modules.login.utils.Constants.bearer_;
+import static com.siemens.mindsphere.apps.common.utils.Constants.bearer_;
 
 public class CommonUtils {
 
@@ -62,6 +71,44 @@ public class CommonUtils {
         int randomPin   =(int)(Math.random()*9000)+1000;
         String otp = String.valueOf(randomPin);
         return otp;
+    }
+
+    public static String replaceString(String line, String paramToReplace, String paramToBeReplaced) {
+        if(line.contains(paramToReplace)) {
+            line = line.replace(paramToReplace, paramToBeReplaced);
+        }
+        return line;
+    }
+
+
+    public static String createJWT(String subject) {
+        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+        Date now = new Date();
+        byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary("SECRET");
+        Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
+        JwtBuilder builder = Jwts.builder()
+                .setIssuedAt(now)
+                .setSubject(subject)
+                .signWith(signatureAlgorithm, signingKey);
+        Calendar c = Calendar.getInstance();
+        c.setTime(now);
+        c.add(Calendar.DATE, 1);
+        Date exp = c.getTime();
+        builder.setExpiration(exp);
+        return builder.compact();
+    }
+
+
+    public static String parseJWT(String jwt) throws TokenExpiredException {
+        Claims claims = Jwts.parser()
+                    .setSigningKey(DatatypeConverter.parseBase64Binary("SECRET"))
+                    .parseClaimsJws(jwt).getBody();
+
+        if(claims.getExpiration().before(new Date())) {
+            throw new TokenExpiredException(ErrorMappings.TOKEN_EXPIRED_CODE, ErrorMappings.TOKEN_EXPIRED_MASSAGE);
+        }
+
+        return claims.getSubject();
     }
 
 }

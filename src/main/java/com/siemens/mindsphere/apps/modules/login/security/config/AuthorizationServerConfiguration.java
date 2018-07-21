@@ -1,7 +1,7 @@
 package com.siemens.mindsphere.apps.modules.login.security.config;
 
-import com.siemens.mindsphere.apps.modules.login.utils.Authorities;
-import com.siemens.mindsphere.apps.modules.login.utils.Constants;
+import com.siemens.mindsphere.apps.common.enums.Authorities;
+import com.siemens.mindsphere.apps.common.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;

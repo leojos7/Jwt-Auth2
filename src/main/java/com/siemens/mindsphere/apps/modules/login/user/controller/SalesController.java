@@ -1,7 +1,9 @@
 package com.siemens.mindsphere.apps.modules.login.user.controller;
 
-import com.siemens.mindsphere.apps.modules.email.EmailService;
-import com.siemens.mindsphere.apps.modules.exception.AlreadyExistingResourceException;
+import com.siemens.mindsphere.apps.common.email.EmailService;
+import com.siemens.mindsphere.apps.common.exception.AlreadyExistingResourceException;
+import com.siemens.mindsphere.apps.common.exception.MailNotSentException;
+import com.siemens.mindsphere.apps.common.exception.ResourceNotFoundException;
 import com.siemens.mindsphere.apps.modules.login.user.dto.UserDto;
 import com.siemens.mindsphere.apps.modules.login.user.entity.User;
 import com.siemens.mindsphere.apps.modules.login.user.service.UserService;
@@ -26,12 +28,12 @@ public class SalesController {
     @RequestMapping(value = "/sign-up",
             method = RequestMethod.POST,
             produces = "application/json")
-    public UserDto salesSignUp(@RequestBody UserDto userDto) throws AlreadyExistingResourceException {
+    public UserDto salesSignUp(@RequestBody UserDto userDto) throws AlreadyExistingResourceException, MailNotSentException {
         User user = convertToEntity(userDto);
         User userCreated = null;
-/*        if (user != null) {
+        if (user != null) {
             userCreated = userService.addUser(user);
-        }*/
+        }
         userService.sendPasswordSettingNotificationEmail(user);
         return convertToDto(userCreated);
     }

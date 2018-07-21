@@ -1,9 +1,9 @@
 package com.siemens.mindsphere.apps.modules.product.controller;
 
-import com.siemens.mindsphere.apps.modules.exception.AlreadyExistingResourceException;
-import com.siemens.mindsphere.apps.modules.exception.ResourceNotFoundException;
+import com.siemens.mindsphere.apps.common.exception.AlreadyExistingResourceException;
+import com.siemens.mindsphere.apps.common.exception.ResourceNotFoundException;
 import com.siemens.mindsphere.apps.modules.login.user.service.UserService;
-import com.siemens.mindsphere.apps.modules.login.utils.CommonUtils;
+import com.siemens.mindsphere.apps.common.utils.CommonUtils;
 import com.siemens.mindsphere.apps.modules.product.dto.ProductDto;
 import com.siemens.mindsphere.apps.modules.product.entity.Product;
 import com.siemens.mindsphere.apps.modules.product.service.product.ProductService;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import static com.siemens.mindsphere.apps.modules.login.utils.Constants.SUCCESSFULLY_SAVED;
+import static com.siemens.mindsphere.apps.common.utils.Constants.SUCCESSFULLY_SAVED;
 
 @CrossOrigin
 @RestController
