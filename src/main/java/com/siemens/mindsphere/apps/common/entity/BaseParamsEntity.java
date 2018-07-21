@@ -1,4 +1,4 @@
-package com.siemens.mindsphere.apps.entity;
+package com.siemens.mindsphere.apps.common.entity;
 
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;

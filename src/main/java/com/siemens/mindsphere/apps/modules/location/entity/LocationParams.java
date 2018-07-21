@@ -1,6 +1,6 @@
 package com.siemens.mindsphere.apps.modules.location.entity;
 
-import com.siemens.mindsphere.apps.entity.BaseParamsEntity;
+import com.siemens.mindsphere.apps.common.entity.BaseParamsEntity;
 
 import javax.persistence.*;
 import java.io.Serializable;

@@ -1,6 +1,6 @@
 package com.siemens.mindsphere.apps.modules.cart.entity;
 
-import com.siemens.mindsphere.apps.entity.BaseEntity;
+import com.siemens.mindsphere.apps.common.entity.BaseEntity;
 import com.siemens.mindsphere.apps.modules.login.user.entity.User;
 import com.siemens.mindsphere.apps.modules.product.entity.Product;
 

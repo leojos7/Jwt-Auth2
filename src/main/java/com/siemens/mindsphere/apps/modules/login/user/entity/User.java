@@ -1,6 +1,6 @@
 package com.siemens.mindsphere.apps.modules.login.user.entity;
 
-import com.siemens.mindsphere.apps.entity.BaseEntity;
+import com.siemens.mindsphere.apps.common.entity.BaseEntity;
 import com.siemens.mindsphere.apps.modules.login.authority.entity.Authority;
 import com.siemens.mindsphere.apps.modules.login.userParams.entity.UserParams;
 

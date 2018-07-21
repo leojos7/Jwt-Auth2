@@ -1,5 +1,6 @@
 package com.siemens.mindsphere.apps.modules.login.user.controller;
 
+import com.siemens.mindsphere.apps.common.dto.ResponseDto;
 import com.siemens.mindsphere.apps.exception.ParseException;
 import com.siemens.mindsphere.apps.modules.exception.ResourceNotFoundException;
 import com.siemens.mindsphere.apps.modules.login.user.dto.UserDto;
@@ -31,20 +32,24 @@ public class AdminController {
 
     @RequestMapping(value = "/updateUserRole",
             method = RequestMethod.POST)
-    public String updateRoleOfUsers(@RequestBody UserDto userDto) throws ResourceNotFoundException {
+    public ResponseDto updateRoleOfUsers(@RequestBody UserDto userDto) throws ResourceNotFoundException {
         User user = convertToEntity(userDto);
-        String userCreated = null;
+        ResponseDto responseDto = new ResponseDto();
         if (user != null) {
-            userCreated = userService.updateUserRole(user);
+            responseDto.setMessage(userService.updateUserRole(user));
         }
-        return userCreated;
+        return responseDto;
     }
 
     @RequestMapping(value = "/activateUser",
             method = RequestMethod.POST)
-    public String activateUser(@RequestBody UserDto userDto)
+    public ResponseDto activateUser(@RequestBody UserDto userDto)
             throws ResourceNotFoundException, ParseException {
-        return userService.activateUser(userDto.getUsername());
+        ResponseDto responseDto = new ResponseDto();
+        if(userDto.getUsername() != null) {
+            responseDto.setMessage(userService.activateUser(userDto.getUsername(), userDto.isStatus()));
+        }
+        return responseDto;
     }
 
 

@@ -1,13 +1,12 @@
 package com.siemens.mindsphere.apps.modules.login.authority.entity;
 
-import com.siemens.mindsphere.apps.entity.BaseEntity;
+import com.siemens.mindsphere.apps.common.entity.BaseEntity;
 import com.siemens.mindsphere.apps.modules.login.privilege.entity.Privilege;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "AUTHORITY")

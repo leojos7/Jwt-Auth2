@@ -28,5 +28,10 @@ public interface UserService {
 
     public String updateUserRole(User user) throws ResourceNotFoundException;
 
-    public String activateUser(String username) throws ResourceNotFoundException;
+    public String activateUser(String username, Boolean status) throws ResourceNotFoundException;
+
+    public String forgotPassword(String username) throws ResourceNotFoundException;
+
+    public void sendPasswordSettingNotificationEmail(User user);
+
 }

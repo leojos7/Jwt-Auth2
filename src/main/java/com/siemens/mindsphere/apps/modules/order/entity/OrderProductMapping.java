@@ -1,6 +1,6 @@
 package com.siemens.mindsphere.apps.modules.order.entity;
 
-import com.siemens.mindsphere.apps.entity.BaseEntity;
+import com.siemens.mindsphere.apps.common.entity.BaseEntity;
 import com.siemens.mindsphere.apps.modules.product.entity.Product;
 
 import javax.persistence.*;

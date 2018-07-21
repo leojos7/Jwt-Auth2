@@ -1,6 +1,6 @@
 package com.siemens.mindsphere.apps.modules.order.entity;
 
-import com.siemens.mindsphere.apps.entity.BaseEntity;
+import com.siemens.mindsphere.apps.common.entity.BaseEntity;
 import com.siemens.mindsphere.apps.modules.location.entity.Location;
 import com.siemens.mindsphere.apps.modules.login.user.entity.User;
 

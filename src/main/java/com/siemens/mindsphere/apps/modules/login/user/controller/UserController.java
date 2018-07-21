@@ -1,5 +1,6 @@
 package com.siemens.mindsphere.apps.modules.login.user.controller;
 
+import com.siemens.mindsphere.apps.common.dto.ResponseDto;
 import com.siemens.mindsphere.apps.exception.ParseException;
 import com.siemens.mindsphere.apps.modules.exception.ResourceNotFoundException;
 import com.siemens.mindsphere.apps.modules.login.user.dto.UserDto;
@@ -68,9 +69,13 @@ public class UserController {
 
     @RequestMapping(value = "/sentOtp",
             method = RequestMethod.GET)
-    public String setOtp(@RequestHeader("Authorization") String authorization) throws ResourceNotFoundException, ParseException {
+    public ResponseDto setOtp(@RequestHeader("Authorization") String authorization) throws ResourceNotFoundException, ParseException {
         String username = CommonUtils.getUsernameFromAccessToken(authorization);
-        return userService.sentOtp(username);
+        ResponseDto responseDto = new ResponseDto();
+        if(username != null) {
+            responseDto.setMessage(userService.sentOtp(username));
+        }
+        return responseDto;
     }
 
 

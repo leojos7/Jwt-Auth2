@@ -13,10 +13,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ResourceUtils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 import static com.siemens.mindsphere.apps.exception.ErrorMappings.ALREADY_EXISTING_USER_CODE;
@@ -80,8 +87,11 @@ public class UserServiceImpl implements UserService {
             existingUser.setOtp(user.getOtp());
             existingUser.setFullName(user.getFullName());
             existingUser.setModifiedDate(new Date());
-            user.getUserParams().stream()
-                    .forEach(userParams -> userParamsService.updateUserParams(userParams));
+            existingUser.setMobileNumber(user.getMobileNumber());
+            if(!CollectionUtils.isEmpty(user.getUserParams())) {
+                user.getUserParams().stream()
+                        .forEach(userParams -> userParamsService.updateUserParams(userParams));
+            }
             newUser = userRepository.save(existingUser);
         } else {
             newUser = userRepository.save(newUser);
@@ -145,6 +155,7 @@ public class UserServiceImpl implements UserService {
     public String resetPassword(String username, String newPassword) throws ResourceNotFoundException {
         User existingUser = getUserByUsername(username);
         existingUser.setPassword(passwordEncoder.encode(newPassword));
+        existingUser.setStatus(Boolean.TRUE);
         existingUser.setModifiedDate(new Date());
         userRepository.save(existingUser);
         return PASSWORD_RESET_SUCCESS;
@@ -161,14 +172,60 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String activateUser(String username) throws ResourceNotFoundException {
+    public String activateUser(String username, Boolean status) throws ResourceNotFoundException {
         User existingUser = getUserByUsername(username);
         if (existingUser != null) {
-            existingUser.setStatus(Boolean.TRUE);
+            existingUser.setStatus(status);
             userRepository.save(existingUser);
         }
         return USER_ACTIVATED;
     }
 
+    @Override
+    public String forgotPassword(String username) throws ResourceNotFoundException {
+        User existingUser = getUserByUsername(username);
+        sendPasswordSettingNotificationEmail(existingUser);
+        return FORGOT_PASSWORD_MAIL_SENT;
+    }
+
+    BiFunction<User, String, String> stringStringFunction = (user1, line) ->  {
+        String hrefUrl = "http://localhost:4200/setPassword";
+        String newHrefUrl = "http://localhost:4200/setPassword?code="+user1.getUsername();
+        String fullName = "{{name}}";
+        if(line.contains(hrefUrl)) {
+            line = line.replace(hrefUrl, newHrefUrl);
+        }
+        if(line.contains(fullName)) {
+            line = line.replace(fullName, user1.getFullName());
+        }
+        return line;
+    };
+
+    public void sendPasswordSettingNotificationEmail(User user) {
+
+        File file = null;
+        try {
+            file = ResourceUtils.getFile("classpath:html/password_reset.html");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        final StringBuilder mailBody = new StringBuilder();
+        try {
+            Files.lines(file.toPath())
+                    .map(line -> stringStringFunction.apply(user, line))
+                    .forEach(line -> mailBody.append(line));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            emailService.sendMail("leojos007@gmail.com","Simoq Test", mailBody.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }
+
+

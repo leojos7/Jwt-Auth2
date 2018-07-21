@@ -29,29 +29,12 @@ public class SalesController {
     public UserDto salesSignUp(@RequestBody UserDto userDto) throws AlreadyExistingResourceException {
         User user = convertToEntity(userDto);
         User userCreated = null;
-        if (user != null) {
+/*        if (user != null) {
             userCreated = userService.addUser(user);
-        }
-
-        sendPasswordSettingNotificationEmail();
+        }*/
+        userService.sendPasswordSettingNotificationEmail(user);
         return convertToDto(userCreated);
     }
-
-    private void sendPasswordSettingNotificationEmail() {
-        String body = String.join(
-                System.getProperty("line.separator"),
-                "<h1>Amazon SES SMTP Email Email</h1>",
-                "<p>This email was sent with Amazon SES using the ",
-                "<a href='https://github.com/javaee/javamail'>Javamail Package</a>",
-                " for <a href='https://www.java.com'>Java</a>."
-        );
-        try {
-//            emailService.sendMail("leojos007@gmail.com","Test Mail", body);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 
     private UserDto convertToDto(User user) {
         UserDto userDto = null;

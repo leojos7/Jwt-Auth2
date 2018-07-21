@@ -4,8 +4,10 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.siemens.mindsphere.apps.exception.ParseException;
+import com.siemens.mindsphere.apps.modules.email.EmailService;
 import com.siemens.mindsphere.apps.modules.login.authority.entity.Authority;
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
@@ -58,7 +60,7 @@ public class CommonUtils {
 
     public static String generateOTP() {
         int randomPin   =(int)(Math.random()*9000)+1000;
-        String otp  =String.valueOf(randomPin);
+        String otp = String.valueOf(randomPin);
         return otp;
     }
 
