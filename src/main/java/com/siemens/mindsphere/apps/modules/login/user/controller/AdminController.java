@@ -1,7 +1,7 @@
 package com.siemens.mindsphere.apps.modules.login.user.controller;
 
 import com.siemens.mindsphere.apps.common.dto.ResponseDto;
-import com.siemens.mindsphere.apps.exception.ParseException;
+import com.siemens.mindsphere.apps.exceptionHandler.ParseException;
 import com.siemens.mindsphere.apps.common.exception.ResourceNotFoundException;
 import com.siemens.mindsphere.apps.modules.login.user.dto.UserDto;
 import com.siemens.mindsphere.apps.modules.login.user.entity.User;
@@ -28,15 +28,11 @@ public class AdminController {
         return convertToDtos(userService.getAllUsers(pageable));
     }
 
-    @RequestMapping(value = "/updateUserRole",
+    @RequestMapping(value = "/updateUser",
             method = RequestMethod.POST)
-    public ResponseDto updateRoleOfUsers(@RequestBody UserDto userDto) throws ResourceNotFoundException {
+    public UserDto updateRoleOfUsers(@RequestBody UserDto userDto) throws ResourceNotFoundException {
         User user = convertToEntity(userDto);
-        ResponseDto responseDto = new ResponseDto();
-        if (user != null) {
-            responseDto.setMessage(userService.updateUserRole(user));
-        }
-        return responseDto;
+        return convertToDto(userService.updateUserRole(user));
     }
 
     @RequestMapping(value = "/activateUser",
@@ -49,7 +45,6 @@ public class AdminController {
         }
         return responseDto;
     }
-
 
     private Page<UserDto> convertToDtos(Page<User> users) {
         return users.map(usetToMap -> convertToDto(usetToMap));

@@ -3,7 +3,7 @@ package com.siemens.mindsphere.apps.modules.login.user.controller;
 import com.siemens.mindsphere.apps.common.email.EmailService;
 import com.siemens.mindsphere.apps.common.exception.AlreadyExistingResourceException;
 import com.siemens.mindsphere.apps.common.exception.MailNotSentException;
-import com.siemens.mindsphere.apps.common.exception.ResourceNotFoundException;
+import com.siemens.mindsphere.apps.common.utils.CommonUtils;
 import com.siemens.mindsphere.apps.modules.login.user.dto.UserDto;
 import com.siemens.mindsphere.apps.modules.login.user.entity.User;
 import com.siemens.mindsphere.apps.modules.login.user.service.UserService;
@@ -25,6 +25,9 @@ public class SalesController {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private CommonUtils commonUtils;
+
     @RequestMapping(value = "/sign-up",
             method = RequestMethod.POST,
             produces = "application/json")
@@ -34,7 +37,7 @@ public class SalesController {
         if (user != null) {
             userCreated = userService.addUser(user);
         }
-        userService.sendPasswordSettingNotificationEmail(user);
+        commonUtils.sendPasswordSettingNotificationEmail(user);
         return convertToDto(userCreated);
     }
 

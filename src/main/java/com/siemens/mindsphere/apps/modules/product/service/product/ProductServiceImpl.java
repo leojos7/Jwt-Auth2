@@ -16,7 +16,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.siemens.mindsphere.apps.exception.ErrorMappings.*;
+import static com.siemens.mindsphere.apps.exceptionHandler.ErrorMappings.*;
 
 @Service
 @Transactional

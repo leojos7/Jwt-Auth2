@@ -36,6 +36,9 @@ public class ProductController {
     @Autowired
     private ProductValidator productValidator;
 
+    @Autowired
+    private CommonUtils commonUtils;
+
     @InitBinder("productDto")
     public void setupBinder(WebDataBinder binder) {
         binder.addValidators(productValidator);
@@ -47,7 +50,7 @@ public class ProductController {
     public String addProduct(@RequestHeader("Authorization") String authorization,
                              @Valid @RequestBody ProductDto productDto)
             throws AlreadyExistingResourceException, ResourceNotFoundException {
-        String username = CommonUtils.getUsernameFromAccessToken(authorization);
+        String username = commonUtils.getUsernameFromAccessToken(authorization);
         Product product = convertToEntity(productDto, username);
         Integer productId = null;
         if (product != null) {
@@ -68,7 +71,7 @@ public class ProductController {
             consumes = "application/json")
     public ProductDto updateProduct(@RequestHeader("Authorization") String authorization,
                                     @RequestBody ProductDto productDto) throws ResourceNotFoundException {
-        String username = CommonUtils.getUsernameFromAccessToken(authorization);
+        String username = commonUtils.getUsernameFromAccessToken(authorization);
         Product product = convertToEntity(productDto, username);
         Product productUpdated = null;
         if (product != null) {

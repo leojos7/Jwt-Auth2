@@ -1,4 +1,4 @@
-package com.siemens.mindsphere.apps.exception;
+package com.siemens.mindsphere.apps.exceptionHandler;
 
 import com.siemens.mindsphere.apps.common.exception.ResourceNotFoundException;
 import org.springframework.http.HttpHeaders;

@@ -1,4 +1,4 @@
-package com.siemens.mindsphere.apps.exception;
+package com.siemens.mindsphere.apps.exceptionHandler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

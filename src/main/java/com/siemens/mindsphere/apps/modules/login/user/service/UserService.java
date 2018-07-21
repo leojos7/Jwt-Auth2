@@ -12,7 +12,7 @@ public interface UserService {
 
     public User addUser(User user) throws AlreadyExistingResourceException;
 
-    public void deleteUser(Integer userId) throws ResourceNotFoundException;
+    public String deleteUser(Integer userId) throws ResourceNotFoundException;
 
     public User updateUser(User user) throws ResourceNotFoundException;
 
@@ -28,12 +28,10 @@ public interface UserService {
 
     public String resetPassword(String username, String newPassword) throws ResourceNotFoundException, TokenExpiredException;
 
-    public String updateUserRole(User user) throws ResourceNotFoundException;
+    public User updateUserRole(User user) throws ResourceNotFoundException;
 
     public String activateUser(String username, Boolean status) throws ResourceNotFoundException;
 
     public String forgotPassword(String username) throws ResourceNotFoundException, MailNotSentException;
-
-    public void sendPasswordSettingNotificationEmail(User user) throws MailNotSentException;
 
 }

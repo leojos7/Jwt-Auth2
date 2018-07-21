@@ -13,5 +13,6 @@ public class Constants {
     public static final String ENTER_CORRECT_OTP = "Please enter correct otp";
     public static final String ROLE_UPDATED = "Role Updated as per request";
     public static final String USER_ACTIVATED = "User have been activated";
+    public static final String USER_DELETED = "User have been deleted";
 
 }

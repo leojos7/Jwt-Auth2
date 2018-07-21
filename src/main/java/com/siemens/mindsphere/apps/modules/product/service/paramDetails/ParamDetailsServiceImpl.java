@@ -66,7 +66,7 @@ public class ParamDetailsServiceImpl implements ParamDetailsService {
         if (existingParamDetailsOptional.isPresent()) {
             existingParamDetails = existingParamDetailsOptional.get();
         } else {
-            // TODO throw custom exception
+            // TODO throw custom exceptionHandler
         }
         return existingParamDetails;
     }
@@ -76,7 +76,7 @@ public class ParamDetailsServiceImpl implements ParamDetailsService {
         if (paramDetailsRepository.findById(paramDetailsId) != null) {
             paramDetailsRepository.deleteById(paramDetailsId);
         } else {
-            // TODO throw custom exception
+            // TODO throw custom exceptionHandler
         }
     }
 

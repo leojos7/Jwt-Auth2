@@ -47,7 +47,7 @@ public class OrderStatusServiceImpl implements OrderStatusService {
         if (existingOrderStatusOptional.isPresent()) {
             existingOrderStatus = existingOrderStatusOptional.get();
         } else {
-            // TODO throw custom exception
+            // TODO throw custom exceptionHandler
         }
         return existingOrderStatus;
     }
@@ -57,7 +57,7 @@ public class OrderStatusServiceImpl implements OrderStatusService {
         if (orderStatusRepository.findById(orderStatusId) != null) {
             orderStatusRepository.deleteById(orderStatusId);
         } else {
-            // TODO throw custom exception
+            // TODO throw custom exceptionHandler
         }
     }
 

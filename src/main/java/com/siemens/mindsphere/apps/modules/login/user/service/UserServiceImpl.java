@@ -6,7 +6,7 @@ import com.siemens.mindsphere.apps.common.exception.MailNotSentException;
 import com.siemens.mindsphere.apps.common.exception.ResourceNotFoundException;
 import com.siemens.mindsphere.apps.common.exception.TokenExpiredException;
 import com.siemens.mindsphere.apps.common.utils.CommonUtils;
-import com.siemens.mindsphere.apps.exception.ErrorMappings;
+import com.siemens.mindsphere.apps.exceptionHandler.ErrorMappings;
 import com.siemens.mindsphere.apps.modules.login.user.entity.User;
 import com.siemens.mindsphere.apps.modules.login.user.repository.UserRepository;
 import com.siemens.mindsphere.apps.modules.login.userParams.service.UserParamsService;
@@ -26,7 +26,7 @@ import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 import static com.siemens.mindsphere.apps.common.utils.Constants.*;
-import static com.siemens.mindsphere.apps.exception.ErrorMappings.*;
+import static com.siemens.mindsphere.apps.exceptionHandler.ErrorMappings.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -42,6 +42,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private CommonUtils commonUtils;
 
     @Override
     public User addUser(User user) throws AlreadyExistingResourceException {
@@ -71,9 +74,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(Integer userId) throws ResourceNotFoundException {
+    public String deleteUser(Integer userId) throws ResourceNotFoundException {
         User user = getUserById(userId);
         userRepository.delete(user);
+        return USER_DELETED;
     }
 
     @Override
@@ -125,7 +129,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String sentOtp(String username) throws ResourceNotFoundException {
-        String otp = CommonUtils.generateOTP();
+        String otp = commonUtils.generateOTP();
         User existingUser = getUserByUsername(username);
         existingUser.setOtp(otp);
         updateUser(existingUser);
@@ -151,7 +155,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String resetPassword(String username, String newPassword)
             throws ResourceNotFoundException, TokenExpiredException {
-        User existingUser = getUserByUsername(CommonUtils.parseJWT(username));
+        User existingUser = getUserByUsername(commonUtils.parseJWT(username));
         existingUser.setPassword(passwordEncoder.encode(newPassword));
         existingUser.setStatus(Boolean.TRUE);
         existingUser.setModifiedDate(new Date());
@@ -160,13 +164,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String updateUserRole(User user) throws ResourceNotFoundException {
+    public User updateUserRole(User user) throws ResourceNotFoundException {
         User existingUser = getUserById(user.getUserId());
+        User newUser = null;
         if (existingUser != null) {
+            existingUser.setOtp(user.getOtp());
+            existingUser.setFullName(user.getFullName());
+            existingUser.setModifiedDate(new Date());
+            existingUser.setMobileNumber(user.getMobileNumber());
             existingUser.setAuthorities(user.getAuthorities());
-            userRepository.save(existingUser);
+            existingUser.setPassword(user.getPassword());
+            if (!CollectionUtils.isEmpty(user.getUserParams())) {
+                user.getUserParams().stream()
+                        .forEach(userParams -> userParamsService.updateUserParams(userParams));
+            }
+            newUser = userRepository.save(existingUser);
+        } else {
+            newUser = userRepository.save(newUser);
         }
-        return ROLE_UPDATED;
+        return newUser;
     }
 
     @Override
@@ -182,37 +198,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public String forgotPassword(String username) throws ResourceNotFoundException, MailNotSentException {
         User existingUser = getUserByUsername(username);
-        sendPasswordSettingNotificationEmail(existingUser);
+        commonUtils.sendPasswordSettingNotificationEmail(existingUser);
         return FORGOT_PASSWORD_MAIL_SENT;
-    }
-
-    BiFunction<User, String, String> detailReplacingFunction = (user, line) -> {
-        String urlToSetPassword = "http://localhost:4200/setPassword?code=" + user.getUsername();
-        String fullNameParamToBeReplaced = "{{name}}";
-        String urlParamToBeReplaced = "{{action_url}}";
-        line = CommonUtils.replaceString(line, urlParamToBeReplaced, urlToSetPassword);
-        line = CommonUtils.replaceString(line, fullNameParamToBeReplaced, user.getFullName());
-        return line;
-    };
-
-    private String createMailBody(User user) throws IOException {
-        StringBuilder mailBody = new StringBuilder();
-        String passwordResetFileLocation = "classpath:html/password_reset.html";
-        File file = ResourceUtils.getFile(passwordResetFileLocation);
-        user.setUsername(CommonUtils.createJWT(user.getUsername()));
-        Files.lines(file.toPath())
-                .map(line -> detailReplacingFunction.apply(user, line))
-                .forEach(line -> mailBody.append(line));
-        return mailBody.toString();
-    }
-
-    public void sendPasswordSettingNotificationEmail(User user) throws MailNotSentException {
-        try {
-            String mailSubject = "Simoq Password Reset";
-            emailService.sendMail("leojos007@gmail.com", mailSubject, createMailBody(user));
-        } catch (Exception e) {
-            throw new MailNotSentException(MAIL_NOT_SENT_CODE, MAIL_NOT_SENT_MASSAGE);
-        }
     }
 
 }

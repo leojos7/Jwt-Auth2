@@ -1,7 +1,7 @@
 package com.siemens.mindsphere.apps.modules.login.user.controller;
 
 import com.siemens.mindsphere.apps.common.dto.ResponseDto;
-import com.siemens.mindsphere.apps.exception.ParseException;
+import com.siemens.mindsphere.apps.exceptionHandler.ParseException;
 import com.siemens.mindsphere.apps.common.exception.ResourceNotFoundException;
 import com.siemens.mindsphere.apps.modules.login.user.dto.UserDto;
 import com.siemens.mindsphere.apps.modules.login.user.entity.User;
@@ -22,11 +22,18 @@ public class UserController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private CommonUtils commonUtils;
+
     @RequestMapping(value = "/delete/{userId}",
             method = RequestMethod.GET)
-    public void deleteUser(@PathVariable Integer userId)
+    public ResponseDto deleteUser(@PathVariable Integer userId)
             throws ResourceNotFoundException, ParseException {
-        userService.deleteUser(userId);
+        ResponseDto responseDto = new ResponseDto();
+        if(userId != null) {
+            responseDto.setMessage(userService.deleteUser(userId));
+        }
+        return responseDto;
     }
 
     @RequestMapping(value = "/update",
@@ -46,7 +53,7 @@ public class UserController {
             produces = "application/json")
     public UserDto getUser(@RequestHeader("Authorization") String authorization)
             throws ResourceNotFoundException, ParseException {
-        String username = CommonUtils.getUsernameFromAccessToken(authorization);
+        String username = commonUtils.getUsernameFromAccessToken(authorization);
         User user = userService.getUserByUsername(username);
         return convertToDto(user);
     }
@@ -70,7 +77,7 @@ public class UserController {
     @RequestMapping(value = "/sentOtp",
             method = RequestMethod.GET)
     public ResponseDto setOtp(@RequestHeader("Authorization") String authorization) throws ResourceNotFoundException, ParseException {
-        String username = CommonUtils.getUsernameFromAccessToken(authorization);
+        String username = commonUtils.getUsernameFromAccessToken(authorization);
         ResponseDto responseDto = new ResponseDto();
         if(username != null) {
             responseDto.setMessage(userService.sentOtp(username));

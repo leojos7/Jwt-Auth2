@@ -48,7 +48,7 @@ public class ProductParamsServiceImpl implements ProductParamsService {
         if (existingProductParamOptional.isPresent()) {
             existingProductParam = existingProductParamOptional.get();
         } else {
-            // TODO throw custom exception
+            // TODO throw custom exceptionHandler
         }
         return existingProductParam;
     }
@@ -58,7 +58,7 @@ public class ProductParamsServiceImpl implements ProductParamsService {
         if (productParamsRepository.findById(paramDetailsId) != null) {
             productParamsRepository.deleteById(paramDetailsId);
         } else {
-            // TODO throw custom exception
+            // TODO throw custom exceptionHandler
         }
     }
 

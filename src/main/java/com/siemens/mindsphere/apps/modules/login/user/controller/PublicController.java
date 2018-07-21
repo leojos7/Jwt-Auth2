@@ -3,7 +3,7 @@ package com.siemens.mindsphere.apps.modules.login.user.controller;
 import com.siemens.mindsphere.apps.common.dto.ResponseDto;
 import com.siemens.mindsphere.apps.common.exception.MailNotSentException;
 import com.siemens.mindsphere.apps.common.exception.TokenExpiredException;
-import com.siemens.mindsphere.apps.exception.ParseException;
+import com.siemens.mindsphere.apps.exceptionHandler.ParseException;
 import com.siemens.mindsphere.apps.common.exception.AlreadyExistingResourceException;
 import com.siemens.mindsphere.apps.common.exception.ResourceNotFoundException;
 import com.siemens.mindsphere.apps.modules.login.user.dto.UserDto;
@@ -13,6 +13,7 @@ import com.siemens.mindsphere.apps.common.enums.Authorities;
 import com.siemens.mindsphere.apps.common.utils.CommonUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
@@ -26,17 +27,21 @@ public class PublicController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private CommonUtils commonUtils;
+
     @RequestMapping(value = "/sign-up",
             method = RequestMethod.POST,
             consumes = "application/json",
             produces = "application/json")
-    public UserDto signUp(@RequestBody UserDto userDto) throws AlreadyExistingResourceException {
+    public UserDto signUp(@RequestBody UserDto userDto) throws AlreadyExistingResourceException, MailNotSentException {
         User user = convertToEntity(userDto);
-        user.setAuthorities(CommonUtils.getAuthoritiesList(Authorities.ROLE_USER.toString()));
+        user.setAuthorities(commonUtils.getAuthoritiesList(Authorities.ROLE_USER.toString()));
         User userCreated = null;
         if (user != null) {
             userCreated = userService.addUser(user);
         }
+        commonUtils.sendActivationEmail(userCreated);
         return convertToDto(userCreated);
     }
 

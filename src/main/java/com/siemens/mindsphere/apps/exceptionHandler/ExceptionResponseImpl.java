@@ -1,4 +1,4 @@
-package com.siemens.mindsphere.apps.exception;
+package com.siemens.mindsphere.apps.exceptionHandler;
 
 public class ExceptionResponseImpl implements ExceptionResponse {
 
